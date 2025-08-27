@@ -1,1 +1,292 @@
-/* You can add global styles to this file, and also import other style files */
+/*!
+ * House Management App - Global Styles
+ * This file contains global styles and theme configuration
+ */
+
+// Import theme variables
+@use '@angular/material' as mat;
+@use 'theme/variables' as *;
+
+// Import Google Fonts
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Round|Material+Icons+Sharp|Material+Icons+Two+Tone');
+
+/* Reset and base styles */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  height: 100%;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: $font-family;
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--text-primary);
+  background-color: var(--background);
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  
+  &.dark-theme {
+    background-color: var(--background);
+    color: var(--text-primary);
+  }
+}
+
+// Typography
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 500;
+  line-height: 1.2;
+  margin-bottom: 0.5em;
+}
+
+h1 { font-size: 2.5rem; }
+h2 { font-size: 2rem; }
+h3 { font-size: 1.75rem; }
+h4 { font-size: 1.5rem; }
+h5 { font-size: 1.25rem; }
+h6 { font-size: 1rem; }
+
+p {
+  margin-bottom: 1rem;
+  
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+a {
+  color: var(--primary-color);
+  text-decoration: none;
+  transition: color 0.2s;
+  
+  &:hover {
+    color: var(--primary-dark);
+    text-decoration: underline;
+  }
+}
+
+// Layout
+.container {
+  width: 100%;
+  max-width: $max-content-width;
+  margin: 0 auto;
+  padding: 0 var(--spacing-4);
+  
+  &--fluid {
+    max-width: 100%;
+  }
+  
+  @include breakpoint-up(md) {
+    padding: 0 var(--spacing-6);
+  }
+}
+
+// Utility classes
+.text-center { text-align: center; }
+.text-right { text-align: right; }
+.text-left { text-align: left; }
+
+.mt-0 { margin-top: 0 !important; }
+.mb-0 { margin-bottom: 0 !important; }
+.ml-0 { margin-left: 0 !important; }
+.mr-0 { margin-right: 0 !important; }
+.mx-0 { margin-left: 0 !important; margin-right: 0 !important; }
+.my-0 { margin-top: 0 !important; margin-bottom: 0 !important; }
+
+.p-0 { padding: 0 !important; }
+.pt-0 { padding-top: 0 !important; }
+.pb-0 { padding-bottom: 0 !important; }
+.pl-0 { padding-left: 0 !important; }
+.pr-0 { padding-right: 0 !important; }
+.px-0 { padding-left: 0 !important; padding-right: 0 !important; }
+.py-0 { padding-top: 0 !important; padding-bottom: 0 !important; }
+
+// RTL support
+[dir='rtl'] {
+  text-align: right;
+  
+  .mat-icon {
+    transform: scaleX(-1);
+  }
+}
+
+// Material overrides
+.mat-mdc-button, 
+.mat-mdc-raised-button, 
+.mat-mdc-unelevated-button, 
+.mat-mdc-outlined-button, 
+.mat-mdc-icon-button {
+  text-transform: uppercase;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  
+  .mat-icon {
+    margin-right: 8px;
+    
+    [dir='rtl'] & {
+      margin-right: 0;
+      margin-left: 8px;
+    }
+  }
+}
+
+.mat-mdc-card {
+  border-radius: var(--border-radius) !important;
+  box-shadow: var(--shadow) !important;
+  margin-bottom: var(--spacing-4);
+  
+  &-header {
+    padding: var(--spacing-4) var(--spacing-4) 0;
+    
+    .mat-mdc-card-title {
+      font-weight: 500;
+      margin-bottom: var(--spacing-2);
+    }
+    
+    .mat-mdc-card-subtitle {
+      margin-bottom: var(--spacing-2);
+    }
+  }
+  
+  &-content {
+    padding: var(--spacing-4);
+  }
+  
+  &-actions {
+    padding: var(--spacing-3) var(--spacing-4) var(--spacing-4);
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--spacing-2);
+  }
+}
+
+// Form styles
+.mat-mdc-form-field {
+  width: 100%;
+  margin-bottom: var(--spacing-3);
+  
+  &-infix {
+    display: flex;
+    align-items: center;
+  }
+  
+  .mat-icon {
+    color: var(--text-secondary);
+  }
+}
+
+// Table styles
+.mat-mdc-table {
+  width: 100%;
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  
+  .mat-mdc-header-row {
+    background-color: var(--gray-100);
+    
+    .dark-theme & {
+      background-color: var(--gray-800);
+    }
+  }
+  
+  .mat-mdc-row {
+    transition: background-color 0.2s;
+    
+    &:hover {
+      background-color: var(--gray-50);
+      
+      .dark-theme & {
+        background-color: var(--gray-800);
+      }
+    }
+  }
+  
+  .mat-mdc-cell,
+  .mat-mdc-header-cell {
+    padding: var(--spacing-3) var(--spacing-4);
+  }
+}
+
+// Snackbar styles
+.mat-mdc-snack-bar-container {
+  &.success-snackbar {
+    --mdc-snackbar-container-color: var(--success);
+  }
+  
+  &.error-snackbar {
+    --mdc-snackbar-container-color: var(--error);
+  }
+  
+  &.warning-snackbar {
+    --mdc-snackbar-container-color: var(--warning);
+  }
+  
+  &.info-snackbar {
+    --mdc-snackbar-container-color: var(--info);
+  }
+}
+
+// Custom scrollbar
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--gray-200);
+  
+  .dark-theme & {
+    background: var(--gray-800);
+  }
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--gray-400);
+  border-radius: 4px;
+  
+  &:hover {
+    background: var(--gray-500);
+  }
+  
+  .dark-theme & {
+    background: var(--gray-600);
+    
+    &:hover {
+      background: var(--gray-500);
+    }
+  }
+}
+
+// Print styles
+@media print {
+  body {
+    background: white;
+    color: black;
+    font-size: 12pt;
+  }
+  
+  .no-print {
+    display: none !important;
+  }
+  
+  .page-break {
+    page-break-before: always;
+  }
+  
+  @page {
+    margin: 2cm;
+  }
+}
