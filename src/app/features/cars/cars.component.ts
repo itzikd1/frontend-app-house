@@ -5,10 +5,13 @@ import { CarService, Car } from '../../core/services/car.service';
 import { ItemListComponent } from '../../shared/components/item-list/item-list.component';
 import { FabButtonComponent } from '../../shared/components/fab-button/fab-button.component';
 import { ItemCardComponent } from '../../shared/components/item-card/item-card.component';
-import { ItemDialogComponent } from '../../shared/components/item-dialog/item-dialog.component';
-import { ItemFormComponent } from '../../shared/components/item-form/item-form.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { AddCarDialogWrapperComponent } from './add-car-dialog-wrapper.component';
+import { ModalDialogComponent } from '../../shared/components/modal-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
+import {ItemFormComponent} from '../../shared/components/item-form/item-form.component';
+import {ItemDialogComponent} from '../../shared/components/item-dialog/item-dialog.component';
 
 @Component({
   selector: 'app-cars',
@@ -19,10 +22,12 @@ import { MatIconModule } from '@angular/material/icon';
     ItemListComponent,
     FabButtonComponent,
     ItemCardComponent,
-    ItemDialogComponent,
-    ItemFormComponent,
     MatButtonModule,
-    MatIconModule
+    MatIconModule,
+    ModalDialogComponent,
+    AddCarDialogWrapperComponent,
+    ItemFormComponent,
+    ItemDialogComponent
   ],
   templateUrl: './cars.component.html',
   styleUrls: ['./cars.component.scss'],
@@ -32,11 +37,10 @@ export class CarsComponent implements OnInit {
   cars = signal<Car[]>([]);
   loading = signal<boolean>(true);
   error = signal<string | null>(null);
-  showDialog = signal<boolean>(false);
   adding = signal<boolean>(false);
   newCar = signal<Partial<Car>>({ make: '', model: '', year: new Date().getFullYear(), licensePlate: '' });
 
-  constructor(private carService: CarService) {}
+  constructor(private carService: CarService, private dialog: MatDialog) {}
 
   ngOnInit(): void {
     this.fetchCars();
@@ -57,22 +61,25 @@ export class CarsComponent implements OnInit {
   }
 
   openAddDialog(): void {
-    this.showDialog.set(true);
+    const dialogRef = this.dialog.open(AddCarDialogWrapperComponent, {
+      width: '400px',
+      data: {}
+    });
+    dialogRef.afterClosed().subscribe((result: Partial<Car> | null) => {
+      if (result && result.make && result.model) {
+        this.addCar(result);
+      }
+    });
   }
 
-  closeDialog(): void {
-    this.showDialog.set(false);
-    this.newCar.set({ make: '', model: '', year: new Date().getFullYear(), licensePlate: '' });
-  }
-
-  addCar(): void {
+  addCar(car?: Partial<Car>): void {
     if (this.adding()) return;
-    if (!this.newCar().make || !this.newCar().model) return;
+    const carToAdd = car ?? this.newCar();
+    if (!carToAdd.make || !carToAdd.model) return;
     this.adding.set(true);
-    this.carService.create(this.newCar()).subscribe({
-      next: (car: Car) => {
-        this.cars.set([car, ...this.cars()]);
-        this.closeDialog();
+    this.carService.create(carToAdd).subscribe({
+      next: (createdCar: Car) => {
+        this.cars.set([createdCar, ...this.cars()]);
         this.adding.set(false);
       },
       error: () => {

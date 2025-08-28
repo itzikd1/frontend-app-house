@@ -5,10 +5,11 @@ import { NoteService, Note } from '../../core/services/note.service';
 import { ItemListComponent } from '../../shared/components/item-list/item-list.component';
 import { FabButtonComponent } from '../../shared/components/fab-button/fab-button.component';
 import { ItemCardComponent } from '../../shared/components/item-card/item-card.component';
-import { ItemDialogComponent } from '../../shared/components/item-dialog/item-dialog.component';
-import { ItemFormComponent } from '../../shared/components/item-form/item-form.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { AddNoteDialogWrapperComponent } from './add-note-dialog-wrapper.component';
+import { ModalDialogComponent } from '../../shared/components/modal-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-notes',
@@ -19,10 +20,10 @@ import { MatIconModule } from '@angular/material/icon';
     ItemListComponent,
     FabButtonComponent,
     ItemCardComponent,
-    ItemDialogComponent,
-    ItemFormComponent,
     MatButtonModule,
-    MatIconModule
+    MatIconModule,
+    ModalDialogComponent,
+    AddNoteDialogWrapperComponent
   ],
   templateUrl: './notes.component.html',
   styleUrls: ['./notes.component.scss'],
@@ -32,11 +33,10 @@ export class NotesComponent implements OnInit {
   notes = signal<Note[]>([]);
   loading = signal<boolean>(true);
   error = signal<string | null>(null);
-  showDialog = signal<boolean>(false);
   adding = signal<boolean>(false);
   newNote = signal<Partial<Note>>({ title: '', content: '' });
 
-  constructor(private noteService: NoteService) {}
+  constructor(private noteService: NoteService, private dialog: MatDialog) {}
 
   ngOnInit(): void {
     this.fetchNotes();
@@ -57,22 +57,25 @@ export class NotesComponent implements OnInit {
   }
 
   openAddDialog(): void {
-    this.showDialog.set(true);
+    const dialogRef = this.dialog.open(AddNoteDialogWrapperComponent, {
+      width: '400px',
+      data: {}
+    });
+    dialogRef.afterClosed().subscribe((result: Partial<Note> | null) => {
+      if (result && result.title) {
+        this.addNote(result);
+      }
+    });
   }
 
-  closeDialog(): void {
-    this.showDialog.set(false);
-    this.newNote.set({ title: '', content: '' });
-  }
-
-  addNote(): void {
+  addNote(note?: Partial<Note>): void {
     if (this.adding()) return;
-    if (!this.newNote().title) return;
+    const noteToAdd = note ?? this.newNote();
+    if (!noteToAdd.title) return;
     this.adding.set(true);
-    this.noteService.create(this.newNote()).subscribe({
-      next: (note: Note) => {
-        this.notes.set([note, ...this.notes()]);
-        this.closeDialog();
+    this.noteService.create(noteToAdd).subscribe({
+      next: (createdNote: Note) => {
+        this.notes.set([createdNote, ...this.notes()]);
         this.adding.set(false);
       },
       error: () => {

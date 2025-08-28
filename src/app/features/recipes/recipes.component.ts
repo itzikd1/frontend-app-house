@@ -5,12 +5,13 @@ import { CommonModule } from '@angular/common';
 import { ItemListComponent } from '../../shared/components/item-list/item-list.component';
 import { FabButtonComponent } from '../../shared/components/fab-button/fab-button.component';
 import { ItemCardComponent } from '../../shared/components/item-card/item-card.component';
-import { ItemDialogComponent } from '../../shared/components/item-dialog/item-dialog.component';
-import { ItemFormComponent } from '../../shared/components/item-form/item-form.component';
-import { FormsModule } from '@angular/forms';
 import { LoadingSpinnerComponent } from '../../shared/components/loading-spinner/loading-spinner.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { AddRecipeDialogWrapperComponent } from './add-recipe-dialog-wrapper.component';
+import { ModalDialogComponent } from '../../shared/components/modal-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
+import {FormsModule} from '@angular/forms';
 
 @Component({
   selector: 'app-recipes',
@@ -21,11 +22,11 @@ import { MatIconModule } from '@angular/material/icon';
     ItemListComponent,
     FabButtonComponent,
     ItemCardComponent,
-    ItemDialogComponent,
-    ItemFormComponent,
     LoadingSpinnerComponent,
     MatButtonModule,
-    MatIconModule
+    MatIconModule,
+    ModalDialogComponent,
+    AddRecipeDialogWrapperComponent
   ],
   templateUrl: './recipes.component.html',
   styleUrls: ['./recipes.component.scss'],
@@ -35,11 +36,9 @@ export class RecipesComponent implements OnInit {
   recipes = signal<Recipe[]>([]);
   error = signal<string | null>(null);
   loading = signal<boolean>(true);
-  showDialog = signal<boolean>(false);
   adding = signal<boolean>(false);
-  newRecipe = signal<Partial<Recipe>>({ title: '', description: '', servings: 1, ingredients: [], instructions: '' });
 
-  constructor(private recipeService: RecipeService) {}
+  constructor(private recipeService: RecipeService, private dialog: MatDialog) {}
 
   ngOnInit(): void {
     this.fetchRecipes();
@@ -60,22 +59,25 @@ export class RecipesComponent implements OnInit {
   }
 
   openAddDialog(): void {
-    this.showDialog.set(true);
+    const dialogRef = this.dialog.open(AddRecipeDialogWrapperComponent, {
+      width: '400px',
+      data: {}
+    });
+    dialogRef.afterClosed().subscribe((result: Partial<Recipe> | null) => {
+      if (result && result.title) {
+        this.addRecipe(result);
+      }
+    });
   }
 
-  closeDialog(): void {
-    this.showDialog.set(false);
-    this.newRecipe.set({ title: '', description: '', servings: 1, ingredients: [], instructions: '' });
-  }
-
-  addRecipe(): void {
+  addRecipe(recipe?: Partial<Recipe>): void {
     if (this.adding()) return;
-    if (!this.newRecipe().title) return;
+    const recipeToAdd = recipe ?? { title: '', description: '', servings: 1, ingredients: [], instructions: '' };
+    if (!recipeToAdd.title) return;
     this.adding.set(true);
-    this.recipeService.createRecipe(this.newRecipe()).subscribe({
+    this.recipeService.createRecipe(recipeToAdd).subscribe({
       next: () => {
         this.fetchRecipes();
-        this.closeDialog();
         this.adding.set(false);
       },
       error: () => {

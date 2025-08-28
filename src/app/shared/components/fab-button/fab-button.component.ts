@@ -11,7 +11,7 @@ import { MatButtonModule } from '@angular/material/button';
     <button mat-fab
             [color]="color"
             class="fab"
-            (click)="click.emit()"
+            (click)="onClick($event)"
             [attr.aria-label]="ariaLabel">
       <mat-icon>{{ icon }}</mat-icon>
     </button>
@@ -23,4 +23,9 @@ export class FabButtonComponent {
   @Input() color: 'primary' | 'accent' | 'warn' = 'primary';
   @Input() ariaLabel = 'Add';
   @Output() click = new EventEmitter<void>();
+
+  onClick(event: MouseEvent): void {
+    event.stopPropagation();
+    this.click.emit();
+  }
 }

@@ -7,8 +7,10 @@ import { LoadingSpinnerComponent } from '../../shared/components/loading-spinner
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
-import { AddTaskDialogComponent } from './add-task-dialog.component';
+import { AddTaskDialogWrapperComponent } from './add-task-dialog-wrapper.component';
 import { FabButtonComponent } from '../../shared/components/fab-button/fab-button.component';
+import { ItemDialogComponent } from '../../shared/components/item-dialog/item-dialog.component';
+import { ItemFormComponent } from '../../shared/components/item-form/item-form.component';
 
 @Component({
   selector: 'app-tasks',
@@ -20,7 +22,7 @@ import { FabButtonComponent } from '../../shared/components/fab-button/fab-butto
     MatIconModule,
     MatDialogModule,
     MatButtonModule,
-    FabButtonComponent
+    FabButtonComponent,
   ],
   templateUrl: './tasks.component.html',
   styleUrl: './tasks.component.scss',
@@ -61,23 +63,29 @@ export class TasksComponent implements OnInit {
   }
 
   openAddTaskDialog(): void {
-    const dialogRef = this.dialog.open(AddTaskDialogComponent, {
+    const dialogRef = this.dialog.open(AddTaskDialogWrapperComponent, {
       width: '400px',
       data: {}
     });
-    dialogRef.afterClosed().subscribe((result: Partial<Task> | undefined) => {
+    dialogRef.afterClosed().subscribe((result: Partial<Task> | null) => {
       if (result && result.title) {
-        this.adding.set(true);
-        this.taskService.createTask(result).subscribe({
-          next: (task) => {
-            this.tasks.set([task, ...this.tasks()]);
-            this.adding.set(false);
-          },
-          error: () => {
-            this.error.set('Failed to add task.');
-            this.adding.set(false);
-          }
-        });
+        this.addTask(result);
+      }
+    });
+  }
+
+  addTask(task: Partial<Task>): void {
+    if (this.adding()) return;
+    if (!task.title) return;
+    this.adding.set(true);
+    this.taskService.createTask(task).subscribe({
+      next: (newTask: Task) => {
+        this.tasks.set([newTask, ...this.tasks()]);
+        this.adding.set(false);
+      },
+      error: () => {
+        this.error.set('Failed to add task.');
+        this.adding.set(false);
       }
     });
   }

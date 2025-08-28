@@ -24,20 +24,5 @@
       ariaLabel="Add Note"
       (click)="openAddDialog()"
     ></app-fab-button>
-
-    <ng-container *ngIf="showDialog()">
-      <app-item-dialog
-        title="Add Note"
-        submitLabel="Add"
-        (submit)="addNote()"
-        (cancel)="closeDialog()"
-      >
-        <app-item-form [submitLabel]="'Add'" (submit)="addNote()">
-          <input type="text" placeholder="Title" [(ngModel)]="newNote().title" name="title" required />
-          <div *ngIf="!newNote().title && adding()" class="error">Title is required.</div>
-          <input type="text" placeholder="Content" [(ngModel)]="newNote().content" name="content" />
-        </app-item-form>
-      </app-item-dialog>
-    </ng-container>
   </ng-template>
 </div>

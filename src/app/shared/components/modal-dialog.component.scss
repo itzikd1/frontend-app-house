@@ -1,0 +1,62 @@
+.mat-dialog-container {
+  padding: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.dialog-container {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+  padding: 2.5rem 2rem 2rem 2rem;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.dialog-header {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #1976d2;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.dialog-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.dialog-form input,
+.dialog-form select {
+  width: 100%;
+  padding: 0.7rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 1.05rem;
+  background: #fafafa;
+  transition: border-color 0.2s;
+}
+.dialog-form input:focus,
+.dialog-form select:focus {
+  border-color: #1976d2;
+  outline: none;
+}
+
+.dialog-form .actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  margin-top: 1.2rem;
+}
+
+.dialog-form button {
+  padding: 0.6rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  background: #1976d2;
+  color: #fff;
+}
+
