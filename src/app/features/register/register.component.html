@@ -1,29 +1,29 @@
 <form [formGroup]="form" (ngSubmit)="submit()" class="register-form">
   <h2>{{ 'register.title' | translate }}</h2>
 
-  <app-form-group
-    [label]="'register.name' | translate"
-    controlName="name"
-    type="text"
-    [form]="form"
-    errorKey="register.name_error">
-  </app-form-group>
+  <div class="form-group">
+    <label for="name">{{ 'register.name' | translate }}</label>
+    <input id="name" type="text" formControlName="name" />
+    <div class="error" *ngIf="form.get('name')?.invalid && (form.get('name')?.dirty || form.get('name')?.touched)">
+      {{ 'register.name_error' | translate }}
+    </div>
+  </div>
 
-  <app-form-group
-    [label]="'register.email' | translate"
-    controlName="email"
-    type="email"
-    [form]="form"
-    errorKey="register.email_error">
-  </app-form-group>
+  <div class="form-group">
+    <label for="email">{{ 'register.email' | translate }}</label>
+    <input id="email" type="email" formControlName="email" />
+    <div class="error" *ngIf="form.get('email')?.invalid && (form.get('email')?.dirty || form.get('email')?.touched)">
+      {{ 'register.email_error' | translate }}
+    </div>
+  </div>
 
-  <app-form-group
-    [label]="'register.password' | translate"
-    controlName="password"
-    type="password"
-    [form]="form"
-    errorKey="register.password_error">
-  </app-form-group>
+  <div class="form-group">
+    <label for="password">{{ 'register.password' | translate }}</label>
+    <input id="password" type="password" formControlName="password" />
+    <div class="error" *ngIf="form.get('password')?.invalid && (form.get('password')?.dirty || form.get('password')?.touched)">
+      {{ 'register.password_error' | translate }}
+    </div>
+  </div>
 
   <button type="submit" [disabled]="form.invalid || loading">
     {{ loading ? ('register.loading' | translate) : ('register.submit' | translate) }}

@@ -1,8 +1,0 @@
-<div class="form-group">
-  <label [for]="controlName">{{ label }}</label>
-  <input [id]="controlName" [formControlName]="controlName" [type]="type" />
-  <div *ngIf="form.get(controlName)?.invalid && form.get(controlName)?.touched" class="error">
-    {{ errorKey | translate }}
-  </div>
-</div>
-
