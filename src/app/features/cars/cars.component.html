@@ -29,12 +29,13 @@
       <app-item-dialog
         title="Add Car"
         submitLabel="Add"
-        (submit)="addCar()"
         (cancel)="closeDialog()"
       >
         <app-item-form [submitLabel]="'Add'" (submit)="addCar()">
           <input type="text" placeholder="Make" [(ngModel)]="newCar().make" name="make" required />
+          <div *ngIf="!newCar().make && adding()" class="error">Make is required.</div>
           <input type="text" placeholder="Model" [(ngModel)]="newCar().model" name="model" required />
+          <div *ngIf="!newCar().model && adding()" class="error">Model is required.</div>
           <input type="number" placeholder="Year" [(ngModel)]="newCar().year" name="year" min="1900" max="2100" />
           <input type="text" placeholder="License Plate" [(ngModel)]="newCar().licensePlate" name="licensePlate" />
         </app-item-form>

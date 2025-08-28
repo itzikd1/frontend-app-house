@@ -33,13 +33,14 @@
   <app-item-dialog
     title="Add Recipe"
     submitLabel="Add"
-    (submit)="addRecipe()"
     (cancel)="closeDialog()"
   >
     <app-item-form [submitLabel]="'Add'" (submit)="addRecipe()">
       <input type="text" placeholder="Title" [(ngModel)]="newRecipe().title" name="title" required />
       <input type="text" placeholder="Description" [(ngModel)]="newRecipe().description" name="description" />
       <input type="number" placeholder="Servings" [(ngModel)]="newRecipe().servings" name="servings" min="1" />
+      <textarea placeholder="Instructions" [(ngModel)]="newRecipe().instructions" name="instructions" required></textarea>
+      <!-- Simple ingredients input: for now, just ensure ingredients is always an array in the component -->
     </app-item-form>
   </app-item-dialog>
 </ng-container>

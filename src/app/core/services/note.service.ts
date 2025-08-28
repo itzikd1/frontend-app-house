@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 import {environment} from '../../../environments/environment';
 
 export interface Note {
@@ -18,7 +19,13 @@ export class NoteService {
   constructor(private http: HttpClient) {}
 
   getAll(): Observable<Note[]> {
-    return this.http.get<Note[]>(this.baseUrl);
+    return this.http.get<{ data?: { success: boolean; notes: Note[] }; error?: string }>(this.baseUrl).pipe(
+      map(res => {
+        if (res.error) throw res.error;
+        return res.data?.notes ?? [];
+      }),
+      catchError(err => throwError(() => err))
+    );
   }
 
   create(note: Partial<Note>): Observable<Note> {

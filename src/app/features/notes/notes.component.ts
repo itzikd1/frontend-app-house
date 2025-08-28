@@ -66,6 +66,7 @@ export class NotesComponent implements OnInit {
   }
 
   addNote(): void {
+    if (this.adding()) return;
     if (!this.newNote().title) return;
     this.adding.set(true);
     this.noteService.create(this.newNote()).subscribe({

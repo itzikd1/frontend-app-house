@@ -14,10 +14,10 @@ export class RecipeService {
   constructor(private http: HttpClient) {}
 
   getRecipes(): Observable<Recipe[]> {
-    return this.http.get<{ data?: Recipe[]; error?: string }>(this.baseUrl).pipe(
+    return this.http.get<{ data?: { success: boolean; recipes: Recipe[] }; error?: string }>(this.baseUrl).pipe(
       map(res => {
         if (res.error) throw res.error;
-        return res.data ?? [];
+        return res.data?.recipes ?? [];
       }),
       catchError(err => throwError(() => err))
     );

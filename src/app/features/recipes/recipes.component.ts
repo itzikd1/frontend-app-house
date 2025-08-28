@@ -37,7 +37,7 @@ export class RecipesComponent implements OnInit {
   loading = signal<boolean>(true);
   showDialog = signal<boolean>(false);
   adding = signal<boolean>(false);
-  newRecipe = signal<Partial<Recipe>>({ title: '', description: '', servings: 1 });
+  newRecipe = signal<Partial<Recipe>>({ title: '', description: '', servings: 1, ingredients: [], instructions: '' });
 
   constructor(private recipeService: RecipeService) {}
 
@@ -65,15 +65,16 @@ export class RecipesComponent implements OnInit {
 
   closeDialog(): void {
     this.showDialog.set(false);
-    this.newRecipe.set({ title: '', description: '', servings: 1 });
+    this.newRecipe.set({ title: '', description: '', servings: 1, ingredients: [], instructions: '' });
   }
 
   addRecipe(): void {
+    if (this.adding()) return;
     if (!this.newRecipe().title) return;
     this.adding.set(true);
     this.recipeService.createRecipe(this.newRecipe()).subscribe({
-      next: (recipe) => {
-        this.recipes.set([recipe, ...this.recipes()]);
+      next: () => {
+        this.fetchRecipes();
         this.closeDialog();
         this.adding.set(false);
       },

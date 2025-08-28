@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 import {environment} from '../../../environments/environment';
 
 export interface Car {
@@ -20,7 +21,13 @@ export class CarService {
   constructor(private http: HttpClient) {}
 
   getAll(): Observable<Car[]> {
-    return this.http.get<Car[]>(this.baseUrl);
+    return this.http.get<{ data?: { success: boolean; cars: Car[] }; error?: string }>(this.baseUrl).pipe(
+      map(res => {
+        if (res.error) throw res.error;
+        return res.data?.cars ?? [];
+      }),
+      catchError(err => throwError(() => err))
+    );
   }
 
   create(car: Partial<Car>): Observable<Car> {

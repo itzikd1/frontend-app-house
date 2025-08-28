@@ -66,6 +66,7 @@ export class CarsComponent implements OnInit {
   }
 
   addCar(): void {
+    if (this.adding()) return;
     if (!this.newCar().make || !this.newCar().model) return;
     this.adding.set(true);
     this.carService.create(this.newCar()).subscribe({
