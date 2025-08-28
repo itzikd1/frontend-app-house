@@ -33,18 +33,27 @@
       <button type="button" (click)="cancelEdit()">Cancel</button>
     </form>
 
-    <div *ngIf="tasks().length; else noTasks">
-      <ul>
-        <li *ngFor="let task of tasks()">
-          <strong>{{ task.title }}</strong>
-          <span *ngIf="task.description"> - {{ task.description }}</span>
-          <span [ngClass]="{ 'completed': task.completed }">
-            {{ task.completed ? 'Completed' : 'Pending' }}
-          </span>
-          <button type="button" (click)="startEdit(task)">Edit</button>
-          <button type="button" (click)="deleteTask(task.id)">Delete</button>
-        </li>
-      </ul>
+    <div *ngIf="tasks().length; else noTasks" class="tasks-grid">
+      <div *ngFor="let task of tasks()" class="task-card">
+        <div class="task-header">
+          <strong class="task-title">{{ task.title }}</strong>
+          <div class="task-actions-right">
+            <button type="button" (click)="startEdit(task)" class="icon-btn edit" title="Edit">
+              <span aria-label="Edit">✏️</span>
+            </button>
+            <button type="button" (click)="deleteTask(task.id)" class="icon-btn delete" title="Delete">
+              <span aria-label="Delete">🗑️</span>
+            </button>
+          </div>
+        </div>
+        <div class="task-body">
+          <span *ngIf="task.description" class="task-desc">{{ task.description }}</span>
+        </div>
+        <div class="task-meta-row">
+          <span class="task-priority" [ngClass]="task.priority?.toLowerCase()">{{ task.priority }}</span>
+          <span *ngIf="task.dueDate" class="task-due-date">{{ task.dueDate | date:'mediumDate' }}</span>
+        </div>
+      </div>
     </div>
     <ng-template #noTasks>
       <p>No tasks found.</p>

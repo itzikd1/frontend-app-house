@@ -14,10 +14,10 @@ export class TaskService {
   constructor(private http: HttpClient) {}
 
   getTasks(): Observable<Task[]> {
-    return this.http.get<{ data?: Task[]; error?: string }>(this.baseUrl).pipe(
+    return this.http.get<{ data?: { tasks?: Task[]; error?: string } }>(this.baseUrl).pipe(
       map(res => {
-        if (res.error) throw res.error;
-        return res.data ?? [];
+        if (res.data?.error) throw res.data.error;
+        return res.data?.tasks ?? [];
       }),
       catchError(err => throwError(() => err))
     );
