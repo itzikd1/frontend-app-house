@@ -47,10 +47,10 @@ export class TranslationService {
     const translations = this.translations();
     // Support nested keys using dot notation
     const keyParts = key.split('.');
-    let value: any = translations;
+    let value: string | Record<string, unknown> = translations;
     for (const part of keyParts) {
       if (value && typeof value === 'object' && part in value) {
-        value = value[part];
+        value = (value as Record<string, string>)[part];
       } else {
         this.logError(`Translation missing for key: ${key}`);
         return `[${key}]`;

@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../core/services/auth.service';
@@ -14,12 +14,16 @@ import { TranslatePipe } from '../../shared/pipes/translate.pipe';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class RegisterComponent {
-  form: FormGroup;
-  loading = false;
-  error: string | null = null;
-  success: boolean = false;
+  public form: FormGroup;
+  public loading = false;
+  public error: string | null = null;
+  public success = false;
 
-  constructor(private fb: FormBuilder, private auth: AuthService, private router: Router) {
+  private fb = inject(FormBuilder);
+  private auth = inject(AuthService);
+  private router = inject(Router);
+
+  constructor() {
     this.form = this.fb.group({
       name: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.email]],
@@ -27,7 +31,7 @@ export class RegisterComponent {
     });
   }
 
-  async submit() {
+  public async submit(): Promise<void> {
     if (this.form.invalid) return;
     this.loading = true;
     this.error = null;
@@ -35,8 +39,8 @@ export class RegisterComponent {
       await this.auth.register(this.form.value).toPromise();
       this.success = true;
       this.router.navigate(['/dashboard']);
-    } catch (err: any) {
-      this.error = err?.error?.message || 'Registration failed';
+    } catch (err: unknown) {
+      this.error = (err instanceof Error ? err.message : 'Unknown error');
     } finally {
       this.loading = false;
     }
