@@ -39,10 +39,10 @@
           <strong class="task-title">{{ task.title }}</strong>
           <div class="task-actions-right">
             <button type="button" (click)="startEdit(task)" class="icon-btn edit" title="Edit">
-              <span aria-label="Edit">✏️</span>
+              <mat-icon class="icon-grey" aria-label="Edit">edit</mat-icon>
             </button>
             <button type="button" (click)="deleteTask(task.id)" class="icon-btn delete" title="Delete">
-              <span aria-label="Delete">🗑️</span>
+              <mat-icon class="icon-grey" aria-label="Delete">delete</mat-icon>
             </button>
           </div>
         </div>
@@ -50,7 +50,7 @@
           <span *ngIf="task.description" class="task-desc">{{ task.description }}</span>
         </div>
         <div class="task-meta-row">
-          <span class="task-priority" [ngClass]="task.priority?.toLowerCase()">{{ task.priority }}</span>
+          <span class="task-priority" [ngClass]="task.priority.toLowerCase()">{{ task.priority }}</span>
           <span *ngIf="task.dueDate" class="task-due-date">{{ task.dueDate | date:'mediumDate' }}</span>
         </div>
       </div>

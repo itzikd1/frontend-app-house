@@ -6,11 +6,11 @@
     <p class="error">{{ error }}</p>
   </div>
   <ng-template #showFamilies>
-    <div *ngIf="families.length; else noFamilies">
+    <div *ngIf="families.length; else noFamilies" class="card family-card">
       <ul>
         <li *ngFor="let family of families">
           <strong>{{ family.name }}</strong>
-          <span>({{ family.members?.length || 0 }} members)</span>
+          <span>({{ family.members.length || 0 }} members)</span>
         </li>
       </ul>
     </div>

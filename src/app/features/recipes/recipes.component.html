@@ -6,7 +6,7 @@
     <p class="error">{{ error }}</p>
   </div>
   <ng-template #showRecipes>
-    <div *ngIf="recipes.length; else noRecipes">
+    <div *ngIf="recipes.length; else noRecipes" class="card recipes-card">
       <ul>
         <li *ngFor="let recipe of recipes">
           <strong>{{ recipe.title }}</strong>

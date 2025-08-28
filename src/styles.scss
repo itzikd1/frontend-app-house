@@ -22,6 +22,8 @@
 }
 
 html {
+  background: #fff;
+  color: #111;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   height: 100%;
@@ -29,11 +31,11 @@ html {
 }
 
 body {
+  background: #fff;
+  color: #111;
   font-family: $font-family;
   font-size: 16px;
   line-height: 1.5;
-  color: var(--text-primary);
-  background-color: var(--background);
   margin: 0;
   min-height: 100vh;
   display: flex;
@@ -289,4 +291,32 @@ a {
   @page {
     margin: 2cm;
   }
+}
+
+.card {
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  padding: 1.5rem;
+}
+
+.material-icons, .material-icons-outlined, .material-icons-round, .material-icons-sharp, .material-icons-two-tone {
+  color: #1976d2; // default blue
+  transition: color 0.2s;
+}
+.icon-green {
+  color: #43a047;
+}
+.icon-yellow {
+  color: #fbc02d;
+}
+.icon-blue {
+  color: #1976d2;
+}
+.icon-red {
+  color: #d32f2f;
+}
+.icon-grey {
+  color: #959595;
 }
