@@ -13,7 +13,7 @@ export interface Note {
 
 @Injectable({ providedIn: 'root' })
 export class NoteService {
-  private readonly baseUrl = `${environment.apiUrl}/notes`;
+  private readonly baseUrl = `${environment.apiUrl}/note`;
 
   constructor(private http: HttpClient) {}
 

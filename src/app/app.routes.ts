@@ -115,4 +115,14 @@ export const routes: Routes = [
       icon: 'note'
     }
   },
+  {
+    path: 'goals',
+    loadComponent: () => import('./features/goals/goals.component').then(m => m.GoalsComponent),
+    canActivate: [authGuard],
+    title: 'Goals | House Manager',
+    data: {
+      title: 'GOALS',
+      icon: 'flag'
+    }
+  },
 ];

@@ -15,7 +15,7 @@ export interface Car {
 
 @Injectable({ providedIn: 'root' })
 export class CarService {
-  private readonly baseUrl = `${environment.apiUrl}/cars`;
+  private readonly baseUrl = `${environment.apiUrl}/car`;
 
   constructor(private http: HttpClient) {}
 
