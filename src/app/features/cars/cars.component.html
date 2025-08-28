@@ -1,7 +1,7 @@
 <div class="cars-page">
   <h2>Cars</h2>
   <ng-container *ngIf="loading(); else showCars">
-    <p>Loading...</p>
+    <app-loading-spinner [translationKey]="'loading.default'"></app-loading-spinner>
   </ng-container>
   <ng-template #showCars>
     <app-item-list

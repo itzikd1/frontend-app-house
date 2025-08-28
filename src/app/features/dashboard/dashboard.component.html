@@ -2,10 +2,10 @@
   <div class="health-status-card card">
     <h2>System Health Status</h2>
 
-    <app-loading-spinner *ngIf="loading()" [message]="'Checking system status...'"></app-loading-spinner>
+    <app-loading-spinner *ngIf="loading()" [translationKey]="'dashboard.checkingStatus'"></app-loading-spinner>
 
     <ng-container *ngIf="error() as errorMsg">
-      <app-error-message [message]="errorMsg"></app-error-message>
+      <app-error-message [translationKey]="errorMsg"></app-error-message>
       <button (click)="retry()" class="retry-btn">Retry</button>
     </ng-container>
 

@@ -1,6 +1,6 @@
-  <h2>Users</h2>
+<h2>Users</h2>
   <ng-container *ngIf="loading(); else showUsers">
-    <p>Loading...</p>
+    <app-loading-spinner [translationKey]="'loading.default'"></app-loading-spinner>
   </ng-container>
   <ng-template #showUsers>
     <table class="users-table" *ngIf="users().length; else noUsers">
