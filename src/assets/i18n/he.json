@@ -1,0 +1,18 @@
+{
+  "header": {
+    "dashboard": "לוח ראשי",
+    "tasks": "משימות",
+    "family": "משפחה",
+    "vehicles": "רכבים",
+    "recipes": "מתכונים",
+    "profile": "פרופיל",
+    "settings": "הגדרות",
+    "language": "שפה",
+    "logout": "התנתקות"
+  },
+  "theme": {
+    "light": "בהיר",
+    "dark": "כהה"
+  }
+}
+

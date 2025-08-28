@@ -1,0 +1,18 @@
+{
+  "header": {
+    "dashboard": "Dashboard",
+    "tasks": "Tasks",
+    "family": "Family",
+    "vehicles": "Vehicles",
+    "recipes": "Recipes",
+    "profile": "Profile",
+    "settings": "Settings",
+    "language": "Language",
+    "logout": "Logout"
+  },
+  "theme": {
+    "light": "Light",
+    "dark": "Dark"
+  }
+}
+

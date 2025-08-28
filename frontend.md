@@ -70,22 +70,10 @@
 ## 2. i18n Configuration
 
 ### Setup
-1. **Translation Files**:
-   - Create translation files for each supported language (en.json, he.json, etc.)
-   - Store in `src/assets/i18n/`
-
-2. **Translation Service**:
-   - Create a `TranslationService` using signals
-   - Handle language switching
-   - Provide current language as a signal
-
-3. **Translation Pipe**:
-   - Create a custom pipe that works with signals
-   - Automatically updates when language changes
-
-4. **Language Switcher**:
-   - Add language selection in the header
-   - Update signal on language change
+1. **Translation Files**: ✅ en.json, he.json exist in src/assets/i18n
+2. **Translation Service**: ✅ translation.service.ts uses signals and persists language in localStorage
+3. **Translation Pipe**: ✅ translate.pipe.ts exists
+4. **Language Switcher**: ✅ Implemented in header.component.html
 
 ## 3. Signals Implementation
 
@@ -149,6 +137,7 @@ setLanguage(lang: string) {
 - `@angular/cdk` - For responsive layout utilities
 - `@angular/localize` - For i18n support
 - `@angular/core` - For signals (built-in)
+- **Translation files present:** ✅
 
 ## 4. State Management
 
@@ -195,9 +184,93 @@ setLanguage(lang: string) {
 - RTL (Right-to-Left) language support
 - Persist language preference
 
+## 9. Linting & Formatting
+   Use ESLint with custom rules matching project guidelines.
+   Integrate Prettier for consistent code formatting.
+   Enforce 2-space indentation, single quotes, trailing commas, and import order.
+   Add Husky pre-commit hooks to run linting and tests.
+
+## 10. Testing Framework
+    Use Jest for unit tests.
+    Ensure every exported function/class has at least one test.
+    Maintain high test coverage for components, services, and utilities.
+
+## 11. Error Handling
+    Implement global error handler using Angular's ErrorHandler.
+    Use try/catch in async code.
+    Add error boundaries for critical UI components.
+
+## 12. Immutability & Pure Functions
+    Prefer immutability in state management and utility functions.
+    Avoid mutating function arguments and objects.
+    Use pure functions for data transformations.
+
+## 13. Named Constants
+    Define all magic numbers/strings as named constants in a dedicated file.
+    Use enums for fixed sets of values.
+
+## 14. Consistent File Naming
+    Enforce kebab-case for all files and Angular component selectors.
+
+## 15. ChangeDetectionStrategy.OnPush
+    Use ChangeDetectionStrategy.OnPush for all Angular components to optimize performance.
+
+## 16. Persisting Preferences
+    Store language and theme preferences in local storage. ✅
+    Load preferences on app startup and update signals accordingly. ✅
+
+## 17. Feature Module Structure & Lazy Loading
+    Organize features into Angular modules.
+    Use lazy loading for feature modules to reduce initial bundle size.
+
+## 18. HTTP Interceptors & Router Guards
+    Implement HTTP interceptors for authentication and error handling.
+    Use router guards to protect routes and manage access control.
+
+## 19. Skeleton Loaders & Service Worker (PWA)
+    Add skeleton loaders for async data fetching.
+    Integrate Angular service worker for offline support and caching.
+
+## 20. Local Storage for User Preferences
+
+## 21. General Coding Guidelines
+    Use ChangeDetectionStrategy.OnPush for all Angular components. ✅
+    Prefer named exports over default exports.
+    Avoid magic numbers/strings; use named constants.
+    Limit function length to 40 lines and cyclomatic complexity.
+    Always handle errors; use try/catch for async code.
+    Prefer async/await over callbacks and .then().
+    Avoid deep nesting (max 3 levels).
+    Always update/add tests when changing code.
+    Prefer immutability; avoid mutating arguments/objects.
+    Use explicit access modifiers in TypeScript classes.
+    Avoid using any; use specific types or generics.
+    Prefer interfaces to type aliases for object shapes.
+    Avoid side effects in functions; keep them pure when possible.
+    Avoid circular dependencies between modules.
+    Disallow implicit any types.
+    Discourage use of the non-null assertion operator (!).
+    Enforce consistent file naming (e.g., kebab-case).
+    For Angular, enforce kebab-case for component selectors.
+    Disallow usage of deprecated APIs.
+    Discourage leaving commented-out code in the codebase.
+    Enforce consistent member ordering for classes/interfaces (fields, constructor, methods).
+    Use ChangeDetectionStrategy.OnPush for all Angular components.
+    Do not enforce readOnly properties in TypeScript interfaces unless explicitly required.
+
+## 22. Testing Guidelines
+    Use Jest for unit tests.
+    Always include at least one test for each exported function or class.
+
 ## Implementation Timeline
 1. Day 1: Setup and basic structure
 2. Day 2: Implement responsive behavior
 3. Day 3: Add animations and polish
 4. Day 4: Testing and bug fixes
 5. Day 5: Final review and deployment
+
+---
+### Recent Improvements
+- Translation files (en.json, he.json) added and loaded from assets.
+- ChangeDetectionStrategy.OnPush enforced in header component.
+- Language and theme preferences are now persisted in localStorage.

@@ -1,4 +1,4 @@
-import { Component, signal, inject, OnInit, computed } from '@angular/core';
+import { Component, signal, inject, OnInit, computed, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -41,25 +41,26 @@ interface NavigationItem {
     MatMenuTrigger
   ],
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss']
+  styleUrls: ['./header.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HeaderComponent implements OnInit {
   private translationService = inject(TranslationService);
   private themeService = inject(ThemeService);
   private router = inject(Router);
-  
+
   isMenuOpen = signal(false);
   currentLanguage = this.translationService.currentLanguage$;
   isDarkMode = this.themeService.darkMode;
   currentTheme = this.themeService.theme;
   navigationItems: NavigationItem[] = [];
-  
+
   // Available themes for the theme picker
   themes = this.themeService.getThemes();
-  
+
   // Theme icon based on current theme
   themeIcon = computed(() => this.isDarkMode() ? 'dark_mode' : 'light_mode');
-  
+
   // Menu references for template
   languageMenuTrigger: MatMenuTrigger | null = null;
   profileMenuTrigger: MatMenuTrigger | null = null;
@@ -99,15 +100,15 @@ export class HeaderComponent implements OnInit {
   setLanguage(lang: Language): void {
     this.translationService.setLanguage(lang);
   }
-  
+
   toggleDarkMode(): void {
     this.themeService.toggleDarkMode();
   }
-  
+
   setTheme(themeId: string): void {
     this.themeService.setTheme(themeId);
   }
-  
+
   trackByFn(index: number, item: NavigationItem): string {
     return item.path;
   }
