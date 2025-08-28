@@ -2,13 +2,13 @@
   <div class="health-status-card">
     <h2>System Health Status</h2>
 
-    <app-loading-spinner *ngIf="loading" [message]="'Checking system status...'"></app-loading-spinner>
+    <app-loading-spinner *ngIf="loading()" [message]="'Checking system status...'"></app-loading-spinner>
 
-    <ng-container *ngIf="error">
-      <app-error-message [message]="error"></app-error-message>
-      <button (click)="ngOnInit()" class="retry-btn">Retry</button>
+    <ng-container *ngIf="error() as errorMsg">
+      <app-error-message [message]="errorMsg"></app-error-message>
+      <button (click)="retry()" class="retry-btn">Retry</button>
     </ng-container>
 
-    <app-health-status-card *ngIf="healthStatus" [healthStatus]="healthStatus"></app-health-status-card>
+    <app-health-status-card *ngIf="healthStatus() as hs" [healthStatus]="hs"></app-health-status-card>
   </div>
 </div>
