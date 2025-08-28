@@ -13,7 +13,7 @@
     <!-- Desktop Navigation -->
     <nav class="desktop-nav" aria-label="Main menu">
       <ul class="nav-list" role="menubar">
-        <ng-container *ngIf="isAuthenticated; else publicMenu">
+        <ng-container *ngIf="isAuthenticated$ | async; else publicMenu">
           <li *ngFor="let item of protectedNavigationItems; trackBy: trackByFn" class="nav-item" role="none">
             <a [routerLink]="item.path"
                class="nav-link"
@@ -179,7 +179,7 @@
   <div id="mobile-navigation" class="mobile-nav" [class.open]="isMenuOpen()" role="menu" [attr.aria-hidden]="!isMenuOpen()">
     <div class="mobile-nav-content">
       <ul class="mobile-nav-list">
-        <ng-container *ngIf="isAuthenticated; else publicMobileMenu">
+        <ng-container *ngIf="isAuthenticated$ | async; else publicMobileMenu">
           <li *ngFor="let item of protectedNavigationItems; trackBy: trackByFn" class="mobile-nav-item">
             <a [routerLink]="item.path"
                class="mobile-nav-link"

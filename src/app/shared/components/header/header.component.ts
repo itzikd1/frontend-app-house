@@ -69,6 +69,8 @@ export class HeaderComponent implements OnInit {
   public languageMenuTrigger: MatMenuTrigger | null = null;
   public profileMenuTrigger: MatMenuTrigger | null = null;
 
+  public readonly isAuthenticated$ = this.authService.isAuthenticated$;
+
   ngOnInit(): void {
     // Initialize navigation items from routes
     this.navigationItems = routes
@@ -117,10 +119,6 @@ export class HeaderComponent implements OnInit {
 
   public trackByFn(index: number, item: NavigationItem): string {
     return item.path;
-  }
-
-  public get isAuthenticated(): boolean {
-    return this.authService.isAuthenticated();
   }
 
   public get publicNavigationItems(): NavigationItem[] {

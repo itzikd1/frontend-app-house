@@ -47,7 +47,7 @@ export class LoginComponent {
       if (result && result.token && result.user) {
         this.auth.setAuth(result.token, result.user);
         this.success = true;
-        this.router.navigate(['/dashboard']);
+        await this.router.navigate(['/dashboard']);
       } else {
         this.error = 'Invalid login response';
       }

@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
 export interface RegisterPayload {
@@ -34,6 +34,9 @@ export class AuthService {
   private readonly TOKEN_KEY = 'auth_token';
   private readonly USER_KEY = 'auth_user';
 
+  private readonly isAuthenticatedSubject = new BehaviorSubject<boolean>(this.isAuthenticated());
+  public readonly isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
+
   register(payload: RegisterPayload): Observable<User> {
     return this.http.post<User>(`${this.apiUrl}/auth/register`, payload);
   }
@@ -45,11 +48,13 @@ export class AuthService {
   setAuth(token: string, user: User): void {
     localStorage.setItem(this.TOKEN_KEY, token);
     localStorage.setItem(this.USER_KEY, JSON.stringify(user));
+    this.isAuthenticatedSubject.next(true);
   }
 
   logout(): void {
     localStorage.removeItem(this.TOKEN_KEY);
     localStorage.removeItem(this.USER_KEY);
+    this.isAuthenticatedSubject.next(false);
   }
 
   isAuthenticated(): boolean {
