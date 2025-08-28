@@ -15,6 +15,8 @@ import { routes } from '../../../app.routes';
 import { filter } from 'rxjs/operators';
 import { MatButtonToggleGroup } from '@angular/material/button-toggle';
 
+const DEFAULT_ICON = 'help_outline';
+
 interface NavigationItem {
   path: string;
   title: string;
@@ -45,25 +47,25 @@ interface NavigationItem {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HeaderComponent implements OnInit {
-  private translationService = inject(TranslationService);
-  private themeService = inject(ThemeService);
-  private router = inject(Router);
+  private readonly translationService = inject(TranslationService);
+  private readonly themeService = inject(ThemeService);
+  private readonly router = inject(Router);
 
-  isMenuOpen = signal(false);
-  currentLanguage = this.translationService.currentLanguage$;
-  isDarkMode = this.themeService.darkMode;
-  currentTheme = this.themeService.theme;
-  navigationItems: NavigationItem[] = [];
+  public readonly isMenuOpen = signal(false);
+  public readonly currentLanguage = this.translationService.currentLanguage$;
+  public readonly isDarkMode = this.themeService.darkMode;
+  public readonly currentTheme = this.themeService.theme;
+  public navigationItems: NavigationItem[] = [];
 
   // Available themes for the theme picker
-  themes = this.themeService.getThemes();
+  public readonly themes = this.themeService.getThemes();
 
   // Theme icon based on current theme
-  themeIcon = computed(() => this.isDarkMode() ? 'dark_mode' : 'light_mode');
+  public readonly themeIcon = computed(() => this.isDarkMode() ? 'dark_mode' : 'light_mode');
 
   // Menu references for template
-  languageMenuTrigger: MatMenuTrigger | null = null;
-  profileMenuTrigger: MatMenuTrigger | null = null;
+  public languageMenuTrigger: MatMenuTrigger | null = null;
+  public profileMenuTrigger: MatMenuTrigger | null = null;
 
   ngOnInit(): void {
     // Initialize navigation items from routes
@@ -76,7 +78,7 @@ export class HeaderComponent implements OnInit {
         return {
           path: `/${path}`,
           title: titleKey,
-          icon: route.data?.['icon'] || 'help_outline',
+          icon: route.data?.['icon'] || DEFAULT_ICON,
           isActive: false
         };
       });
@@ -95,23 +97,23 @@ export class HeaderComponent implements OnInit {
       });
   }
 
-  toggleMenu(): void {
+  public toggleMenu(): void {
     this.isMenuOpen.update(isOpen => !isOpen);
   }
 
-  setLanguage(lang: Language): void {
+  public setLanguage(lang: Language): void {
     this.translationService.setLanguage(lang);
   }
 
-  toggleDarkMode(): void {
+  public toggleDarkMode(): void {
     this.themeService.toggleDarkMode();
   }
 
-  setTheme(themeId: string): void {
+  public setTheme(themeId: string): void {
     this.themeService.setTheme(themeId);
   }
 
-  trackByFn(index: number, item: NavigationItem): string {
+  public trackByFn(index: number, item: NavigationItem): string {
     return item.path;
   }
 }

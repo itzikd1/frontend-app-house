@@ -2,11 +2,19 @@ import { Component, OnInit, ChangeDetectionStrategy, inject } from '@angular/cor
 import { CommonModule } from '@angular/common';
 import { HealthService, HealthStatus } from '../../core/services/health.service';
 import { catchError, of } from 'rxjs';
+import { HealthStatusCardComponent } from '../../shared/components/health-status-card/health-status-card.component';
+import { LoadingSpinnerComponent } from '../../shared/components/loading-spinner/loading-spinner.component';
+import { ErrorMessageComponent } from '../../shared/components/error-message/error-message.component';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule],
+  imports: [
+    CommonModule,
+    LoadingSpinnerComponent,
+    ErrorMessageComponent,
+    HealthStatusCardComponent
+  ],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush

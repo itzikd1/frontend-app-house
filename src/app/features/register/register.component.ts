@@ -4,11 +4,21 @@ import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angula
 import { AuthService } from '../../core/services/auth.service';
 import { Router } from '@angular/router';
 import { TranslatePipe } from '../../shared/pipes/translate.pipe';
+import { FormGroupComponent } from '../../shared/components/form-group/form-group.component';
+import { ErrorMessageComponent } from '../../shared/components/error-message/error-message.component';
+import { SuccessMessageComponent } from '../../shared/components/success-message/success-message.component';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, TranslatePipe],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    TranslatePipe,
+    FormGroupComponent,
+    ErrorMessageComponent,
+    SuccessMessageComponent
+  ],
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush

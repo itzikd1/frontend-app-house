@@ -1,0 +1,37 @@
+.health-details {
+  .status-badge {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+    background-color: #dc3545;
+    color: white;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    width: 80px;
+    &.status-up {
+      background-color: #28a745;
+    }
+  }
+  .detail-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #eee;
+    &:last-child {
+      border-bottom: none;
+    }
+    .label {
+      color: #666;
+      font-weight: 500;
+    }
+    .value {
+      color: #333;
+      font-weight: 600;
+    }
+  }
+}
+

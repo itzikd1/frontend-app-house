@@ -1,0 +1,18 @@
+<div class="health-details">
+  <div class="status-badge" [class.status-up]="healthStatus.status === 'UP'">
+    {{ healthStatus.status }}
+  </div>
+  <div class="detail-row">
+    <span class="label">Version:</span>
+    <span class="value">{{ healthStatus.version }}</span>
+  </div>
+  <div class="detail-row">
+    <span class="label">Environment:</span>
+    <span class="value">{{ healthStatus.environment }}</span>
+  </div>
+  <div class="detail-row">
+    <span class="label">Last Checked:</span>
+    <span class="value">{{ healthStatus.timestamp | date:'medium' }}</span>
+  </div>
+</div>
+
