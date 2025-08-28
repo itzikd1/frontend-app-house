@@ -72,6 +72,15 @@ export const routes: Routes = [
     }
   },
   {
+    path: 'register',
+    loadComponent: () => import('./features/register/register.component').then(m => m.RegisterComponent),
+    title: 'Register | House Manager',
+    data: {
+      title: 'register.title',
+      icon: 'person_add'
+    }
+  },
+  {
     path: '**',
     redirectTo: '/dashboard'
   }

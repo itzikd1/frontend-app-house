@@ -1,12 +1,12 @@
 <header class="header" role="banner">
   <!-- Skip to main content link for keyboard users -->
-  <a href="#main-content" class="skip-to-content">{{ 'SKIP_TO_MAIN_CONTENT' | translate }}</a>
-  
+  <a href="#main-content" class="skip-to-content">{{ 'skip_to_main_content' | translate }}</a>
+
   <mat-toolbar class="toolbar" role="navigation" aria-label="Main navigation">
     <!-- Logo -->
     <div class="logo">
       <a routerLink="/" class="logo-link" aria-label="Home">
-        <span class="logo-text" [class.rtl]="currentLanguage() === 'he'" aria-hidden="true">{{ 'HOUSE_MANAGER' | translate }}</span>
+        <span class="logo-text" [class.rtl]="currentLanguage() === 'he'" aria-hidden="true">{{ 'house_manager' | translate }}</span>
       </a>
     </div>
 
@@ -14,14 +14,14 @@
     <nav class="desktop-nav" aria-label="Main menu">
       <ul class="nav-list" role="menubar">
         <li *ngFor="let item of navigationItems; trackBy: trackByFn" class="nav-item" role="none">
-          <a [routerLink]="item.path" 
-             class="nav-link" 
+          <a [routerLink]="item.path"
+             class="nav-link"
              [class.active]="item.isActive"
              [matTooltip]="item.title | translate"
-             [attr.aria-current]="item.isActive ? 'page' : null"
+             [attr.aria-label]="item.title | translate"
              matTooltipPosition="below"
              role="menuitem"
-             [attr.aria-label]="item.title | translate">
+             [attr.aria-current]="item.isActive ? 'page' : null">
             <mat-icon class="nav-icon" aria-hidden="true">{{ item.icon }}</mat-icon>
             <span class="nav-text">{{ item.title | translate }}</span>
           </a>
@@ -33,40 +33,40 @@
 
     <!-- Language Switcher -->
     <div class="language-switcher" aria-label="Language selector">
-      <button mat-icon-button 
-              [matMenuTriggerFor]="languageMenu" 
+      <button mat-icon-button
+              [matMenuTriggerFor]="languageMenu"
               #languageTrigger="matMenuTrigger"
               class="language-button"
-              [matTooltip]="'LANGUAGE' | translate"
+              [matTooltip]="'language' | translate"
               matTooltipPosition="below"
-              [attr.aria-label]="'SELECT_LANGUAGE' | translate"
+              [attr.aria-label]="'select_language' | translate"
               [attr.aria-haspopup]="'menu'"
               [attr.aria-expanded]="languageTrigger.menuOpen"
               (menuOpened)="languageMenuTrigger = languageTrigger">
         <mat-icon aria-hidden="true">language</mat-icon>
-        <span class="visually-hidden">{{ 'CURRENT_LANGUAGE' | translate }}: {{ currentLanguage() | uppercase }}</span>
+        <span class="visually-hidden">{{ 'current_language' | translate }}: {{ currentLanguage() | uppercase }}</span>
       </button>
       <mat-menu #languageMenu="matMenu" class="language-menu" xPosition="before" role="menu">
-        <button mat-menu-item 
-                (click)="setLanguage('en')" 
+        <button mat-menu-item
+                (click)="setLanguage('en')"
                 [class.active]="currentLanguage() === 'en'"
                 role="menuitemradio"
                 [attr.aria-checked]="currentLanguage() === 'en'"
-                [attr.aria-label]="'SET_LANGUAGE_TO_ENGLISH' | translate">
+                [attr.aria-label]="'set_language_to_english' | translate">
           <span class="language-option">
             <span class="flag-icon" aria-hidden="true">🇬🇧</span>
-            <span>{{ 'ENGLISH' | translate }}</span>
+            <span>{{ 'english' | translate }}</span>
           </span>
         </button>
-        <button mat-menu-item 
-                (click)="setLanguage('he')" 
+        <button mat-menu-item
+                (click)="setLanguage('he')"
                 [class.active]="currentLanguage() === 'he'"
                 role="menuitemradio"
                 [attr.aria-checked]="currentLanguage() === 'he'"
-                [attr.aria-label]="'SET_LANGUAGE_TO_HEBREW' | translate">
+                [attr.aria-label]="'set_language_to_hebrew' | translate">
           <span class="language-option">
             <span class="flag-icon" aria-hidden="true">🇮🇱</span>
-            <span>{{ 'HEBREW' | translate }}</span>
+            <span>{{ 'hebrew' | translate }}</span>
           </span>
         </button>
       </mat-menu>
@@ -74,50 +74,50 @@
 
     <!-- Theme Toggle Button -->
     <div class="theme-toggle" aria-label="Theme selector">
-      <button mat-icon-button 
-              [matTooltip]="'THEME' | translate"
+      <button mat-icon-button
+              [matTooltip]="'theme' | translate"
               matTooltipPosition="below"
               (click)="toggleDarkMode()"
-              [attr.aria-label]="(isDarkMode() ? 'LIGHT' : 'DARK') + '_THEME' | translate"
+              [attr.aria-label]="(isDarkMode() ? 'light' : 'dark') + '_theme' | translate"
               [attr.aria-pressed]="isDarkMode()">
         <mat-icon aria-hidden="true">{{ themeIcon() }}</mat-icon>
         <span class="visually-hidden">
-          {{ 'SWITCH_TO' | translate }} {{ (isDarkMode() ? 'LIGHT' : 'DARK') + '_THEME' | translate | lowercase }}
+          {{ 'switch_to' | translate }} {{ (isDarkMode() ? 'light' : 'dark') + '_theme' | translate | lowercase }}
         </span>
       </button>
     </div>
 
     <!-- Profile Menu -->
     <div class="profile-menu">
-      <button mat-icon-button 
-              [matMenuTriggerFor]="profileMenu" 
+      <button mat-icon-button
+              [matMenuTriggerFor]="profileMenu"
               #profileTrigger="matMenuTrigger"
               class="profile-button"
-              [matTooltip]="'PROFILE' | translate"
+              [matTooltip]="'profile' | translate"
               matTooltipPosition="below"
               [attr.aria-label]="'PROFILE_MENU' | translate"
               [attr.aria-haspopup]="'menu'"
               [attr.aria-expanded]="profileTrigger.menuOpen"
               (menuOpened)="profileMenuTrigger = profileTrigger">
         <mat-icon aria-hidden="true">account_circle</mat-icon>
-        <span class="visually-hidden">{{ 'OPEN_PROFILE_MENU' | translate }}</span>
+        <span class="visually-hidden">{{ 'open_profile_menu' | translate }}</span>
       </button>
       <mat-menu #profileMenu="matMenu" class="profile-dropdown" xPosition="before" role="menu">
         <!-- Theme Picker Section -->
         <div class="theme-picker" role="group" aria-labelledby="theme-picker-label">
           <div class="theme-picker-header" id="theme-picker-label">
             <mat-icon aria-hidden="true">palette</mat-icon>
-            <span>{{ 'THEME' | translate }}</span>
+            <span>{{ 'theme' | translate }}</span>
           </div>
-          <mat-button-toggle-group 
-            [value]="currentTheme()" 
-            (change)="setTheme($event.value)" 
+          <mat-button-toggle-group
+            [value]="currentTheme()"
+            (change)="setTheme($event.value)"
             class="theme-options"
             role="radiogroup"
             aria-label="Color themes">
-            <mat-button-toggle 
-              *ngFor="let theme of themes" 
-              [value]="theme.id" 
+            <mat-button-toggle
+              *ngFor="let theme of themes"
+              [value]="theme.id"
               [class.active]="theme.id === currentTheme()"
               [attr.aria-label]="theme.name | translate"
               role="radio"
@@ -128,7 +128,7 @@
           </mat-button-toggle-group>
           <mat-divider></mat-divider>
         </div>
-        
+
         <button mat-menu-item routerLink="/profile" (click)="isMenuOpen.set(false); profileTrigger.closeMenu()" role="menuitem">
           <mat-icon aria-hidden="true">person</mat-icon>
           <span>{{ 'PROFILE' | translate }}</span>
@@ -146,8 +146,8 @@
     </div>
 
     <!-- Mobile Menu Toggle -->
-    <button mat-icon-button 
-            class="mobile-menu-button" 
+    <button mat-icon-button
+            class="mobile-menu-button"
             (click)="toggleMenu()"
             [matTooltip]="'MENU' | translate"
             matTooltipPosition="below"
@@ -167,9 +167,9 @@
     <div class="mobile-nav-content">
       <ul class="mobile-nav-list">
         <li *ngFor="let item of navigationItems; trackBy: trackByFn" class="mobile-nav-item">
-          <a [routerLink]="item.path" 
-             class="mobile-nav-link" 
-             (click)="isMenuOpen.set(false)" 
+          <a [routerLink]="item.path"
+             class="mobile-nav-link"
+             (click)="isMenuOpen.set(false)"
              [class.active]="item.isActive">
             <mat-icon class="mobile-nav-icon">{{ item.icon }}</mat-icon>
             <span class="mobile-nav-text">{{ item.title | translate }}</span>
@@ -178,14 +178,14 @@
         <li class="mobile-nav-item language-item">
           <div class="language-label">{{ 'LANGUAGE' | translate }}</div>
           <div class="language-options">
-            <button class="language-option" 
-                    [class.active]="currentLanguage() === 'en'" 
+            <button class="language-option"
+                    [class.active]="currentLanguage() === 'en'"
                     (click)="setLanguage('en')">
               <span class="flag-icon">🇬🇧</span>
               <span>{{ 'ENGLISH' | translate }}</span>
             </button>
-            <button class="language-option" 
-                    [class.active]="currentLanguage() === 'he'" 
+            <button class="language-option"
+                    [class.active]="currentLanguage() === 'he'"
                     (click)="setLanguage('he')">
               <span class="flag-icon">🇮🇱</span>
               <span>{{ 'HEBREW' | translate }}</span>

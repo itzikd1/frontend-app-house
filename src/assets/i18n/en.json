@@ -1,13 +1,26 @@
 {
-  "DASHBOARD": "Dashboard",
-  "TASKS": "Tasks",
-  "FAMILY": "Family",
-  "VEHICLES": "Vehicles",
-  "RECIPES": "Recipes",
-  "PROFILE": "Profile",
-  "SETTINGS": "Settings",
-  "LANGUAGE": "Language",
-  "LOGOUT": "Logout",
-  "LIGHT": "Light",
-  "DARK": "Dark"
+  "dashboard": "Dashboard",
+  "tasks": "Tasks",
+  "family": "Family",
+  "vehicles": "Vehicles",
+  "recipes": "Recipes",
+  "profile": "Profile",
+  "settings": "Settings",
+  "language": "Language",
+  "logout": "Logout",
+  "light": "Light",
+  "dark": "Dark",
+  "register": {
+    "title": "Create an Account",
+    "name": "Name",
+    "email": "Email",
+    "password": "Password",
+    "submit": "Register",
+    "loading": "Registering...",
+    "success": "Registration successful! Redirecting...",
+    "name_error": "Name is required.",
+    "email_error": "Valid email is required.",
+    "password_error": "Password must be at least 6 characters."
+  },
+  "theme": "Theme"
 }

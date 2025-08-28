@@ -71,9 +71,11 @@ export class HeaderComponent implements OnInit {
       .filter(route => route.path && route.path !== '**' && route.path !== '')
       .map(route => {
         const path = route.path || '';
+        // Use lowercase title keys for i18n
+        const titleKey = (route.data?.['title'] || path).toLowerCase();
         return {
           path: `/${path}`,
-          title: route.data?.['title'] || path.toUpperCase(),
+          title: titleKey,
           icon: route.data?.['icon'] || 'help_outline',
           isActive: false
         };

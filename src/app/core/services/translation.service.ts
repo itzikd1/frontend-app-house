@@ -45,11 +45,22 @@ export class TranslationService {
 
   getTranslation(key: string): string {
     const translations = this.translations();
-    if (!translations[key]) {
-      this.logError(`Translation missing for key: ${key}`);
-      return `[${key}]`;
+    // Support nested keys using dot notation
+    const keyParts = key.split('.');
+    let value: any = translations;
+    for (const part of keyParts) {
+      if (value && typeof value === 'object' && part in value) {
+        value = value[part];
+      } else {
+        this.logError(`Translation missing for key: ${key}`);
+        return `[${key}]`;
+      }
     }
-    return translations[key];
+    if (typeof value === 'string') {
+      return value;
+    }
+    this.logError(`Translation missing for key: ${key}`);
+    return `[${key}]`;
   }
 
   translate(key: string): string {

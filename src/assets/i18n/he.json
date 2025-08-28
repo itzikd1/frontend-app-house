@@ -1,18 +1,26 @@
 {
-  "header": {
-    "dashboard": "לוח ראשי",
-    "tasks": "משימות",
-    "family": "משפחה",
-    "vehicles": "רכבים",
-    "recipes": "מתכונים",
-    "profile": "פרופיל",
-    "settings": "הגדרות",
-    "language": "שפה",
-    "logout": "התנתקות"
+  "dashboard": "לוח ראשי",
+  "tasks": "משימות",
+  "family": "משפחה",
+  "vehicles": "רכבים",
+  "recipes": "מתכונים",
+  "profile": "פרופיל",
+  "settings": "הגדרות",
+  "language": "שפה",
+  "logout": "התנתקות",
+  "light": "בהיר",
+  "dark": "כהה",
+  "register": {
+    "title": "צור חשבון חדש",
+    "name": "שם",
+    "email": "אימייל",
+    "password": "סיסמה",
+    "submit": "הרשמה",
+    "loading": "נרשם...",
+    "success": "ההרשמה הצליחה! מעביר...",
+    "name_error": "יש להזין שם.",
+    "email_error": "יש להזין אימייל תקין.",
+    "password_error": "הסיסמה חייבת להכיל לפחות 6 תווים."
   },
-  "theme": {
-    "light": "בהיר",
-    "dark": "כהה"
-  }
+  "theme": "עיצוב"
 }
-
