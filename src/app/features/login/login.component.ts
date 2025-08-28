@@ -8,7 +8,7 @@ import { ErrorMessageComponent } from '../../shared/components/error-message/err
 import { SuccessMessageComponent } from '../../shared/components/success-message/success-message.component';
 
 @Component({
-  selector: 'app-register',
+  selector: 'app-login',
   standalone: true,
   imports: [
     CommonModule,
@@ -17,11 +17,11 @@ import { SuccessMessageComponent } from '../../shared/components/success-message
     ErrorMessageComponent,
     SuccessMessageComponent
   ],
-  templateUrl: './register.component.html',
-  styleUrls: ['./register.component.scss'],
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class RegisterComponent {
+export class LoginComponent {
   public form: FormGroup;
   public loading = false;
   public error: string | null = null;
@@ -33,7 +33,6 @@ export class RegisterComponent {
 
   constructor() {
     this.form = this.fb.group({
-      name: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(4)]]
     });
@@ -44,7 +43,7 @@ export class RegisterComponent {
     this.loading = true;
     this.error = null;
     try {
-      await this.auth.register(this.form.value).toPromise();
+      await this.auth.login(this.form.value).toPromise();
       this.success = true;
       this.router.navigate(['/dashboard']);
     } catch (err: unknown) {
@@ -54,3 +53,4 @@ export class RegisterComponent {
     }
   }
 }
+

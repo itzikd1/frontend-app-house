@@ -22,5 +22,15 @@
     "email_error": "Valid email is required.",
     "password_error": "Password must be at least 6 characters."
   },
-  "theme": "Theme"
+  "theme": "Theme",
+  "login": {
+    "title": "Sign In",
+    "email": "Email",
+    "email_error": "Valid email is required.",
+    "password": "Password",
+    "password_error": "Password must be at least 6 characters.",
+    "loading": "Signing in...",
+    "submit": "Login",
+    "success": "Login successful! Redirecting..."
+  }
 }

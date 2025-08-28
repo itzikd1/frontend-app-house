@@ -1,0 +1,28 @@
+
+<form [formGroup]="form" (ngSubmit)="submit()" class="login-form">
+  <h2>{{ 'login.title' | translate }}</h2>
+
+  <div class="form-group">
+    <label for="email">{{ 'login.email' | translate }}</label>
+    <input id="email" type="email" formControlName="email" />
+    <div class="error" *ngIf="form.get('email')?.invalid && (form.get('email')?.dirty || form.get('email')?.touched)">
+      {{ 'login.email_error' | translate }}
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="password">{{ 'login.password' | translate }}</label>
+    <input id="password" type="password" formControlName="password" />
+    <div class="error" *ngIf="form.get('password')?.invalid && (form.get('password')?.dirty || form.get('password')?.touched)">
+      {{ 'login.password_error' | translate }}
+    </div>
+  </div>
+
+  <button type="submit" [disabled]="form.invalid || loading">
+    {{ loading ? ('login.loading' | translate) : ('login.submit' | translate) }}
+  </button>
+
+  <app-error-message *ngIf="error" [message]="error"></app-error-message>
+  <app-success-message *ngIf="success" [message]="'login.success' | translate"></app-success-message>
+</form>
+

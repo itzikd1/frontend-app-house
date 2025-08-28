@@ -16,6 +16,11 @@ export interface User {
 
 }
 
+export interface LoginPayload {
+  email: string;
+  password: string;
+}
+
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private readonly http = inject(HttpClient);
@@ -23,5 +28,9 @@ export class AuthService {
 
   register(payload: RegisterPayload): Observable<User> {
     return this.http.post<User>(`${this.apiUrl}/auth/register`, payload);
+  }
+
+  login(payload: LoginPayload): Observable<User> {
+    return this.http.post<User>(`${this.apiUrl}/auth/login`, payload);
   }
 }

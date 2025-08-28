@@ -81,6 +81,15 @@ export const routes: Routes = [
     }
   },
   {
+    path: 'login',
+    loadComponent: () => import('./features/login/login.component').then(m => m.LoginComponent),
+    title: 'Login | House Manager',
+    data: {
+      title: 'login.title',
+      icon: 'login'
+    }
+  },
+  {
     path: '**',
     redirectTo: '/dashboard'
   }
