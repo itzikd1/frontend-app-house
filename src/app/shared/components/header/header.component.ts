@@ -6,7 +6,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule, MatMenuTrigger } from '@angular/material/menu';
-import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDividerModule } from '@angular/material/divider';
 import { TranslatePipe } from '../../pipes/translate.pipe';
 import { TranslationService, Language } from '../../../core/services/translation.service';
@@ -34,7 +33,6 @@ interface NavigationItem {
     MatMenuModule,
     MatButtonModule,
     MatButtonToggleModule,
-    MatTooltipModule,
     MatDividerModule,
     TranslatePipe
   ],
