@@ -1,4 +1,5 @@
 {
+  "house_manager": "House Manager",
   "menu": {
     "dashboard": "Dashboard",
     "tasks": "Tasks",
@@ -19,7 +20,10 @@
     "SUNSET": "Sunset",
     "english": "English",
     "hebrew": "Hebrew",
-    "setting": "Setting"
+    "setting": "Setting",
+    "cars": "Cars",
+    "users": "Users",
+    "notes": "Notes"
   },
   "register": {
     "title": "Create an Account",

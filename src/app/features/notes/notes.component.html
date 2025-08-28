@@ -1,0 +1,17 @@
+<div class="notes-page">
+  <h2>Notes</h2>
+  <ng-container *ngIf="loading(); else showNotes">
+    <p>Loading...</p>
+  </ng-container>
+  <ng-template #showNotes>
+    <ul *ngIf="notes().length; else noNotes">
+      <li *ngFor="let note of notes()">
+        <strong>{{ note.title }}</strong>: {{ note.content }}
+      </li>
+    </ul>
+    <ng-template #noNotes>
+      <p>No notes found.</p>
+    </ng-template>
+  </ng-template>
+</div>
+

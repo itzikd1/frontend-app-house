@@ -6,19 +6,6 @@
     <p class="error">{{ error() }}</p>
   </div>
   <ng-template #showTasks>
-    <!-- Add Task Form -->
-    <form (ngSubmit)="addTask()" *ngIf="!editing()" class="task-form">
-      <input type="text" placeholder="Title" [(ngModel)]="newTask().title" name="title" required />
-      <input type="text" placeholder="Description" [(ngModel)]="newTask().description" name="description" />
-      <select [(ngModel)]="newTask().priority" name="priority">
-        <option value="Low">Low</option>
-        <option value="Medium">Medium</option>
-        <option value="High">High</option>
-      </select>
-      <input type="date" [(ngModel)]="newTask().dueDate" name="dueDate" />
-      <button type="submit" [disabled]="adding()">Add Task</button>
-    </form>
-
     <!-- Edit Task Form -->
     <form (ngSubmit)="updateTask()" *ngIf="editing() && editTaskForm" class="task-form">
       <input type="text" placeholder="Title" [(ngModel)]="editTaskForm.title" name="editTitle" required />
@@ -60,3 +47,8 @@
     </ng-template>
   </ng-template>
 </ng-container>
+
+<!-- Floating Action Button -->
+<button mat-fab color="primary" class="fab" (click)="openAddTaskDialog()" aria-label="Add Task">
+  <mat-icon>add</mat-icon>
+</button>

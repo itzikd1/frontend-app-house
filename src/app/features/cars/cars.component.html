@@ -1,0 +1,17 @@
+<div class="cars-page">
+  <h2>Cars</h2>
+  <ng-container *ngIf="loading(); else showCars">
+    <p>Loading...</p>
+  </ng-container>
+  <ng-template #showCars>
+    <ul *ngIf="cars().length; else noCars">
+      <li *ngFor="let car of cars()">
+        <strong>{{ car.make }} {{ car.model }}</strong> ({{ car.year }}) - {{ car.licensePlate }}
+      </li>
+    </ul>
+    <ng-template #noCars>
+      <p>No cars found.</p>
+    </ng-template>
+  </ng-template>
+</div>
+

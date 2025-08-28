@@ -38,16 +38,6 @@ export const routes: Routes = [
     }
   },
   {
-    path: 'vehicles',
-    loadComponent: () => import('./features/vehicles/vehicles.component').then(m => m.VehiclesComponent),
-    canActivate: [authGuard],
-    title: 'Vehicles | House Manager',
-    data: {
-      title: 'VEHICLES',
-      icon: 'directions_car'
-    }
-  },
-  {
     path: 'recipes',
     loadComponent: () => import('./features/recipes/recipes.component').then(m => m.RecipesComponent),
     canActivate: [authGuard],
@@ -93,6 +83,36 @@ export const routes: Routes = [
     data: {
       title: 'REGISTER',
       icon: 'person_add'
+    }
+  },
+  {
+    path: 'users',
+    loadComponent: () => import('./features/users/users.component').then(m => m.UsersComponent),
+    canActivate: [authGuard],
+    title: 'Users | House Manager',
+    data: {
+      title: 'USERS',
+      icon: 'person'
+    }
+  },
+  {
+    path: 'cars',
+    loadComponent: () => import('./features/cars/cars.component').then(m => m.CarsComponent),
+    canActivate: [authGuard],
+    title: 'Cars | House Manager',
+    data: {
+      title: 'CARS',
+      icon: 'directions_car'
+    }
+  },
+  {
+    path: 'notes',
+    loadComponent: () => import('./features/notes/notes.component').then(m => m.NotesComponent),
+    canActivate: [authGuard],
+    title: 'Notes | House Manager',
+    data: {
+      title: 'NOTES',
+      icon: 'note'
     }
   },
 ];

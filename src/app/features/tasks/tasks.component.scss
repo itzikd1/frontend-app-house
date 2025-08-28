@@ -341,3 +341,26 @@
     min-height: 44px;
   }
 }
+
+.fab {
+  position: fixed;
+  right: 2rem;
+  bottom: 2rem;
+  z-index: 100;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  border-radius: 50%;
+  width: 56px;
+  height: 56px;
+  background: #e0e0e0 !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+.fab .mat-icon {
+  color: #1976d2 !important;
+  line-height: 1;
+  vertical-align: middle;
+  margin: 0;
+  padding: 0;
+}

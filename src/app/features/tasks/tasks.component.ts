@@ -5,11 +5,14 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { LoadingSpinnerComponent } from '../../shared/components/loading-spinner/loading-spinner.component';
 import { MatIconModule } from '@angular/material/icon';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatButtonModule } from '@angular/material/button';
+import { AddTaskDialogComponent } from './add-task-dialog.component';
 
 @Component({
   selector: 'app-tasks',
   standalone: true,
-  imports: [CommonModule, FormsModule, LoadingSpinnerComponent, MatIconModule],
+  imports: [CommonModule, FormsModule, LoadingSpinnerComponent, MatIconModule, MatDialogModule, MatButtonModule],
   templateUrl: './tasks.component.html',
   styleUrl: './tasks.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -28,7 +31,7 @@ export class TasksComponent implements OnInit {
   editTask = signal<Task | null>(null);
   editTaskForm: Partial<Task> | null = null;
 
-  constructor(private taskService: TaskService) {}
+  constructor(private taskService: TaskService, private dialog: MatDialog) {}
 
   ngOnInit(): void {
     this.fetchTasks();
@@ -60,6 +63,28 @@ export class TasksComponent implements OnInit {
       error: () => {
         this.error.set('Failed to add task.');
         this.adding.set(false);
+      }
+    });
+  }
+
+  openAddTaskDialog(): void {
+    const dialogRef = this.dialog.open(AddTaskDialogComponent, {
+      width: '400px',
+      data: {}
+    });
+    dialogRef.afterClosed().subscribe((result: Partial<Task> | undefined) => {
+      if (result && result.title) {
+        this.adding.set(true);
+        this.taskService.createTask(result).subscribe({
+          next: (task) => {
+            this.tasks.set([task, ...this.tasks()]);
+            this.adding.set(false);
+          },
+          error: () => {
+            this.error.set('Failed to add task.');
+            this.adding.set(false);
+          }
+        });
       }
     });
   }
