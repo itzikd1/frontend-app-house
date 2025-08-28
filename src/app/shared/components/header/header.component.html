@@ -13,19 +13,32 @@
     <!-- Desktop Navigation -->
     <nav class="desktop-nav" aria-label="Main menu">
       <ul class="nav-list" role="menubar">
-        <li *ngFor="let item of navigationItems; trackBy: trackByFn" class="nav-item" role="none">
-          <a [routerLink]="item.path"
-             class="nav-link"
-             [class.active]="item.isActive"
-             [matTooltip]="item.title | translate"
-             [attr.aria-label]="item.title | translate"
-             matTooltipPosition="below"
-             role="menuitem"
-             [attr.aria-current]="item.isActive ? 'page' : null">
-            <mat-icon class="nav-icon" aria-hidden="true">{{ item.icon }}</mat-icon>
-            <span class="nav-text">{{ item.title | translate }}</span>
-          </a>
-        </li>
+        <ng-container *ngIf="isAuthenticated; else publicMenu">
+          <li *ngFor="let item of protectedNavigationItems; trackBy: trackByFn" class="nav-item" role="none">
+            <a [routerLink]="item.path"
+               class="nav-link"
+               [class.active]="item.isActive"
+               [attr.aria-label]="item.title | translate"
+               role="menuitem"
+               [attr.aria-current]="item.isActive ? 'page' : null">
+              <mat-icon class="nav-icon" aria-hidden="true">{{ item.icon }}</mat-icon>
+              <span class="nav-text">{{ 'menu.' + item.title.toLowerCase() | translate }}</span>
+            </a>
+          </li>
+        </ng-container>
+        <ng-template #publicMenu>
+          <li *ngFor="let item of publicNavigationItems; trackBy: trackByFn" class="nav-item" role="none">
+            <a [routerLink]="item.path"
+               class="nav-link"
+               [class.active]="item.isActive"
+               [attr.aria-label]="item.title | translate"
+               role="menuitem"
+               [attr.aria-current]="item.isActive ? 'page' : null">
+              <mat-icon class="nav-icon" aria-hidden="true">{{ item.icon }}</mat-icon>
+              <span class="nav-text">{{ 'menu.' + item.title.toLowerCase() | translate }}</span>
+            </a>
+          </li>
+        </ng-template>
       </ul>
     </nav>
 
@@ -138,7 +151,7 @@
           <span>{{ 'SETTINGS' | translate }}</span>
         </button>
         <mat-divider></mat-divider>
-        <button mat-menu-item role="menuitem">
+        <button mat-menu-item role="menuitem" (click)="logout()">
           <mat-icon aria-hidden="true">logout</mat-icon>
           <span>{{ 'LOGOUT' | translate }}</span>
         </button>
@@ -166,15 +179,34 @@
   <div id="mobile-navigation" class="mobile-nav" [class.open]="isMenuOpen()" role="menu" [attr.aria-hidden]="!isMenuOpen()">
     <div class="mobile-nav-content">
       <ul class="mobile-nav-list">
-        <li *ngFor="let item of navigationItems; trackBy: trackByFn" class="mobile-nav-item">
-          <a [routerLink]="item.path"
-             class="mobile-nav-link"
-             (click)="isMenuOpen.set(false)"
-             [class.active]="item.isActive">
-            <mat-icon class="mobile-nav-icon">{{ item.icon }}</mat-icon>
-            <span class="mobile-nav-text">{{ item.title | translate }}</span>
-          </a>
-        </li>
+        <ng-container *ngIf="isAuthenticated; else publicMobileMenu">
+          <li *ngFor="let item of protectedNavigationItems; trackBy: trackByFn" class="mobile-nav-item">
+            <a [routerLink]="item.path"
+               class="mobile-nav-link"
+               (click)="isMenuOpen.set(false)"
+               [class.active]="item.isActive">
+              <mat-icon class="mobile-nav-icon">{{ item.icon }}</mat-icon>
+              <span class="mobile-nav-text">{{ item.title | translate }}</span>
+            </a>
+          </li>
+          <li class="mobile-nav-item">
+            <button class="logout-button" (click)="logout()">
+              <mat-icon class="mobile-nav-icon">logout</mat-icon>
+              <span class="mobile-nav-text">{{ 'LOGOUT' | translate }}</span>
+            </button>
+          </li>
+        </ng-container>
+        <ng-template #publicMobileMenu>
+          <li *ngFor="let item of publicNavigationItems; trackBy: trackByFn" class="mobile-nav-item">
+            <a [routerLink]="item.path"
+               class="mobile-nav-link"
+               (click)="isMenuOpen.set(false)"
+               [class.active]="item.isActive">
+              <mat-icon class="mobile-nav-icon">{{ item.icon }}</mat-icon>
+              <span class="mobile-nav-text">{{ item.title | translate }}</span>
+            </a>
+          </li>
+        </ng-template>
         <li class="mobile-nav-item language-item">
           <div class="language-label">{{ 'LANGUAGE' | translate }}</div>
           <div class="language-options">
@@ -191,12 +223,6 @@
               <span>{{ 'HEBREW' | translate }}</span>
             </button>
           </div>
-        </li>
-        <li class="mobile-nav-item">
-          <button class="logout-button" (click)="isMenuOpen.set(false)">
-            <mat-icon class="mobile-nav-icon">logout</mat-icon>
-            <span class="mobile-nav-text">{{ 'LOGOUT' | translate }}</span>
-          </button>
         </li>
       </ul>
     </div>

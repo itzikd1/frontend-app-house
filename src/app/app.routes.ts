@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import authGuard from './core/guards/auth.guard';
 
 export const routes: Routes = [
   {
@@ -9,15 +10,17 @@ export const routes: Routes = [
   {
     path: 'dashboard',
     loadComponent: () => import('./features/dashboard/dashboard.component').then(m => m.DashboardComponent),
+    canActivate: [authGuard],
     title: 'Dashboard | House Manager',
     data: {
-      title: 'DASHBOARD',
+      title: 'dashboard',
       icon: 'dashboard'
     }
   },
   {
     path: 'tasks',
     loadComponent: () => import('./features/tasks/tasks.component').then(m => m.TasksComponent),
+    canActivate: [authGuard],
     title: 'Tasks | House Manager',
     data: {
       title: 'TASKS',
@@ -27,6 +30,7 @@ export const routes: Routes = [
   {
     path: 'family',
     loadComponent: () => import('./features/family/family.component').then(m => m.FamilyComponent),
+    canActivate: [authGuard],
     title: 'Family | House Manager',
     data: {
       title: 'FAMILY',
@@ -36,6 +40,7 @@ export const routes: Routes = [
   {
     path: 'vehicles',
     loadComponent: () => import('./features/vehicles/vehicles.component').then(m => m.VehiclesComponent),
+    canActivate: [authGuard],
     title: 'Vehicles | House Manager',
     data: {
       title: 'VEHICLES',
@@ -45,6 +50,7 @@ export const routes: Routes = [
   {
     path: 'recipes',
     loadComponent: () => import('./features/recipes/recipes.component').then(m => m.RecipesComponent),
+    canActivate: [authGuard],
     title: 'Recipes | House Manager',
     data: {
       title: 'RECIPES',
@@ -54,7 +60,7 @@ export const routes: Routes = [
   {
     path: 'profile',
     loadComponent: () => import('./features/profile/profile.component').then(m => m.ProfileComponent),
-    canActivate: [() => import('./core/guards/auth.guard').then(m => m.default)],
+    canActivate: [authGuard],
     title: 'Profile | House Manager',
     data: {
       title: 'PROFILE',
@@ -64,7 +70,7 @@ export const routes: Routes = [
   {
     path: 'settings',
     loadComponent: () => import('./features/settings/settings.component').then(m => m.SettingsComponent),
-    canActivate: [() => import('./core/guards/auth.guard').then(m => m.default)],
+    canActivate: [authGuard],
     title: 'Settings | House Manager',
     data: {
       title: 'SETTINGS',
@@ -72,25 +78,21 @@ export const routes: Routes = [
     }
   },
   {
-    path: 'register',
-    loadComponent: () => import('./features/register/register.component').then(m => m.RegisterComponent),
-    title: 'Register | House Manager',
-    data: {
-      title: 'register.title',
-      icon: 'person_add'
-    }
-  },
-  {
     path: 'login',
     loadComponent: () => import('./features/login/login.component').then(m => m.LoginComponent),
     title: 'Login | House Manager',
     data: {
-      title: 'login.title',
+      title: 'LOGIN',
       icon: 'login'
     }
   },
   {
-    path: '**',
-    redirectTo: '/dashboard'
-  }
+    path: 'register',
+    loadComponent: () => import('./features/register/register.component').then(m => m.RegisterComponent),
+    title: 'Register | House Manager',
+    data: {
+      title: 'REGISTER',
+      icon: 'person_add'
+    }
+  },
 ];

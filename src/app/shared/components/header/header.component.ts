@@ -14,6 +14,7 @@ import { ThemeService } from '../../../core/services/theme.service';
 import { routes } from '../../../app.routes';
 import { filter } from 'rxjs/operators';
 import { MatButtonToggleGroup } from '@angular/material/button-toggle';
+import { AuthService } from '../../../core/services/auth.service';
 
 const DEFAULT_ICON = 'help_outline';
 
@@ -50,6 +51,7 @@ export class HeaderComponent implements OnInit {
   private readonly translationService = inject(TranslationService);
   private readonly themeService = inject(ThemeService);
   private readonly router = inject(Router);
+  private readonly authService = inject(AuthService);
 
   public readonly isMenuOpen = signal(false);
   public readonly currentLanguage = this.translationService.currentLanguage$;
@@ -115,5 +117,27 @@ export class HeaderComponent implements OnInit {
 
   public trackByFn(index: number, item: NavigationItem): string {
     return item.path;
+  }
+
+  public get isAuthenticated(): boolean {
+    return this.authService.isAuthenticated();
+  }
+
+  public get publicNavigationItems(): NavigationItem[] {
+    return this.navigationItems.filter(item =>
+      item.path === '/login' || item.path === '/register'
+    );
+  }
+
+  public get protectedNavigationItems(): NavigationItem[] {
+    return this.navigationItems.filter(item =>
+      ['/dashboard', '/tasks', '/family', '/vehicles', '/recipes', '/profile', '/settings'].includes(item.path)
+    );
+  }
+
+  public logout(): void {
+    this.authService.logout();
+    this.isMenuOpen.set(false);
+    this.router.navigate(['/login']);
   }
 }

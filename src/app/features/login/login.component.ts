@@ -43,9 +43,14 @@ export class LoginComponent {
     this.loading = true;
     this.error = null;
     try {
-      await this.auth.login(this.form.value).toPromise();
-      this.success = true;
-      this.router.navigate(['/dashboard']);
+      const result = await this.auth.login(this.form.value).toPromise();
+      if (result && result.token && result.user) {
+        this.auth.setAuth(result.token, result.user);
+        this.success = true;
+        this.router.navigate(['/dashboard']);
+      } else {
+        this.error = 'Invalid login response';
+      }
     } catch (err: unknown) {
       this.error = (err instanceof Error ? err.message : 'Unknown error');
     } finally {
@@ -53,4 +58,3 @@ export class LoginComponent {
     }
   }
 }
-
