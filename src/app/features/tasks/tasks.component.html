@@ -21,26 +21,17 @@
     </form>
 
     <div *ngIf="tasks().length; else noTasks" class="tasks-grid">
-      <div *ngFor="let task of tasks()" class="task-card">
-        <div class="task-header">
-          <strong class="task-title">{{ task.title }}</strong>
-          <div class="task-actions-right">
-            <button type="button" (click)="startEdit(task)" class="icon-btn edit" title="Edit">
-              <mat-icon class="icon-grey" aria-label="Edit">edit</mat-icon>
-            </button>
-            <button type="button" (click)="deleteTask(task.id)" class="icon-btn delete" title="Delete">
-              <mat-icon class="icon-grey" aria-label="Delete">delete</mat-icon>
-            </button>
-          </div>
-        </div>
-        <div class="task-body">
-          <span *ngIf="task.description" class="task-desc">{{ task.description }}</span>
-        </div>
+      <app-item-card
+        *ngFor="let task of tasks()"
+        [item]="task"
+        (edit)="startEdit(task)"
+        (delete)="deleteTask(task.id)"
+      >
         <div class="task-meta-row">
           <span class="task-priority" [ngClass]="task.priority.toLowerCase()">{{ task.priority }}</span>
           <span *ngIf="task.dueDate" class="task-due-date">{{ task.dueDate | date:'mediumDate' }}</span>
         </div>
-      </div>
+      </app-item-card>
     </div>
     <ng-template #noTasks>
       <p>No tasks found.</p>

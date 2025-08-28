@@ -9,6 +9,7 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { AddTaskDialogWrapperComponent } from './add-task-dialog-wrapper.component';
 import { FabButtonComponent } from '../../shared/components/fab-button/fab-button.component';
+import { ItemCardComponent } from '../../shared/components/item-card/item-card.component';
 
 @Component({
   selector: 'app-tasks',
@@ -21,6 +22,7 @@ import { FabButtonComponent } from '../../shared/components/fab-button/fab-butto
     MatDialogModule,
     MatButtonModule,
     FabButtonComponent,
+    ItemCardComponent
   ],
   templateUrl: './tasks.component.html',
   styleUrl: './tasks.component.scss',
