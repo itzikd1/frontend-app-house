@@ -23,7 +23,8 @@
     "setting": "Setting",
     "cars": "Cars",
     "users": "Users",
-    "notes": "Notes"
+    "notes": "Notes",
+    "goals": "Goals"
   },
   "register": {
     "title": "Create an Account",

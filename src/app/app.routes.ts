@@ -28,16 +28,6 @@ export const routes: Routes = [
     }
   },
   {
-    path: 'family',
-    loadComponent: () => import('./features/family/family.component').then(m => m.FamilyComponent),
-    canActivate: [authGuard],
-    title: 'Family | House Manager',
-    data: {
-      title: 'FAMILY',
-      icon: 'people'
-    }
-  },
-  {
     path: 'recipes',
     loadComponent: () => import('./features/recipes/recipes.component').then(m => m.RecipesComponent),
     canActivate: [authGuard],
@@ -45,26 +35,6 @@ export const routes: Routes = [
     data: {
       title: 'RECIPES',
       icon: 'restaurant'
-    }
-  },
-  {
-    path: 'profile',
-    loadComponent: () => import('./features/profile/profile.component').then(m => m.ProfileComponent),
-    canActivate: [authGuard],
-    title: 'Profile | House Manager',
-    data: {
-      title: 'PROFILE',
-      icon: 'person'
-    }
-  },
-  {
-    path: 'settings',
-    loadComponent: () => import('./features/settings/settings.component').then(m => m.SettingsComponent),
-    canActivate: [authGuard],
-    title: 'Settings | House Manager',
-    data: {
-      title: 'SETTINGS',
-      icon: 'settings'
     }
   },
   {
@@ -123,6 +93,36 @@ export const routes: Routes = [
     data: {
       title: 'GOALS',
       icon: 'flag'
+    }
+  },
+  {
+    path: 'profile',
+    loadComponent: () => import('./features/profile/profile.component').then(m => m.ProfileComponent),
+    canActivate: [authGuard],
+    title: 'Profile | House Manager',
+    data: {
+      title: 'PROFILE',
+      icon: 'person'
+    }
+  },
+  {
+    path: 'settings',
+    loadComponent: () => import('./features/settings/settings.component').then(m => m.SettingsComponent),
+    canActivate: [authGuard],
+    title: 'Settings | House Manager',
+    data: {
+      title: 'SETTINGS',
+      icon: 'settings'
+    }
+  },
+  {
+    path: 'family',
+    loadComponent: () => import('./features/family/family.component').then(m => m.FamilyComponent),
+    canActivate: [authGuard],
+    title: 'Family | House Manager',
+    data: {
+      title: 'FAMILY',
+      icon: 'people'
     }
   },
 ];
