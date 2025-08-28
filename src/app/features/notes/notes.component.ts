@@ -22,8 +22,6 @@ import { MatDialog } from '@angular/material/dialog';
     ItemCardComponent,
     MatButtonModule,
     MatIconModule,
-    ModalDialogComponent,
-    AddNoteDialogWrapperComponent
   ],
   templateUrl: './notes.component.html',
   styleUrls: ['./notes.component.scss'],

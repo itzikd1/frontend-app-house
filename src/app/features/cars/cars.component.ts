@@ -8,10 +8,7 @@ import { ItemCardComponent } from '../../shared/components/item-card/item-card.c
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { AddCarDialogWrapperComponent } from './add-car-dialog-wrapper.component';
-import { ModalDialogComponent } from '../../shared/components/modal-dialog.component';
-import { MatDialog } from '@angular/material/dialog';
-import {ItemFormComponent} from '../../shared/components/item-form/item-form.component';
-import {ItemDialogComponent} from '../../shared/components/item-dialog/item-dialog.component';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-cars',
@@ -24,10 +21,7 @@ import {ItemDialogComponent} from '../../shared/components/item-dialog/item-dial
     ItemCardComponent,
     MatButtonModule,
     MatIconModule,
-    ModalDialogComponent,
-    AddCarDialogWrapperComponent,
-    ItemFormComponent,
-    ItemDialogComponent
+    MatDialogModule
   ],
   templateUrl: './cars.component.html',
   styleUrls: ['./cars.component.scss'],

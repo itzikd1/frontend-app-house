@@ -25,8 +25,6 @@ import {FormsModule} from '@angular/forms';
     LoadingSpinnerComponent,
     MatButtonModule,
     MatIconModule,
-    ModalDialogComponent,
-    AddRecipeDialogWrapperComponent
   ],
   templateUrl: './recipes.component.html',
   styleUrls: ['./recipes.component.scss'],

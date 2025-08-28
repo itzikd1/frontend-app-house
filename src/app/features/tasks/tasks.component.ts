@@ -9,8 +9,6 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { AddTaskDialogWrapperComponent } from './add-task-dialog-wrapper.component';
 import { FabButtonComponent } from '../../shared/components/fab-button/fab-button.component';
-import { ItemDialogComponent } from '../../shared/components/item-dialog/item-dialog.component';
-import { ItemFormComponent } from '../../shared/components/item-form/item-form.component';
 
 @Component({
   selector: 'app-tasks',

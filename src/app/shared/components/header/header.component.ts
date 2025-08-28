@@ -12,8 +12,6 @@ import { TranslatePipe } from '../../pipes/translate.pipe';
 import { TranslationService, Language } from '../../../core/services/translation.service';
 import { ThemeService } from '../../../core/services/theme.service';
 import { routes } from '../../../app.routes';
-import { filter } from 'rxjs/operators';
-import { MatButtonToggleGroup } from '@angular/material/button-toggle';
 import { AuthService } from '../../../core/services/auth.service';
 
 const DEFAULT_ICON = 'help_outline';
