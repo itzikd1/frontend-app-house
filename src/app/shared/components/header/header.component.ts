@@ -1,6 +1,6 @@
 import { Component, signal, inject, OnInit, computed, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterLink } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
@@ -22,7 +22,6 @@ interface NavigationItem {
   path: string;
   title: string;
   icon: string;
-  isActive: boolean;
 }
 
 @Component({
@@ -31,6 +30,7 @@ interface NavigationItem {
   imports: [
     CommonModule,
     RouterLink,
+    RouterLinkActive,
 
     MatToolbarModule,
     MatButtonModule,
@@ -81,23 +81,9 @@ export class HeaderComponent implements OnInit {
         const titleKey = (route.data?.['title'] || path).toLowerCase();
         return {
           path: `/${path}`,
-          title: titleKey,
+          title: `menu.${titleKey}`,
           icon: route.data?.['icon'] || DEFAULT_ICON,
-          isActive: false
         };
-      });
-
-    // Update active state on route changes
-    this.router.events
-      .pipe(
-        filter(event => event.constructor.name === 'NavigationEnd')
-      )
-      .subscribe(() => {
-        const currentUrl = this.router.url.split('?')[0];
-        this.navigationItems = this.navigationItems.map(item => ({
-          ...item,
-          isActive: currentUrl === item.path
-        }));
       });
   }
 

@@ -17,12 +17,12 @@
           <li *ngFor="let item of protectedNavigationItems; trackBy: trackByFn" class="nav-item" role="none">
             <a [routerLink]="item.path"
                class="nav-link"
-               [class.active]="item.isActive"
+               routerLinkActive="active"
+               [routerLinkActiveOptions]="{ exact: true }"
                [attr.aria-label]="item.title | translate"
-               role="menuitem"
-               [attr.aria-current]="item.isActive ? 'page' : null">
+               role="menuitem">
               <mat-icon class="nav-icon" aria-hidden="true">{{ item.icon }}</mat-icon>
-              <span class="nav-text">{{ 'menu.' + item.title.toLowerCase() | translate }}</span>
+              <span class="nav-text">{{ item.title | translate }}</span>
             </a>
           </li>
         </ng-container>
@@ -30,10 +30,10 @@
           <li *ngFor="let item of publicNavigationItems; trackBy: trackByFn" class="nav-item" role="none">
             <a [routerLink]="item.path"
                class="nav-link"
-               [class.active]="item.isActive"
+               routerLinkActive="active"
+               [routerLinkActiveOptions]="{ exact: true }"
                [attr.aria-label]="item.title | translate"
-               role="menuitem"
-               [attr.aria-current]="item.isActive ? 'page' : null">
+               role="menuitem">
               <mat-icon class="nav-icon" aria-hidden="true">{{ item.icon }}</mat-icon>
               <span class="nav-text">{{ 'menu.' + item.title.toLowerCase() | translate }}</span>
             </a>
@@ -50,8 +50,6 @@
               [matMenuTriggerFor]="languageMenu"
               #languageTrigger="matMenuTrigger"
               class="language-button"
-              [matTooltip]="'language' | translate"
-              matTooltipPosition="below"
               [attr.aria-label]="'select_language' | translate"
               [attr.aria-haspopup]="'menu'"
               [attr.aria-expanded]="languageTrigger.menuOpen"
@@ -68,7 +66,7 @@
                 [attr.aria-label]="'set_language_to_english' | translate">
           <span class="language-option">
             <span class="flag-icon" aria-hidden="true">🇬🇧</span>
-            <span>{{ 'english' | translate }}</span>
+            <span>{{ 'menu.english' | translate }}</span>
           </span>
         </button>
         <button mat-menu-item
@@ -79,7 +77,7 @@
                 [attr.aria-label]="'set_language_to_hebrew' | translate">
           <span class="language-option">
             <span class="flag-icon" aria-hidden="true">🇮🇱</span>
-            <span>{{ 'hebrew' | translate }}</span>
+            <span>{{ 'menu.hebrew' | translate }}</span>
           </span>
         </button>
       </mat-menu>
@@ -88,14 +86,12 @@
     <!-- Theme Toggle Button -->
     <div class="theme-toggle" aria-label="Theme selector">
       <button mat-icon-button
-              [matTooltip]="'theme' | translate"
-              matTooltipPosition="below"
               (click)="toggleDarkMode()"
-              [attr.aria-label]="(isDarkMode() ? 'light' : 'dark') + '_theme' | translate"
+              [attr.aria-label]="isDarkMode() ? 'menu.light_theme' : 'menu.dark_theme' | translate"
               [attr.aria-pressed]="isDarkMode()">
         <mat-icon aria-hidden="true">{{ themeIcon() }}</mat-icon>
         <span class="visually-hidden">
-          {{ 'switch_to' | translate }} {{ (isDarkMode() ? 'light' : 'dark') + '_theme' | translate | lowercase }}
+          {{ 'menu.switch_to' | translate }} {{ isDarkMode() ? 'menu.light_theme' : 'menu.dark_theme' | translate | lowercase }}
         </span>
       </button>
     </div>
@@ -106,8 +102,6 @@
               [matMenuTriggerFor]="profileMenu"
               #profileTrigger="matMenuTrigger"
               class="profile-button"
-              [matTooltip]="'profile' | translate"
-              matTooltipPosition="below"
               [attr.aria-label]="'PROFILE_MENU' | translate"
               [attr.aria-haspopup]="'menu'"
               [attr.aria-expanded]="profileTrigger.menuOpen"
@@ -144,16 +138,16 @@
 
         <button mat-menu-item routerLink="/profile" (click)="isMenuOpen.set(false); profileTrigger.closeMenu()" role="menuitem">
           <mat-icon aria-hidden="true">person</mat-icon>
-          <span>{{ 'PROFILE' | translate }}</span>
+          <span>{{ 'menu.profile' | translate }}</span>
         </button>
         <button mat-menu-item routerLink="/settings" (click)="isMenuOpen.set(false); profileTrigger.closeMenu()" role="menuitem">
           <mat-icon aria-hidden="true">settings</mat-icon>
-          <span>{{ 'SETTINGS' | translate }}</span>
+          <span>{{ 'menu.setting' | translate }}</span>
         </button>
         <mat-divider></mat-divider>
         <button mat-menu-item role="menuitem" (click)="logout()">
           <mat-icon aria-hidden="true">logout</mat-icon>
-          <span>{{ 'LOGOUT' | translate }}</span>
+          <span>{{ 'menu.logout' | translate }}</span>
         </button>
       </mat-menu>
     </div>
@@ -183,8 +177,10 @@
           <li *ngFor="let item of protectedNavigationItems; trackBy: trackByFn" class="mobile-nav-item">
             <a [routerLink]="item.path"
                class="mobile-nav-link"
+               routerLinkActive="active"
+               [routerLinkActiveOptions]="{ exact: true }"
                (click)="isMenuOpen.set(false)"
-               [class.active]="item.isActive">
+               [attr.aria-label]="item.title | translate">
               <mat-icon class="mobile-nav-icon">{{ item.icon }}</mat-icon>
               <span class="mobile-nav-text">{{ item.title | translate }}</span>
             </a>
@@ -192,7 +188,7 @@
           <li class="mobile-nav-item">
             <button class="logout-button" (click)="logout()">
               <mat-icon class="mobile-nav-icon">logout</mat-icon>
-              <span class="mobile-nav-text">{{ 'LOGOUT' | translate }}</span>
+              <span class="mobile-nav-text">{{ 'menu.logout' | translate }}</span>
             </button>
           </li>
         </ng-container>
@@ -200,27 +196,29 @@
           <li *ngFor="let item of publicNavigationItems; trackBy: trackByFn" class="mobile-nav-item">
             <a [routerLink]="item.path"
                class="mobile-nav-link"
+               routerLinkActive="active"
+               [routerLinkActiveOptions]="{ exact: true }"
                (click)="isMenuOpen.set(false)"
-               [class.active]="item.isActive">
+               [attr.aria-label]="item.title | translate">
               <mat-icon class="mobile-nav-icon">{{ item.icon }}</mat-icon>
               <span class="mobile-nav-text">{{ item.title | translate }}</span>
             </a>
           </li>
         </ng-template>
         <li class="mobile-nav-item language-item">
-          <div class="language-label">{{ 'LANGUAGE' | translate }}</div>
+          <div class="language-label">{{ 'menu.language' | translate }}</div>
           <div class="language-options">
             <button class="language-option"
                     [class.active]="currentLanguage() === 'en'"
                     (click)="setLanguage('en')">
               <span class="flag-icon">🇬🇧</span>
-              <span>{{ 'ENGLISH' | translate }}</span>
+              <span>{{ 'menu.english' | translate }}</span>
             </button>
             <button class="language-option"
                     [class.active]="currentLanguage() === 'he'"
                     (click)="setLanguage('he')">
               <span class="flag-icon">🇮🇱</span>
-              <span>{{ 'HEBREW' | translate }}</span>
+              <span>{{ 'menu.hebrew' | translate }}</span>
             </button>
           </div>
         </li>

@@ -17,8 +17,9 @@
     "NATURE": "טבע",
     "OCEAN": "אוקיינוס",
     "SUNSET": "שקיעה",
-    "ENGLISH": "אנגלית",
-    "HEBREW": "עברית"
+    "english": "אנגלית",
+    "hebrew": "עברית",
+    "setting": "הגדרות"
   },
   "register": {
     "title": "צור חשבון חדש",

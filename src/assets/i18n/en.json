@@ -17,8 +17,9 @@
     "NATURE": "Nature",
     "OCEAN": "Ocean",
     "SUNSET": "Sunset",
-    "ENGLISH": "English",
-    "HEBREW": "Hebrew"
+    "english": "English",
+    "hebrew": "Hebrew",
+    "setting": "Setting"
   },
   "register": {
     "title": "Create an Account",
