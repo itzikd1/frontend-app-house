@@ -1,18 +1,13 @@
 {
-  "header": {
-    "dashboard": "Dashboard",
-    "tasks": "Tasks",
-    "family": "Family",
-    "vehicles": "Vehicles",
-    "recipes": "Recipes",
-    "profile": "Profile",
-    "settings": "Settings",
-    "language": "Language",
-    "logout": "Logout"
-  },
-  "theme": {
-    "light": "Light",
-    "dark": "Dark"
-  }
+  "DASHBOARD": "Dashboard",
+  "TASKS": "Tasks",
+  "FAMILY": "Family",
+  "VEHICLES": "Vehicles",
+  "RECIPES": "Recipes",
+  "PROFILE": "Profile",
+  "SETTINGS": "Settings",
+  "LANGUAGE": "Language",
+  "LOGOUT": "Logout",
+  "LIGHT": "Light",
+  "DARK": "Dark"
 }
-
