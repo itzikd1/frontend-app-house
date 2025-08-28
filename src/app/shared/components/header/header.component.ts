@@ -31,17 +31,14 @@ interface NavigationItem {
     CommonModule,
     RouterLink,
     RouterLinkActive,
-
+    MatIconModule,
     MatToolbarModule,
+    MatMenuModule,
     MatButtonModule,
     MatButtonToggleModule,
-    MatButtonToggleGroup,
-    MatIconModule,
-    MatMenuModule,
     MatTooltipModule,
     MatDividerModule,
-    TranslatePipe,
-    MatMenuTrigger
+    TranslatePipe
   ],
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
