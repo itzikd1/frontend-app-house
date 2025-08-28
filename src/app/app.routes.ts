@@ -1,11 +1,4 @@
 import { Routes } from '@angular/router';
-import { DashboardComponent } from './features/dashboard/dashboard.component';
-import { TasksComponent } from './features/tasks/tasks.component';
-import { FamilyComponent } from './features/family/family.component';
-import { VehiclesComponent } from './features/vehicles/vehicles.component';
-import { RecipesComponent } from './features/recipes/recipes.component';
-import { ProfileComponent } from './features/profile/profile.component';
-import { SettingsComponent } from './features/settings/settings.component';
 
 export const routes: Routes = [
   {
@@ -15,7 +8,7 @@ export const routes: Routes = [
   },
   {
     path: 'dashboard',
-    component: DashboardComponent,
+    loadComponent: () => import('./features/dashboard/dashboard.component').then(m => m.DashboardComponent),
     title: 'Dashboard | House Manager',
     data: {
       title: 'DASHBOARD',
@@ -24,7 +17,7 @@ export const routes: Routes = [
   },
   {
     path: 'tasks',
-    component: TasksComponent,
+    loadComponent: () => import('./features/tasks/tasks.component').then(m => m.TasksComponent),
     title: 'Tasks | House Manager',
     data: {
       title: 'TASKS',
@@ -33,7 +26,7 @@ export const routes: Routes = [
   },
   {
     path: 'family',
-    component: FamilyComponent,
+    loadComponent: () => import('./features/family/family.component').then(m => m.FamilyComponent),
     title: 'Family | House Manager',
     data: {
       title: 'FAMILY',
@@ -42,7 +35,7 @@ export const routes: Routes = [
   },
   {
     path: 'vehicles',
-    component: VehiclesComponent,
+    loadComponent: () => import('./features/vehicles/vehicles.component').then(m => m.VehiclesComponent),
     title: 'Vehicles | House Manager',
     data: {
       title: 'VEHICLES',
@@ -51,7 +44,7 @@ export const routes: Routes = [
   },
   {
     path: 'recipes',
-    component: RecipesComponent,
+    loadComponent: () => import('./features/recipes/recipes.component').then(m => m.RecipesComponent),
     title: 'Recipes | House Manager',
     data: {
       title: 'RECIPES',
@@ -60,7 +53,8 @@ export const routes: Routes = [
   },
   {
     path: 'profile',
-    component: ProfileComponent,
+    loadComponent: () => import('./features/profile/profile.component').then(m => m.ProfileComponent),
+    canActivate: [() => import('./core/guards/auth.guard').then(m => m.default)],
     title: 'Profile | House Manager',
     data: {
       title: 'PROFILE',
@@ -69,7 +63,8 @@ export const routes: Routes = [
   },
   {
     path: 'settings',
-    component: SettingsComponent,
+    loadComponent: () => import('./features/settings/settings.component').then(m => m.SettingsComponent),
+    canActivate: [() => import('./core/guards/auth.guard').then(m => m.default)],
     title: 'Settings | House Manager',
     data: {
       title: 'SETTINGS',

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HealthService, HealthStatus } from '../../core/services/health.service';
 import { catchError, of } from 'rxjs';
@@ -8,14 +8,15 @@ import { catchError, of } from 'rxjs';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss']
+  styleUrls: ['./dashboard.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DashboardComponent implements OnInit {
   healthStatus: HealthStatus | null = null;
   error: string | null = null;
   loading = true;
 
-  constructor(private healthService: HealthService) {}
+  private readonly healthService = inject(HealthService);
 
   ngOnInit(): void {
     this.healthService.getHealthStatus()
