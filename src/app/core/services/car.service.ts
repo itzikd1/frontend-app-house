@@ -22,5 +22,12 @@ export class CarService {
   getAll(): Observable<Car[]> {
     return this.http.get<Car[]>(this.baseUrl);
   }
-}
 
+  create(car: Partial<Car>): Observable<Car> {
+    return this.http.post<Car>(this.baseUrl, car);
+  }
+
+  delete(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/${id}`);
+  }
+}

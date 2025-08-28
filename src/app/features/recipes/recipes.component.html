@@ -1,22 +1,45 @@
-<ng-container *ngIf="loading">
+<ng-container *ngIf="loading()">
   <app-loading-spinner></app-loading-spinner>
 </ng-container>
-<ng-container *ngIf="!loading">
-  <div *ngIf="error; else showRecipes">
-    <p class="error">{{ error }}</p>
+<ng-container *ngIf="!loading()">
+  <div *ngIf="error(); else showRecipes">
+    <p class="error">{{ error() }}</p>
   </div>
   <ng-template #showRecipes>
-    <div *ngIf="recipes.length; else noRecipes" class="card recipes-card">
-      <ul>
-        <li *ngFor="let recipe of recipes">
-          <strong>{{ recipe.title }}</strong>
-          <span *ngIf="recipe.description"> - {{ recipe.description }}</span>
-          <span *ngIf="recipe.servings">Servings: {{ recipe.servings }}</span>
-        </li>
-      </ul>
-    </div>
-    <ng-template #noRecipes>
-      <p>No recipes found.</p>
-    </ng-template>
+    <app-item-list
+      [items]="recipes()"
+      [loading]="loading()"
+      [error]="error()"
+      emptyMessage="No recipes found."
+    >
+      <app-item-card
+        *ngFor="let recipe of recipes()"
+        [item]="recipe"
+        (delete)="deleteRecipe(recipe)"
+      >
+        <span *ngIf="recipe.servings">Servings: {{ recipe.servings }}</span>
+      </app-item-card>
+    </app-item-list>
   </ng-template>
+</ng-container>
+
+<app-fab-button
+  icon="add"
+  ariaLabel="Add Recipe"
+  (click)="openAddDialog()"
+></app-fab-button>
+
+<ng-container *ngIf="showDialog()">
+  <app-item-dialog
+    title="Add Recipe"
+    submitLabel="Add"
+    (submit)="addRecipe()"
+    (cancel)="closeDialog()"
+  >
+    <app-item-form [submitLabel]="'Add'" (submit)="addRecipe()">
+      <input type="text" placeholder="Title" [(ngModel)]="newRecipe().title" name="title" required />
+      <input type="text" placeholder="Description" [(ngModel)]="newRecipe().description" name="description" />
+      <input type="number" placeholder="Servings" [(ngModel)]="newRecipe().servings" name="servings" min="1" />
+    </app-item-form>
+  </app-item-dialog>
 </ng-container>

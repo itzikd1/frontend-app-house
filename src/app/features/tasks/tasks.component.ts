@@ -8,11 +8,20 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { AddTaskDialogComponent } from './add-task-dialog.component';
+import { FabButtonComponent } from '../../shared/components/fab-button/fab-button.component';
 
 @Component({
   selector: 'app-tasks',
   standalone: true,
-  imports: [CommonModule, FormsModule, LoadingSpinnerComponent, MatIconModule, MatDialogModule, MatButtonModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    LoadingSpinnerComponent,
+    MatIconModule,
+    MatDialogModule,
+    MatButtonModule,
+    FabButtonComponent
+  ],
   templateUrl: './tasks.component.html',
   styleUrl: './tasks.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -47,22 +56,6 @@ export class TasksComponent implements OnInit {
       error: () => {
         this.error.set('Failed to load tasks.');
         this.loading.set(false);
-      }
-    });
-  }
-
-  addTask(): void {
-    if (!this.newTask().title) return;
-    this.adding.set(true);
-    this.taskService.createTask(this.newTask()).subscribe({
-      next: (task) => {
-        this.tasks.set([task, ...this.tasks()]);
-        this.newTask.set({ title: '', description: '', priority: 'Medium', dueDate: '' });
-        this.adding.set(false);
-      },
-      error: () => {
-        this.error.set('Failed to add task.');
-        this.adding.set(false);
       }
     });
   }

@@ -20,4 +20,12 @@ export class NoteService {
   getAll(): Observable<Note[]> {
     return this.http.get<Note[]>(this.baseUrl);
   }
+
+  create(note: Partial<Note>): Observable<Note> {
+    return this.http.post<Note>(this.baseUrl, note);
+  }
+
+  delete(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/${id}`);
+  }
 }

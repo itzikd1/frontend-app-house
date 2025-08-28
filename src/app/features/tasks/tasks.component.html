@@ -49,6 +49,8 @@
 </ng-container>
 
 <!-- Floating Action Button -->
-<button mat-fab color="primary" class="fab" (click)="openAddTaskDialog()" aria-label="Add Task">
-  <mat-icon>add</mat-icon>
-</button>
+<app-fab-button
+  icon="add"
+  ariaLabel="Add Task"
+  (click)="openAddTaskDialog()"
+></app-fab-button>
