@@ -1,1 +1,21 @@
-<p>family works!</p>
+<ng-container *ngIf="loading">
+  <app-loading-spinner></app-loading-spinner>
+</ng-container>
+<ng-container *ngIf="!loading">
+  <div *ngIf="error; else showFamilies">
+    <p class="error">{{ error }}</p>
+  </div>
+  <ng-template #showFamilies>
+    <div *ngIf="families.length; else noFamilies">
+      <ul>
+        <li *ngFor="let family of families">
+          <strong>{{ family.name }}</strong>
+          <span>({{ family.members?.length || 0 }} members)</span>
+        </li>
+      </ul>
+    </div>
+    <ng-template #noFamilies>
+      <p>No families found.</p>
+    </ng-template>
+  </ng-template>
+</ng-container>

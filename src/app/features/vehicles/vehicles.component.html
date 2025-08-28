@@ -1,1 +1,22 @@
-<p>vehicles works!</p>
+<ng-container *ngIf="loading">
+  <app-loading-spinner></app-loading-spinner>
+</ng-container>
+<ng-container *ngIf="!loading">
+  <div *ngIf="error; else showVehicles">
+    <p class="error">{{ error }}</p>
+  </div>
+  <ng-template #showVehicles>
+    <div *ngIf="vehicles.length; else noVehicles">
+      <ul>
+        <li *ngFor="let vehicle of vehicles">
+          <strong>{{ vehicle.make }} {{ vehicle.model }}</strong>
+          <span>({{ vehicle.year }})</span>
+          <span>License: {{ vehicle.licensePlate }}</span>
+        </li>
+      </ul>
+    </div>
+    <ng-template #noVehicles>
+      <p>No vehicles found.</p>
+    </ng-template>
+  </ng-template>
+</ng-container>

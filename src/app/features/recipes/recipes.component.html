@@ -1,1 +1,22 @@
-<p>recipes works!</p>
+<ng-container *ngIf="loading">
+  <app-loading-spinner></app-loading-spinner>
+</ng-container>
+<ng-container *ngIf="!loading">
+  <div *ngIf="error; else showRecipes">
+    <p class="error">{{ error }}</p>
+  </div>
+  <ng-template #showRecipes>
+    <div *ngIf="recipes.length; else noRecipes">
+      <ul>
+        <li *ngFor="let recipe of recipes">
+          <strong>{{ recipe.title }}</strong>
+          <span *ngIf="recipe.description"> - {{ recipe.description }}</span>
+          <span *ngIf="recipe.servings">Servings: {{ recipe.servings }}</span>
+        </li>
+      </ul>
+    </div>
+    <ng-template #noRecipes>
+      <p>No recipes found.</p>
+    </ng-template>
+  </ng-template>
+</ng-container>

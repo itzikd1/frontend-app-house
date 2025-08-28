@@ -1,1 +1,62 @@
-<p>tasks works!</p>
+<ng-container *ngIf="loading()">
+  <app-loading-spinner></app-loading-spinner>
+</ng-container>
+<ng-container *ngIf="!loading()">
+  <div *ngIf="error(); else showTasks">
+    <p class="error">{{ error() }}</p>
+  </div>
+  <ng-template #showTasks>
+    <!-- Add Task Form -->
+    <form (ngSubmit)="addTask()" *ngIf="!editing()" class="task-form">
+      <input type="text" placeholder="Title" [(ngModel)]="newTask().title" name="title" required />
+      <input type="text" placeholder="Description" [(ngModel)]="newTask().description" name="description" />
+      <select [(ngModel)]="newTask().priority" name="priority">
+        <option value="Low">Low</option>
+        <option value="Medium">Medium</option>
+        <option value="High">High</option>
+      </select>
+      <input type="date" [(ngModel)]="newTask().dueDate" name="dueDate" />
+      <button type="submit" [disabled]="adding()">Add Task</button>
+    </form>
+
+    <!-- Edit Task Form -->
+    <form (ngSubmit)="updateTask()" *ngIf="editing() && editTaskForm" class="task-form">
+      <input type="text" placeholder="Title" [(ngModel)]="editTaskForm.title" name="editTitle" required />
+      <input type="text" placeholder="Description" [(ngModel)]="editTaskForm.description" name="editDescription" />
+      <select [(ngModel)]="editTaskForm.priority" name="editPriority">
+        <option value="Low">Low</option>
+        <option value="Medium">Medium</option>
+        <option value="High">High</option>
+      </select>
+      <input type="date" [(ngModel)]="editTaskForm.dueDate" name="editDueDate" />
+      <button type="submit">Update Task</button>
+      <button type="button" (click)="cancelEdit()">Cancel</button>
+    </form>
+
+    <div *ngIf="tasks().length; else noTasks" class="tasks-grid">
+      <div *ngFor="let task of tasks()" class="task-card">
+        <div class="task-header">
+          <strong class="task-title">{{ task.title }}</strong>
+          <div class="task-actions-right">
+            <button type="button" (click)="startEdit(task)" class="icon-btn edit" title="Edit">
+              <span aria-label="Edit">✏️</span>
+            </button>
+            <button type="button" (click)="deleteTask(task.id)" class="icon-btn delete" title="Delete">
+              <span aria-label="Delete">🗑️</span>
+            </button>
+          </div>
+        </div>
+        <div class="task-body">
+          <span *ngIf="task.description" class="task-desc">{{ task.description }}</span>
+        </div>
+        <div class="task-meta-row">
+          <span class="task-priority" [ngClass]="task.priority?.toLowerCase()">{{ task.priority }}</span>
+          <span *ngIf="task.dueDate" class="task-due-date">{{ task.dueDate | date:'mediumDate' }}</span>
+        </div>
+      </div>
+    </div>
+    <ng-template #noTasks>
+      <p>No tasks found.</p>
+    </ng-template>
+  </ng-template>
+</ng-container>

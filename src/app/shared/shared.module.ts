@@ -6,6 +6,7 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatMenuModule} from '@angular/material/menu';
 import {RouterModule} from '@angular/router';
 import {HeaderComponent} from './components/header/header.component';
+import {LoadingSpinnerComponent} from './components/loading-spinner/loading-spinner.component';
 
 const MATERIAL_MODULES = [
   MatToolbarModule,
@@ -15,7 +16,10 @@ const MATERIAL_MODULES = [
 ];
 
 @NgModule({
-  declarations: [],
+  declarations: [
+    HeaderComponent,
+    LoadingSpinnerComponent
+  ],
   imports: [
     CommonModule,
     RouterModule,
@@ -24,7 +28,8 @@ const MATERIAL_MODULES = [
   ],
   exports: [
     ...MATERIAL_MODULES,
-    HeaderComponent
+    HeaderComponent,
+    LoadingSpinnerComponent
   ]
 })
 export class SharedModule {

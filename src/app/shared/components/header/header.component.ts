@@ -1,6 +1,6 @@
 import { Component, signal, inject, OnInit, computed, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterLink } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
@@ -14,6 +14,7 @@ import { ThemeService } from '../../../core/services/theme.service';
 import { routes } from '../../../app.routes';
 import { filter } from 'rxjs/operators';
 import { MatButtonToggleGroup } from '@angular/material/button-toggle';
+import { AuthService } from '../../../core/services/auth.service';
 
 const DEFAULT_ICON = 'help_outline';
 
@@ -21,7 +22,6 @@ interface NavigationItem {
   path: string;
   title: string;
   icon: string;
-  isActive: boolean;
 }
 
 @Component({
@@ -30,6 +30,7 @@ interface NavigationItem {
   imports: [
     CommonModule,
     RouterLink,
+    RouterLinkActive,
 
     MatToolbarModule,
     MatButtonModule,
@@ -50,6 +51,7 @@ export class HeaderComponent implements OnInit {
   private readonly translationService = inject(TranslationService);
   private readonly themeService = inject(ThemeService);
   private readonly router = inject(Router);
+  private readonly authService = inject(AuthService);
 
   public readonly isMenuOpen = signal(false);
   public readonly currentLanguage = this.translationService.currentLanguage$;
@@ -67,6 +69,8 @@ export class HeaderComponent implements OnInit {
   public languageMenuTrigger: MatMenuTrigger | null = null;
   public profileMenuTrigger: MatMenuTrigger | null = null;
 
+  public readonly isAuthenticated$ = this.authService.isAuthenticated$;
+
   ngOnInit(): void {
     // Initialize navigation items from routes
     this.navigationItems = routes
@@ -77,23 +81,9 @@ export class HeaderComponent implements OnInit {
         const titleKey = (route.data?.['title'] || path).toLowerCase();
         return {
           path: `/${path}`,
-          title: titleKey,
+          title: `menu.${titleKey}`,
           icon: route.data?.['icon'] || DEFAULT_ICON,
-          isActive: false
         };
-      });
-
-    // Update active state on route changes
-    this.router.events
-      .pipe(
-        filter(event => event.constructor.name === 'NavigationEnd')
-      )
-      .subscribe(() => {
-        const currentUrl = this.router.url.split('?')[0];
-        this.navigationItems = this.navigationItems.map(item => ({
-          ...item,
-          isActive: currentUrl === item.path
-        }));
       });
   }
 
@@ -115,5 +105,23 @@ export class HeaderComponent implements OnInit {
 
   public trackByFn(index: number, item: NavigationItem): string {
     return item.path;
+  }
+
+  public get publicNavigationItems(): NavigationItem[] {
+    return this.navigationItems.filter(item =>
+      item.path === '/login' || item.path === '/register'
+    );
+  }
+
+  public get protectedNavigationItems(): NavigationItem[] {
+    return this.navigationItems.filter(item =>
+      ['/dashboard', '/tasks', '/family', '/vehicles', '/recipes', '/profile', '/settings'].includes(item.path)
+    );
+  }
+
+  public logout(): void {
+    this.authService.logout();
+    this.isMenuOpen.set(false);
+    this.router.navigate(['/login']);
   }
 }
