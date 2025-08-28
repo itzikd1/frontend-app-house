@@ -1,28 +1,17 @@
-
 <div *ngIf="loading()">Loading goals...</div>
 <div *ngIf="error()" class="error">{{ error() }}</div>
 
-<form (ngSubmit)="addGoal()" class="goal-form">
-  <input type="text" placeholder="Title" [(ngModel)]="newGoal().title" name="title" required />
-  <input type="text" placeholder="Description" [(ngModel)]="newGoal().description" name="description" />
-  <select [(ngModel)]="newGoal().status" name="status">
-    <option value="active">Active</option>
-    <option value="completed">Completed</option>
-    <option value="archived">Archived</option>
-  </select>
-  <input type="date" [(ngModel)]="newGoal().dueDate" name="dueDate" />
-  <button type="submit" [disabled]="adding()">Add Goal</button>
-</form>
+<app-fab-button (click)="openAddGoalDialog()"></app-fab-button>
 
 <ul class="goal-list">
   <li *ngFor="let goal of goals()" class="goal-item">
     <div class="goal-main">
       <strong>{{ goal.title }}</strong>
       <span *ngIf="goal.description">{{ goal.description }}</span>
-      <span class="goal-status">{{ goal.status }}</span>
-      <span *ngIf="goal.dueDate">Due: {{ goal.dueDate | date:'mediumDate' }}</span>
+      <span class="goal-status">{{ goal.isCompleted ? 'Completed' : 'Active' }}</span>
+      <span *ngIf="goal.targetDate">Target: {{ goal.targetDate | date:'mediumDate' }}</span>
+      <span *ngIf="goal.progress !== undefined">Progress: {{ goal.progress }}%</span>
     </div>
     <button type="button" (click)="deleteGoal(goal.id)">Delete</button>
   </li>
 </ul>
-
