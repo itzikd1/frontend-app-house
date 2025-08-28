@@ -1,0 +1,28 @@
+<div class="cars-page">
+  <h2>Cars</h2>
+  <ng-container *ngIf="loading(); else showCars">
+    <p>Loading...</p>
+  </ng-container>
+  <ng-template #showCars>
+    <app-item-list
+      [items]="cars()"
+      [loading]="loading()"
+      [error]="error()"
+      emptyMessage="No cars found."
+    >
+      <app-item-card
+        *ngFor="let car of cars()"
+        [item]="car"
+        (delete)="deleteCar(car)"
+      >
+        <span>{{ car.make }} {{ car.model }} ({{ car.year }}) - {{ car.licensePlate }}</span>
+      </app-item-card>
+    </app-item-list>
+
+    <app-fab-button
+      icon="add"
+      ariaLabel="Add Car"
+      (click)="openAddDialog()"
+    ></app-fab-button>
+  </ng-template>
+</div>

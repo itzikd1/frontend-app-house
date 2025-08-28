@@ -467,11 +467,11 @@
     }
 
     .mobile-nav-icon {
-      margin-right: 24px;
-      color: rgba(0, 0, 0, 0.6);
-      font-size: 1.5rem;
-      width: 24px;
-      height: 24px;
+      color: var(--white);
+      font-size: 24px;
+      vertical-align: middle;
+      display: inline-block;
+      margin-right: var(--spacing-2);
     }
 
     .mobile-nav-text {

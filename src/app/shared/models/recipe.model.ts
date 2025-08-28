@@ -16,7 +16,7 @@ export interface Recipe extends BaseModel {
   title: string;
   description?: string;
   ingredients: Ingredient[];
-  instructions: string[];
+  instructions: string;
   prepTime?: number;
   cookTime?: number;
   servings?: number;

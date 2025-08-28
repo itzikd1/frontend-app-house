@@ -1,0 +1,27 @@
+  <h2>Users</h2>
+  <ng-container *ngIf="loading(); else showUsers">
+    <p>Loading...</p>
+  </ng-container>
+  <ng-template #showUsers>
+    <table class="users-table" *ngIf="users().length; else noUsers">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Role</th>
+          <th>Created At</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of users()">
+          <td>{{ user.name }}</td>
+          <td>{{ user.email }}</td>
+          <td>{{ user.role }}</td>
+          <td>{{ user.createdAt | date:'medium' }}</td>
+        </tr>
+      </tbody>
+    </table>
+    <ng-template #noUsers>
+      <p>No users found.</p>
+    </ng-template>
+  </ng-template>

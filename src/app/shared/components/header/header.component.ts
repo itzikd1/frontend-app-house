@@ -12,8 +12,6 @@ import { TranslatePipe } from '../../pipes/translate.pipe';
 import { TranslationService, Language } from '../../../core/services/translation.service';
 import { ThemeService } from '../../../core/services/theme.service';
 import { routes } from '../../../app.routes';
-import { filter } from 'rxjs/operators';
-import { MatButtonToggleGroup } from '@angular/material/button-toggle';
 import { AuthService } from '../../../core/services/auth.service';
 
 const DEFAULT_ICON = 'help_outline';
@@ -31,17 +29,14 @@ interface NavigationItem {
     CommonModule,
     RouterLink,
     RouterLinkActive,
-
+    MatIconModule,
     MatToolbarModule,
+    MatMenuModule,
     MatButtonModule,
     MatButtonToggleModule,
-    MatButtonToggleGroup,
-    MatIconModule,
-    MatMenuModule,
     MatTooltipModule,
     MatDividerModule,
-    TranslatePipe,
-    MatMenuTrigger
+    TranslatePipe
   ],
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
@@ -115,7 +110,7 @@ export class HeaderComponent implements OnInit {
 
   public get protectedNavigationItems(): NavigationItem[] {
     return this.navigationItems.filter(item =>
-      ['/dashboard', '/tasks', '/family', '/vehicles', '/recipes', '/profile', '/settings'].includes(item.path)
+      ['/dashboard', '/tasks', '/family', '/cars', '/notes', '/users', '/goals', '/recipes', '/profile', '/settings'].includes(item.path)
     );
   }
 

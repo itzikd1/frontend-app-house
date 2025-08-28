@@ -1,0 +1,35 @@
+import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { MatIconModule } from '@angular/material/icon';
+
+@Component({
+  selector: 'app-item-card',
+  standalone: true,
+  imports: [CommonModule, MatIconModule],
+  template: `
+    <div class="item-card">
+      <div class="item-header">
+        <strong class="item-title">{{ item?.title }}</strong>
+        <div class="item-actions">
+          <button type="button" class="icon-btn edit" (click)="edit.emit(item)" title="Edit">
+            <mat-icon aria-label="Edit">edit</mat-icon>
+          </button>
+          <button type="button" class="icon-btn delete" (click)="delete.emit(item)" title="Delete">
+            <mat-icon aria-label="Delete">delete</mat-icon>
+          </button>
+        </div>
+      </div>
+      <div class="item-body">
+        <span *ngIf="item?.description" class="item-desc">{{ item.description }}</span>
+        <ng-content></ng-content>
+      </div>
+    </div>
+  `,
+  styleUrls: ['./item-card.component.scss']
+})
+export class ItemCardComponent {
+  @Input() item: any;
+  @Output() edit = new EventEmitter<any>();
+  @Output() delete = new EventEmitter<any>();
+}
+

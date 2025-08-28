@@ -1,4 +1,5 @@
 {
+  "house_manager": "House Manager",
   "menu": {
     "dashboard": "לוח ראשי",
     "tasks": "משימות",
@@ -19,7 +20,10 @@
     "SUNSET": "שקיעה",
     "english": "אנגלית",
     "hebrew": "עברית",
-    "setting": "הגדרות"
+    "setting": "הגדרות",
+    "cars": "מכוניות",
+    "users": "משתמשים",
+    "notes": "פתקים"
   },
   "register": {
     "title": "צור חשבון חדש",
