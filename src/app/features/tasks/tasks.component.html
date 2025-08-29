@@ -50,6 +50,7 @@
           <app-item-card
             *ngFor="let task of filteredTasks"
             [item]="task"
+            [showCheckbox]="true"
             [completed]="task.completed"
             (toggleComplete)="onToggleComplete(task, $event)"
             (edit)="startEdit(task)"

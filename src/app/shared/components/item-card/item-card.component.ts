@@ -10,6 +10,7 @@ import { MatIconModule } from '@angular/material/icon';
     <div class="item-card">
       <div class="item-header">
         <input
+          *ngIf="showCheckbox"
           type="checkbox"
           class="item-complete-checkbox"
           [checked]="completed"
@@ -37,6 +38,7 @@ import { MatIconModule } from '@angular/material/icon';
 export class ItemCardComponent {
   @Input() item: any;
   @Input() completed: boolean = false;
+  @Input() showCheckbox: boolean = false;
   @Output() edit = new EventEmitter<any>();
   @Output() delete = new EventEmitter<any>();
   @Output() toggleComplete = new EventEmitter<boolean>();
