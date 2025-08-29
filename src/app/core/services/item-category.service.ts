@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 
 export interface TaskCategory {
@@ -12,12 +13,13 @@ export interface TaskCategory {
 
 @Injectable({ providedIn: 'root' })
 export class TaskCategoryService {
-  private readonly baseUrl = `${environment.apiUrl}/category`;
+  private readonly baseUrl = `${environment.apiUrl}/task-category`;
 
   constructor(private http: HttpClient) {}
 
   getAll(): Observable<TaskCategory[]> {
-    return this.http.get<TaskCategory[]>(this.baseUrl);
+    return this.http.get<{ success: boolean; data: TaskCategory[] }>(this.baseUrl)
+      .pipe(map(res => res.data ?? []));
   }
 
   create(category: Partial<TaskCategory>): Observable<TaskCategory> {

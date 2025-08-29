@@ -11,6 +11,8 @@ import { AddTaskDialogWrapperComponent } from './add-task-dialog-wrapper.compone
 import { ItemCardComponent } from '../../shared/components/item-card/item-card.component';
 import { DashboardCardConfig } from '../../shared/components/dashboard-summary-cards/dashboard-summary-cards.component';
 import { DashboardSummaryCardsComponent } from '../../shared/components/dashboard-summary-cards/dashboard-summary-cards.component';
+import { RouterLink } from '@angular/router';
+import { TaskCategoryService, TaskCategory } from '../../core/services/item-category.service';
 
 @Component({
   selector: 'app-tasks',
@@ -23,7 +25,7 @@ import { DashboardSummaryCardsComponent } from '../../shared/components/dashboar
     MatDialogModule,
     MatButtonModule,
     ItemCardComponent,
-    DashboardSummaryCardsComponent
+    DashboardSummaryCardsComponent,
   ],
   templateUrl: './tasks.component.html',
   styleUrl: './tasks.component.scss',
@@ -44,10 +46,26 @@ export class TasksComponent implements OnInit {
   public selectedStatus: 'all' = 'all';
   public selectedCategory: string = 'all';
 
-  constructor(private taskService: TaskService, private dialog: MatDialog) {}
+  // Tab logic
+  selectedTab = signal<'tasks' | 'categories'>('tasks');
+
+  // Category management state
+  categories = signal<TaskCategory[]>([]);
+  categoryLoading = signal<boolean>(false);
+  categoryError = signal<string | null>(null);
+  editingCategory = signal<TaskCategory | null>(null);
+  // Change from signal to property
+  public categoryFormName: string = '';
+
+  constructor(
+    private taskService: TaskService,
+    private dialog: MatDialog,
+    private categoryService: TaskCategoryService
+  ) {}
 
   ngOnInit(): void {
     this.fetchTasks();
+    this.loadCategories();
   }
 
   fetchTasks(): void {
@@ -110,6 +128,61 @@ export class TasksComponent implements OnInit {
         this.loading.set(false);
       }
     });
+  }
+
+  // Tab switching
+  setTab(tab: 'tasks' | 'categories'): void {
+    this.selectedTab.set(tab);
+  }
+
+  // Category management
+  loadCategories(): void {
+    this.categoryLoading.set(true);
+    this.categoryService.getAll().subscribe({
+      next: (categories) => {
+        this.categories.set(categories);
+        this.categoryLoading.set(false);
+      },
+      error: () => {
+        this.categoryError.set('Failed to load categories.');
+        this.categoryLoading.set(false);
+      }
+    });
+  }
+
+  submitCategory(): void {
+    const name = this.categoryFormName;
+    if (!name) return;
+    if (this.editingCategory()) {
+      const editing = this.editingCategory();
+      if (!editing) return;
+      this.categoryService.update(editing.id, { name }).subscribe(() => {
+        this.editingCategory.set(null);
+        this.categoryFormName = '';
+        this.loadCategories();
+      });
+    } else {
+      this.categoryService.create({ name }).subscribe(() => {
+        this.categoryFormName = '';
+        this.loadCategories();
+      });
+    }
+  }
+
+  editCategory(category: TaskCategory): void {
+    this.editingCategory.set(category);
+    this.categoryFormName = category.name;
+  }
+
+  deleteCategory(category: TaskCategory): void {
+    this.categoryService.delete(category.id).subscribe(() => {
+      this.loadCategories();
+    });
+  }
+
+  cancelEditCategory(): void {
+    this.editingCategory.set(null);
+    this.categoryFormName = '';
   }
 
   get overdueCount(): number {

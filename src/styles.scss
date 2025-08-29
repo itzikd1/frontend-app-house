@@ -244,6 +244,12 @@ a {
   }
 }
 
+/* Ensure Angular Material overlays are always above header and other content */
+.cdk-overlay-container,
+.cdk-overlay-pane {
+  z-index: 2000 !important;
+}
+
 // Custom scrollbar
 ::-webkit-scrollbar {
   width: 8px;
