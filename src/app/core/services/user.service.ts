@@ -21,4 +21,8 @@ export class UserService {
   getAll(): Observable<User[]> {
     return this.http.get<User[]>(this.baseUrl);
   }
+
+  create(user: Partial<User>): Observable<User> {
+    return this.http.post<User>(this.baseUrl, user);
+  }
 }

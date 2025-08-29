@@ -2,59 +2,110 @@
   <div class="tasks-header">
     <h1>Tasks</h1>
     <p class="tasks-subtitle">Manage your tasks and stay organized</p>
-    <button class="add-task-btn" (click)="openAddTaskDialog()">+ Add Task</button>
   </div>
+
+  <app-fab-button
+    *ngIf="selectedTab() === 'tasks'"
+    icon="add"
+    color="primary"
+    ariaLabel="Add Task"
+    (click)="openAddTaskDialog()"
+  ></app-fab-button>
+  <app-fab-button
+    *ngIf="selectedTab() === 'categories'"
+    icon="add"
+    color="accent"
+    ariaLabel="Add Category"
+    (click)="openAddCategoryDialog()"
+  ></app-fab-button>
 
   <div class="tasks-tabs">
-    <button class="tab active">Tasks</button>
-    <button class="tab">Manage Categories</button>
+    <button class="tab" [class.active]="selectedTab() === 'tasks'" (click)="setTab('tasks')">Tasks</button>
+    <button class="tab" [class.active]="selectedTab() === 'categories'" (click)="setTab('categories')">Categories</button>
   </div>
 
-  <div class="tasks-dashboard">
-    <app-dashboard-summary-cards
-      [cards]="dashboardCards"
-    ></app-dashboard-summary-cards>
-  </div>
+  <ng-container *ngIf="selectedTab() === 'tasks'">
+    <div class="tasks-dashboard">
+      <app-dashboard-summary-cards
+        [cards]="dashboardCards"
+        [activeFilter]="dashboardFilter()"
+        (cardClick)="setDashboardFilter($event)"
+      ></app-dashboard-summary-cards>
+    </div>
 
-  <div class="tasks-filters">
-    <div class="status-filters">
-      <button class="status-btn" [class.active]="selectedStatus === 'all'" (click)="setStatus('all')">All ({{ tasks().length }})</button>
-    </div>
-    <div class="tag-filters">
-      <button class="tag-btn" [class.active]="selectedCategory === 'all'" (click)="setCategory('all')">All</button>
-      <button class="tag-btn" [class.active]="selectedCategory === 'home'" (click)="setCategory('home')">Home</button>
-      <button class="tag-btn" [class.active]="selectedCategory === 'work'" (click)="setCategory('work')">Work</button>
-    </div>
-  </div>
-
-  <div *ngIf="loading()">
-    <app-loading-spinner [translationKey]="'loading.default'"></app-loading-spinner>
-  </div>
-  <div *ngIf="!loading()">
-    <div *ngIf="error(); else showTasks">
-      <p class="error">{{ error() }}</p>
-    </div>
-    <ng-template #showTasks>
-      <div *ngIf="filteredTasks.length; else noTasks" class="tasks-list">
-        <app-item-card
-          *ngFor="let task of filteredTasks"
-          [item]="task"
-          (edit)="startEdit(task)"
-          (delete)="deleteTask(task.id)"
+    <div class="tasks-filters">
+      <div class="tag-filters">
+        <button class="tag-btn" [class.active]="selectedCategory() === 'all'" (click)="setCategory('all')">All ({{ tasks().length }})</button>
+        <button
+          class="tag-btn"
+          *ngFor="let category of categories()"
+          [class.active]="selectedCategory() === category.id"
+          (click)="setCategory(category.id)"
         >
-          <div class="task-meta-row">
-            <span class="task-title">{{ task.title }}</span>
-            <span class="task-priority-badge" [ngClass]="task.priority.toLowerCase()">{{ task.priority }}</span>
-            <span *ngIf="task.dueDate" class="task-due-date">
-              <mat-icon class="due-date-icon">error</mat-icon>
-              <span [ngClass]="{'overdue': isOverdue(task)}">{{ task.dueDate | date:'MMM d, yyyy' }}</span>
-            </span>
-          </div>
-        </app-item-card>
+          {{ category.name }}
+        </button>
       </div>
-      <ng-template #noTasks>
-        <p>No tasks found.</p>
+    </div>
+
+    <div *ngIf="loading()">
+      <app-loading-spinner [translationKey]="'loading.default'"></app-loading-spinner>
+    </div>
+    <div *ngIf="!loading()">
+      <div *ngIf="error(); else showTasks">
+        <p class="error">{{ error() }}</p>
+      </div>
+      <ng-template #showTasks>
+        <div *ngIf="filteredTasks.length; else noTasks" class="tasks-list">
+          <app-item-card
+            *ngFor="let task of filteredTasks"
+            [item]="task"
+            [showCheckbox]="true"
+            [completed]="task.completed"
+            (toggleComplete)="onToggleComplete(task, $event)"
+            (edit)="startEdit(task)"
+            (delete)="deleteTask(task.id)"
+          >
+            <div class="task-meta-row">
+              <span class="task-priority-badge" [ngClass]="task.priority && task.priority.toLowerCase()">{{ task.priority }}</span>
+              <span *ngIf="task.dueDate" class="task-due-date">
+                <mat-icon class="due-date-icon">error</mat-icon>
+                <span [ngClass]="{'overdue': isOverdue(task)}">{{ task.dueDate | date:'MMM d, yyyy' }}</span>
+              </span>
+              <span *ngIf="task.category && task.category.id !== 'None'" class="task-category-name">
+                {{ getCategoryName(task.category.id) }}
+              </span>
+            </div>
+          </app-item-card>
+        </div>
+        <ng-template #noTasks>
+          <p>No tasks found.</p>
+        </ng-template>
       </ng-template>
-    </ng-template>
-  </div>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="selectedTab() === 'categories'">
+    <div class="category-management">
+      <h2>Manage Task Categories</h2>
+      <div *ngIf="categoryLoading()">
+        <app-loading-spinner [translationKey]="'loading.default'"></app-loading-spinner>
+      </div>
+      <div *ngIf="categoryError()">
+        <p class="error">{{ categoryError() }}</p>
+      </div>
+      <div *ngIf="!categoryLoading() && categories().length">
+        <div class="categories-list">
+          <app-item-card
+            *ngFor="let category of categories()"
+            [item]="{ title: category.name }"
+            (edit)="openEditCategoryDialog(category)"
+            (delete)="deleteCategory(category)"
+          ></app-item-card>
+        </div>
+      </div>
+      <div *ngIf="!categoryLoading() && !categories().length">
+        <p>No categories found.</p>
+      </div>
+    </div>
+  </ng-container>
 </div>

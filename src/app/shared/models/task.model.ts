@@ -1,3 +1,5 @@
+import { TaskCategory } from '../../core/services/item-category.service';
+
 export interface BaseModel {
   id: string;
   createdAt: string;
@@ -8,10 +10,12 @@ export interface BaseModel {
 export interface Task extends BaseModel {
   title: string;
   description?: string;
-  category?: string;
+  categoryId?: string;
+  category?: TaskCategory;
   priority: 'Low' | 'Medium' | 'High';
-  dueDate: string;
+  dueDate: string | null;
   repeat?: string;
+  completed: boolean;
 }
 
 export {}

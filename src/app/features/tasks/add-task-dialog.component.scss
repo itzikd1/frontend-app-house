@@ -2,6 +2,15 @@
   padding: 0 !important;
   background: transparent !important;
   box-shadow: none !important;
+  z-index: 3000 !important; // ensure modal is above header
+  position: fixed !important; // ensure modal overlays all content
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 98vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .dialog-container {
@@ -10,9 +19,12 @@
   box-shadow: 0 8px 32px rgba(0,0,0,0.18);
   padding: 2.5rem 2rem 2rem 2rem;
   max-width: 400px;
+  max-height: 90vh; // limit modal height to viewport
+  overflow-y: auto; // scroll if content overflows
   display: flex;
   flex-direction: column;
   align-items: stretch;
+  z-index: 3100; // ensure dialog content is above everything
 }
 
 .dialog-header {
@@ -26,7 +38,7 @@
 .dialog-form {
   display: flex;
   flex-direction: column;
-  gap: 1.2rem;
+  gap: 0.3rem;
 }
 
 .dialog-form input,
@@ -82,6 +94,44 @@
 .mat-select,
 .mat-option {
   font-size: 1.05rem !important;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 0.8rem; // reduce spacing between fields
+}
+
+.input-label {
+  font-size: 0.98rem;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 0.35rem;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+  width: 100%;
+  padding: 0.7rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 1.05rem;
+  background: #fafafa;
+  transition: border-color 0.2s;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+  border-color: #1976d2;
+  outline: none;
+}
+
+.form-group textarea {
+  min-height: 60px; // reduce textarea height
+  max-height: 120px;
+  resize: vertical;
 }
 
 @media (max-width: 600px) {

@@ -23,10 +23,9 @@ body {
 }
 
 .main-content {
-  padding: 16px;
   margin-top: 64px; /* Height of the header */
   min-height: calc(100vh - 64px);
-  
+
   @media (max-width: 599px) {
     margin-top: 56px; /* Height of the header on mobile */
     min-height: calc(100vh - 56px);
