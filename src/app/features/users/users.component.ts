@@ -1,11 +1,12 @@
 import { Component, ChangeDetectionStrategy, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UserService, User } from '../../core/services/user.service';
+import { LoadingSpinnerComponent } from '../../shared/components/loading-spinner/loading-spinner.component';
 
 @Component({
   selector: 'app-users',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, LoadingSpinnerComponent],
   templateUrl: './users.component.html',
   styleUrls: ['./users.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

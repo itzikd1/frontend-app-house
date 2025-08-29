@@ -9,6 +9,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { AddCarDialogWrapperComponent } from './add-car-dialog-wrapper.component';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { LoadingSpinnerComponent } from '../../shared/components/loading-spinner/loading-spinner.component';
 
 @Component({
   selector: 'app-cars',
@@ -21,7 +22,8 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
     ItemCardComponent,
     MatButtonModule,
     MatIconModule,
-    MatDialogModule
+    MatDialogModule,
+    LoadingSpinnerComponent
   ],
   templateUrl: './cars.component.html',
   styleUrls: ['./cars.component.scss'],

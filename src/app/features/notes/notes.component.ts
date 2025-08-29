@@ -8,8 +8,8 @@ import { ItemCardComponent } from '../../shared/components/item-card/item-card.c
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { AddNoteDialogWrapperComponent } from './add-note-dialog-wrapper.component';
-import { ModalDialogComponent } from '../../shared/components/modal-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { LoadingSpinnerComponent } from '../../shared/components/loading-spinner/loading-spinner.component';
 
 @Component({
   selector: 'app-notes',
@@ -22,6 +22,7 @@ import { MatDialog } from '@angular/material/dialog';
     ItemCardComponent,
     MatButtonModule,
     MatIconModule,
+    LoadingSpinnerComponent
   ],
   templateUrl: './notes.component.html',
   styleUrls: ['./notes.component.scss'],

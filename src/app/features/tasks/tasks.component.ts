@@ -8,7 +8,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { AddTaskDialogWrapperComponent } from './add-task-dialog-wrapper.component';
-import { FabButtonComponent } from '../../shared/components/fab-button/fab-button.component';
+import { ItemCardComponent } from '../../shared/components/item-card/item-card.component';
+import { DashboardCardConfig } from '../../shared/components/dashboard-summary-cards/dashboard-summary-cards.component';
+import { DashboardSummaryCardsComponent } from '../../shared/components/dashboard-summary-cards/dashboard-summary-cards.component';
 
 @Component({
   selector: 'app-tasks',
@@ -20,7 +22,8 @@ import { FabButtonComponent } from '../../shared/components/fab-button/fab-butto
     MatIconModule,
     MatDialogModule,
     MatButtonModule,
-    FabButtonComponent,
+    ItemCardComponent,
+    DashboardSummaryCardsComponent
   ],
   templateUrl: './tasks.component.html',
   styleUrl: './tasks.component.scss',
@@ -31,14 +34,15 @@ export class TasksComponent implements OnInit {
   error = signal<string | null>(null);
   loading = signal<boolean>(true);
 
-  // New task form state
-  newTask = signal<Partial<Task>>({ title: '', description: '', priority: 'Medium', dueDate: '' });
-  adding = signal<boolean>(false);
-
   // Edit task state
   editing = signal<boolean>(false);
   editTask = signal<Task | null>(null);
   editTaskForm: Partial<Task> | null = null;
+
+  private adding = signal<boolean>(false);
+
+  public selectedStatus: 'all' = 'all';
+  public selectedCategory: string = 'all';
 
   constructor(private taskService: TaskService, private dialog: MatDialog) {}
 
@@ -94,25 +98,6 @@ export class TasksComponent implements OnInit {
     this.editTaskForm = { ...task };
   }
 
-  updateTask(): void {
-    const originalTask = this.editTask();
-    if (!originalTask || !this.editTaskForm) return;
-    this.loading.set(true);
-    this.taskService.updateTask(originalTask.id, this.editTaskForm).subscribe({
-      next: (updated) => {
-        this.tasks.set(this.tasks().map(t => t.id === updated.id ? updated : t));
-        this.editing.set(false);
-        this.editTask.set(null);
-        this.editTaskForm = null;
-        this.loading.set(false);
-      },
-      error: () => {
-        this.error.set('Failed to update task.');
-        this.loading.set(false);
-      }
-    });
-  }
-
   deleteTask(id: string): void {
     this.loading.set(true);
     this.taskService.deleteTask(id).subscribe({
@@ -127,9 +112,47 @@ export class TasksComponent implements OnInit {
     });
   }
 
-  cancelEdit(): void {
-    this.editing.set(false);
-    this.editTask.set(null);
-    this.editTaskForm = null;
+  get overdueCount(): number {
+    return this.tasks().filter(t => this.isOverdue(t)).length;
+  }
+
+  get dashboardCards(): DashboardCardConfig[] {
+    return [
+      {
+        title: 'Total Tasks',
+        value: this.tasks().length,
+        icon: 'list',
+        color: '#9ca3af',
+      },
+      {
+        title: 'Overdue',
+        value: this.overdueCount,
+        icon: 'error',
+        color: '#ef4444',
+      },
+    ];
+  }
+
+  public get filteredTasks(): Task[] {
+    let filtered = this.tasks();
+    if (this.selectedCategory !== 'all') {
+      filtered = filtered.filter(t => t.category === this.selectedCategory);
+    }
+    return filtered;
+  }
+
+  public setStatus(status: 'all'): void {
+    this.selectedStatus = status;
+  }
+
+  public setCategory(category: string): void {
+    this.selectedCategory = category;
+  }
+
+  isOverdue(task: Task): boolean {
+    if (!task.dueDate) return false;
+    const due = new Date(task.dueDate);
+    const now = new Date();
+    return due < now;
   }
 }

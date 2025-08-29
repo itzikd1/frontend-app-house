@@ -1,4 +1,3 @@
-
 <form [formGroup]="form" (ngSubmit)="submit()" class="login-form">
   <h2>{{ 'login.title' | translate }}</h2>
 
@@ -22,7 +21,6 @@
     {{ loading ? ('login.loading' | translate) : ('login.submit' | translate) }}
   </button>
 
-  <app-error-message *ngIf="error" [message]="error"></app-error-message>
-  <app-success-message *ngIf="success" [message]="'login.success' | translate"></app-success-message>
+  <app-error-message *ngIf="error" [translationKey]="error"></app-error-message>
+  <app-success-message *ngIf="success" [translationKey]="'login.success'"></app-success-message>
 </form>
-

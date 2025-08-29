@@ -29,6 +29,6 @@
     {{ loading ? ('register.loading' | translate) : ('register.submit' | translate) }}
   </button>
 
-  <app-error-message *ngIf="error" [message]="error"></app-error-message>
-  <app-success-message *ngIf="success" [message]="'register.success' | translate"></app-success-message>
+  <app-error-message *ngIf="error" [translationKey]="error"></app-error-message>
+  <app-success-message *ngIf="success" [translationKey]="'register.success'"></app-success-message>
 </form>
