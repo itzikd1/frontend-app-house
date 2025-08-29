@@ -120,25 +120,9 @@ export class TasksComponent implements OnInit {
       completed: false,
     };
     this.taskService.createTask(payload).subscribe({
-      next: (newTask: Task) => {
-        if (newTask && newTask.id && newTask.title) {
-          const safeTask: Task = {
-            id: newTask.id,
-            title: newTask.title,
-            description: newTask.description ?? '',
-            categoryId: newTask.categoryId ?? '',
-            category: newTask.category ?? undefined,
-            priority: newTask.priority ?? 'Medium',
-            dueDate: newTask.dueDate ?? null,
-            repeat: newTask.repeat ?? 'None',
-            completed: newTask.completed ?? false,
-            createdAt: newTask.createdAt ?? new Date().toISOString(),
-            updatedAt: newTask.updatedAt ?? new Date().toISOString(),
-            createdBy: newTask.createdBy ?? '',
-          };
-          this.tasks.set(this.sortTasks([safeTask, ...this.tasks()]));
-          this.selectedCategory.set('all');
-        }
+      next: () => {
+        this.fetchTasks(); // Always reload tasks from backend after add
+        this.selectedCategory.set('all');
         this.adding.set(false);
       },
       error: () => {
