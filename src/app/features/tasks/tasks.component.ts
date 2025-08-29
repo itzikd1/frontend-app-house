@@ -57,6 +57,9 @@ export class TasksComponent implements OnInit {
   // Change from signal to property
   public categoryFormName: string = '';
 
+  // New dashboard filter state
+  public dashboardFilter = signal<'all' | 'overdue' | 'complete' | 'uncomplete'>('all');
+
   constructor(
     private taskService: TaskService,
     private dialog: MatDialog,
@@ -279,32 +282,57 @@ export class TasksComponent implements OnInit {
         value: this.tasks().length,
         icon: 'list',
         color: '#9ca3af',
+        filter: 'all',
       },
       {
         title: 'Overdue',
         value: this.overdueCount,
         icon: 'error',
         color: '#ef4444',
+        filter: 'overdue',
       },
       {
         title: 'Complete',
         value: this.completeCount,
         icon: 'check_circle',
         color: '#22c55e',
+        filter: 'complete',
       },
       {
         title: 'Uncomplete',
         value: this.uncompleteCount,
         icon: 'radio_button_unchecked',
         color: '#fbbf24',
+        filter: 'uncomplete',
       },
     ];
   }
 
+  public setDashboardFilter(filter: 'all' | 'overdue' | 'complete' | 'uncomplete'): void {
+    this.dashboardFilter.set(filter);
+  }
+
   public get filteredTasks(): Task[] {
     let filtered = this.tasks();
+    // Category filter
     if (this.selectedCategory() !== 'all') {
       filtered = filtered.filter(t => t.categoryId === this.selectedCategory());
+    }
+    // Dashboard filter
+    switch (this.dashboardFilter()) {
+      case 'overdue':
+        filtered = filtered.filter(t => this.isOverdue(t));
+        break;
+      case 'complete':
+        filtered = filtered.filter(t => t.completed);
+        break;
+      case 'uncomplete':
+        filtered = filtered.filter(t => !t.completed);
+        break;
+      case 'all':
+      default:
+        // No additional filter
+        break;
     }
     return filtered;
   }

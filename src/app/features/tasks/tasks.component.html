@@ -19,6 +19,8 @@
     <div class="tasks-dashboard">
       <app-dashboard-summary-cards
         [cards]="dashboardCards"
+        [activeFilter]="dashboardFilter()"
+        (cardClick)="setDashboardFilter($event)"
       ></app-dashboard-summary-cards>
     </div>
 

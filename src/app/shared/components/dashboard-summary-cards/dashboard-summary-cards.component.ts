@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 
@@ -7,6 +7,7 @@ export interface DashboardCardConfig {
   value: number;
   icon: string;
   color: string;
+  filter: 'all' | 'overdue' | 'complete' | 'uncomplete';
 }
 
 @Component({
@@ -18,5 +19,12 @@ export interface DashboardCardConfig {
 })
 export class DashboardSummaryCardsComponent {
   @Input() cards: DashboardCardConfig[] = [];
-}
+  @Input() activeFilter: 'all' | 'overdue' | 'complete' | 'uncomplete' = 'all';
+  @Output() cardClick = new EventEmitter<'all' | 'overdue' | 'complete' | 'uncomplete'>();
 
+  onCardClick(filter: 'all' | 'overdue' | 'complete' | 'uncomplete'): void {
+    this.cardClick.emit(filter);
+  }
+
+
+}

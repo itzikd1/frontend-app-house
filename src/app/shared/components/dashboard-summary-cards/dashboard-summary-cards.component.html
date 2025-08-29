@@ -1,8 +1,14 @@
 <div class="dashboard-summary-cards">
-  <div *ngFor="let card of cards" class="dashboard-card">
+  <div
+    *ngFor="let card of cards"
+    class="dashboard-card"
+    [class.active]="card.filter === activeFilter"
+    (click)="onCardClick(card.filter)"
+    tabindex="0"
+    role="button"
+  >
     <span class="dashboard-title">{{ card.title }}</span>
     <span class="dashboard-value">{{ card.value }}</span>
     <mat-icon class="dashboard-icon" [ngStyle]="{ color: card.color }">{{ card.icon }}</mat-icon>
   </div>
 </div>
-
