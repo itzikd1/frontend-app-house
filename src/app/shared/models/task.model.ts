@@ -15,6 +15,7 @@ export interface Task extends BaseModel {
   priority: 'Low' | 'Medium' | 'High';
   dueDate: string | null;
   repeat?: string;
+  completed: boolean;
 }
 
 export {}

@@ -9,6 +9,13 @@ import { MatIconModule } from '@angular/material/icon';
   template: `
     <div class="item-card">
       <div class="item-header">
+        <input
+          type="checkbox"
+          class="item-complete-checkbox"
+          [checked]="completed"
+          (change)="onToggleComplete($event)"
+          aria-label="Mark as complete"
+        />
         <strong class="item-title">{{ item?.title }}</strong>
         <div class="item-actions">
           <button type="button" class="icon-btn edit" (click)="edit.emit(item)" title="Edit">
@@ -29,7 +36,13 @@ import { MatIconModule } from '@angular/material/icon';
 })
 export class ItemCardComponent {
   @Input() item: any;
+  @Input() completed: boolean = false;
   @Output() edit = new EventEmitter<any>();
   @Output() delete = new EventEmitter<any>();
-}
+  @Output() toggleComplete = new EventEmitter<boolean>();
 
+  onToggleComplete(event: Event): void {
+    const checked = (event.target as HTMLInputElement).checked;
+    this.toggleComplete.emit(checked);
+  }
+}

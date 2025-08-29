@@ -24,11 +24,11 @@
 
     <div class="tasks-filters">
       <div class="tag-filters">
-        <button class="tag-btn" [class.active]="selectedCategory === 'all'" (click)="setCategory('all')">All ({{ tasks().length }})</button>
+        <button class="tag-btn" [class.active]="selectedCategory() === 'all'" (click)="setCategory('all')">All ({{ tasks().length }})</button>
         <button
           class="tag-btn"
           *ngFor="let category of categories()"
-          [class.active]="selectedCategory === category.id"
+          [class.active]="selectedCategory() === category.id"
           (click)="setCategory(category.id)"
         >
           {{ category.name }}
@@ -48,6 +48,8 @@
           <app-item-card
             *ngFor="let task of filteredTasks"
             [item]="task"
+            [completed]="task.completed"
+            (toggleComplete)="onToggleComplete(task, $event)"
             (edit)="startEdit(task)"
             (delete)="deleteTask(task.id)"
           >

@@ -44,7 +44,7 @@ export class TasksComponent implements OnInit {
   private adding = signal<boolean>(false);
 
   public selectedStatus: 'all' = 'all';
-  public selectedCategory: string = 'all';
+  public selectedCategory = signal<string>('all');
 
   // Tab logic
   selectedTab = signal<'tasks' | 'categories'>('tasks');
@@ -98,7 +98,6 @@ export class TasksComponent implements OnInit {
     if (this.adding()) return;
     if (!task.title) return;
     this.adding.set(true);
-    // Only send relevant fields, including categoryId
     const payload: Partial<Task> = {
       title: task.title,
       description: task.description,
@@ -106,10 +105,29 @@ export class TasksComponent implements OnInit {
       dueDate: task.dueDate,
       repeat: task.repeat,
       categoryId: task.categoryId,
+      completed: false,
     };
     this.taskService.createTask(payload).subscribe({
       next: (newTask: Task) => {
-        this.tasks.set([newTask, ...this.tasks()]);
+        if (newTask && newTask.id && newTask.title) {
+          const safeTask: Task = {
+            id: newTask.id,
+            title: newTask.title,
+            description: newTask.description ?? '',
+            categoryId: newTask.categoryId ?? '',
+            category: newTask.category ?? undefined,
+            priority: newTask.priority ?? 'Medium',
+            dueDate: newTask.dueDate ?? null,
+            repeat: newTask.repeat ?? 'None',
+            completed: newTask.completed ?? false,
+            createdAt: newTask.createdAt ?? new Date().toISOString(),
+            updatedAt: newTask.updatedAt ?? new Date().toISOString(),
+            createdBy: newTask.createdBy ?? '',
+          };
+          this.tasks.set([safeTask, ...this.tasks()]);
+          // Use signal setter for selectedCategory
+          this.selectedCategory.set('all');
+        }
         this.adding.set(false);
       },
       error: () => {
@@ -133,15 +151,16 @@ export class TasksComponent implements OnInit {
 
   updateTask(id: string, changes: Partial<Task>): void {
     this.loading.set(true);
-    // Ensure repeatFrequency is always a string in the payload
     const originalTask = this.tasks().find(t => t.id === id);
     const repeatFrequency = (changes as any).repeatFrequency ?? (originalTask as any)?.repeatFrequency ?? '';
     const payload = { ...changes, repeatFrequency };
     this.taskService.updateTask(id, payload).subscribe({
       next: (updatedTask: Task) => {
-        this.tasks.set(
-          this.tasks().map(t => t.id === id ? updatedTask : t)
-        );
+        if (updatedTask && updatedTask.id) {
+          this.tasks.set(
+            this.tasks().map(t => t.id === id ? updatedTask : t)
+          );
+        }
         this.loading.set(false);
         this.editing.set(false);
         this.editTask.set(null);
@@ -264,8 +283,8 @@ export class TasksComponent implements OnInit {
 
   public get filteredTasks(): Task[] {
     let filtered = this.tasks();
-    if (this.selectedCategory !== 'all') {
-      filtered = filtered.filter(t => t.categoryId === this.selectedCategory);
+    if (this.selectedCategory() !== 'all') {
+      filtered = filtered.filter(t => t.categoryId === this.selectedCategory());
     }
     return filtered;
   }
@@ -275,7 +294,7 @@ export class TasksComponent implements OnInit {
   }
 
   public setCategory(category: string): void {
-    this.selectedCategory = category;
+    this.selectedCategory.set(category);
   }
 
   public getCategoryName(categoryId: string): string {
@@ -295,10 +314,11 @@ export class TasksComponent implements OnInit {
       width: '400px',
       data: {}
     });
-    dialogRef.afterClosed().subscribe((result: string | null) => {
+    dialogRef.afterClosed().subscribe((result: string | { name: string }) => {
       if (result) {
         this.categoryLoading.set(true);
-        this.categoryService.create({ name: result }).subscribe({
+        const name = typeof result === 'string' ? result : result.name;
+        this.categoryService.create({ name }).subscribe({
           next: () => {
             this.loadCategories();
             this.categoryLoading.set(false);
@@ -308,6 +328,29 @@ export class TasksComponent implements OnInit {
             this.categoryLoading.set(false);
           }
         });
+      }
+    });
+  }
+
+  onToggleComplete(task: Task, completed: boolean): void {
+    // Optimistically update UI with a new object reference
+    this.tasks.set(
+      this.tasks().map(t => t.id === task.id ? { ...t, completed } : t)
+    );
+    this.taskService.updateTask(task.id, { completed }).subscribe({
+      next: (updatedTask: Task) => {
+        if (updatedTask && updatedTask.id) {
+          this.tasks.set(
+            this.tasks().map(t => t.id === task.id ? updatedTask : t)
+          );
+        }
+      },
+      error: () => {
+        this.error.set('Failed to update task completion.');
+        // Revert UI if error
+        this.tasks.set(
+          this.tasks().map(t => t.id === task.id ? { ...t, completed: task.completed } : t)
+        );
       }
     });
   }
