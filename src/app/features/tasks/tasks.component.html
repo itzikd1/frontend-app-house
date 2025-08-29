@@ -2,7 +2,12 @@
   <div class="tasks-header">
     <h1>Tasks</h1>
     <p class="tasks-subtitle">Manage your tasks and stay organized</p>
-    <button class="add-task-btn" (click)="openAddTaskDialog()">+ Add Task</button>
+    <ng-container *ngIf="selectedTab() === 'tasks'; else addCategoryBtn">
+      <button class="add-task-btn" (click)="openAddTaskDialog()">+ Add Task</button>
+    </ng-container>
+    <ng-template #addCategoryBtn>
+      <button class="add-task-btn" (click)="openAddCategoryDialog()">+ Add Category</button>
+    </ng-template>
   </div>
 
   <div class="tasks-tabs">
@@ -68,13 +73,6 @@
   <ng-container *ngIf="selectedTab() === 'categories'">
     <div class="category-management">
       <h2>Manage Task Categories</h2>
-      <form (ngSubmit)="submitCategory()">
-        <input [(ngModel)]="categoryFormName" name="categoryName" placeholder="Category name" required />
-        <button type="submit" [disabled]="!categoryFormName">
-          {{ editingCategory() ? 'Update' : 'Add' }} Category
-        </button>
-        <button type="button" *ngIf="editingCategory()" (click)="cancelEditCategory()">Cancel</button>
-      </form>
       <div *ngIf="categoryLoading()">
         <app-loading-spinner [translationKey]="'loading.default'"></app-loading-spinner>
       </div>
@@ -86,7 +84,7 @@
           <app-item-card
             *ngFor="let category of categories()"
             [item]="{ title: category.name }"
-            (edit)="editCategory(category)"
+            (edit)="openEditCategoryDialog(category)"
             (delete)="deleteCategory(category)"
           ></app-item-card>
         </div>

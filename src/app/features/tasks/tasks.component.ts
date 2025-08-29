@@ -12,6 +12,7 @@ import { ItemCardComponent } from '../../shared/components/item-card/item-card.c
 import { DashboardCardConfig } from '../../shared/components/dashboard-summary-cards/dashboard-summary-cards.component';
 import { DashboardSummaryCardsComponent } from '../../shared/components/dashboard-summary-cards/dashboard-summary-cards.component';
 import { TaskCategoryService, TaskCategory } from '../../core/services/item-category.service';
+import { AddCategoryDialogWrapperComponent } from './add-category-dialog-wrapper.component';
 
 @Component({
   selector: 'app-tasks',
@@ -210,20 +211,34 @@ export class TasksComponent implements OnInit {
     }
   }
 
-  editCategory(category: TaskCategory): void {
-    this.editingCategory.set(category);
-    this.categoryFormName = category.name;
+  openEditCategoryDialog(category: TaskCategory): void {
+    const dialogRef = this.dialog.open(AddCategoryDialogWrapperComponent, {
+      width: '400px',
+      data: { category }
+    });
+    dialogRef.afterClosed().subscribe((result: { name: string; id?: string; isEdit: boolean } | null) => {
+      if (result && result.name) {
+        this.categoryLoading.set(true);
+        if (result.isEdit && result.id) {
+          this.categoryService.update(result.id, { name: result.name }).subscribe({
+            next: () => {
+              this.loadCategories();
+              this.categoryLoading.set(false);
+            },
+            error: () => {
+              this.categoryError.set('Failed to update category.');
+              this.categoryLoading.set(false);
+            }
+          });
+        }
+      }
+    });
   }
 
   deleteCategory(category: TaskCategory): void {
     this.categoryService.delete(category.id).subscribe(() => {
       this.loadCategories();
     });
-  }
-
-  cancelEditCategory(): void {
-    this.editingCategory.set(null);
-    this.categoryFormName = '';
   }
 
   get overdueCount(): number {
@@ -273,5 +288,27 @@ export class TasksComponent implements OnInit {
     const due = new Date(task.dueDate);
     const now = new Date();
     return due < now;
+  }
+
+  openAddCategoryDialog(): void {
+    const dialogRef = this.dialog.open(AddCategoryDialogWrapperComponent, {
+      width: '400px',
+      data: {}
+    });
+    dialogRef.afterClosed().subscribe((result: string | null) => {
+      if (result) {
+        this.categoryLoading.set(true);
+        this.categoryService.create({ name: result }).subscribe({
+          next: () => {
+            this.loadCategories();
+            this.categoryLoading.set(false);
+          },
+          error: () => {
+            this.categoryError.set('Failed to add category.');
+            this.categoryLoading.set(false);
+          }
+        });
+      }
+    });
   }
 }
