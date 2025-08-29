@@ -97,7 +97,7 @@
 }
 .tasks-filters {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   gap: 24px;
   margin-bottom: 24px;
 }
@@ -122,9 +122,23 @@
 }
 .tag-filters {
   display: flex;
+  flex-direction: row;
   gap: 8px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
+  width: 100%;
+  max-width: 100%;
+  padding-bottom: 8px;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE 10+ */
+  -webkit-overflow-scrolling: touch; /* iOS smooth scroll */
+}
+.tag-filters::-webkit-scrollbar {
+  display: none; /* Chrome, Safari */
 }
 .tag-btn {
+  flex: 0 0 auto;
   background: #f3f4f6;
   color: #374151;
   border: none;
@@ -133,11 +147,16 @@
   font-size: 1rem;
   font-weight: 500;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 8px rgba(59,130,246,0.08);
+  margin-bottom: 0;
+  margin-top: 0;
+  margin-right: 2px;
 }
 .tag-btn.active {
   background: #222;
   color: #fff;
+  box-shadow: 0 2px 8px rgba(34,34,34,0.15);
 }
 .tasks-list {
   display: flex;
