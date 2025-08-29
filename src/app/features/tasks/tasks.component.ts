@@ -264,6 +264,14 @@ export class TasksComponent implements OnInit {
     return this.tasks().filter(t => this.isOverdue(t)).length;
   }
 
+  get completeCount(): number {
+    return this.tasks().filter(t => t.completed).length;
+  }
+
+  get uncompleteCount(): number {
+    return this.tasks().filter(t => !t.completed).length;
+  }
+
   get dashboardCards(): DashboardCardConfig[] {
     return [
       {
@@ -277,6 +285,18 @@ export class TasksComponent implements OnInit {
         value: this.overdueCount,
         icon: 'error',
         color: '#ef4444',
+      },
+      {
+        title: 'Complete',
+        value: this.completeCount,
+        icon: 'check_circle',
+        color: '#22c55e',
+      },
+      {
+        title: 'Uncomplete',
+        value: this.uncompleteCount,
+        icon: 'radio_button_unchecked',
+        color: '#fbbf24',
       },
     ];
   }
