@@ -8,12 +8,10 @@ export interface BaseModel {
 export interface Task extends BaseModel {
   title: string;
   description?: string;
-  completed: boolean;
-  dueDate?: string;
+  category?: string;
   priority: 'Low' | 'Medium' | 'High';
-  repeatFrequency?: string;
-  categoryId?: string;
-  userId: string;
+  dueDate: string;
+  repeat?: string;
 }
 
 export {}

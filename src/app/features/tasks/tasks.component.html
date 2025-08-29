@@ -1,47 +1,60 @@
-<ng-container *ngIf="loading()">
-  <app-loading-spinner [translationKey]="'loading.default'"></app-loading-spinner>
-</ng-container>
-<ng-container *ngIf="!loading()">
-  <div *ngIf="error(); else showTasks">
-    <p class="error">{{ error() }}</p>
+<div class="tasks-page">
+  <div class="tasks-header">
+    <h1>Tasks</h1>
+    <p class="tasks-subtitle">Manage your tasks and stay organized</p>
+    <button class="add-task-btn" (click)="openAddTaskDialog()">+ Add Task</button>
   </div>
-  <ng-template #showTasks>
-    <!-- Edit Task Form -->
-    <form (ngSubmit)="updateTask()" *ngIf="editing() && editTaskForm" class="task-form">
-      <input type="text" placeholder="Title" [(ngModel)]="editTaskForm.title" name="editTitle" required />
-      <input type="text" placeholder="Description" [(ngModel)]="editTaskForm.description" name="editDescription" />
-      <select [(ngModel)]="editTaskForm.priority" name="editPriority">
-        <option value="Low">Low</option>
-        <option value="Medium">Medium</option>
-        <option value="High">High</option>
-      </select>
-      <input type="date" [(ngModel)]="editTaskForm.dueDate" name="editDueDate" />
-      <button type="submit">Update Task</button>
-      <button type="button" (click)="cancelEdit()">Cancel</button>
-    </form>
 
-    <div *ngIf="tasks().length; else noTasks" class="tasks-grid">
-      <app-item-card
-        *ngFor="let task of tasks()"
-        [item]="task"
-        (edit)="startEdit(task)"
-        (delete)="deleteTask(task.id)"
-      >
-        <div class="task-meta-row">
-          <span class="task-priority" [ngClass]="task.priority.toLowerCase()">{{ task.priority }}</span>
-          <span *ngIf="task.dueDate" class="task-due-date">{{ task.dueDate | date:'mediumDate' }}</span>
-        </div>
-      </app-item-card>
+  <div class="tasks-tabs">
+    <button class="tab active">Tasks</button>
+    <button class="tab">Manage Categories</button>
+  </div>
+
+  <div class="tasks-dashboard">
+    <app-dashboard-summary-cards
+      [cards]="dashboardCards"
+    ></app-dashboard-summary-cards>
+  </div>
+
+  <div class="tasks-filters">
+    <div class="status-filters">
+      <button class="status-btn" [class.active]="selectedStatus === 'all'" (click)="setStatus('all')">All ({{ tasks().length }})</button>
     </div>
-    <ng-template #noTasks>
-      <p>No tasks found.</p>
-    </ng-template>
-  </ng-template>
-</ng-container>
+    <div class="tag-filters">
+      <button class="tag-btn" [class.active]="selectedCategory === 'all'" (click)="setCategory('all')">All</button>
+      <button class="tag-btn" [class.active]="selectedCategory === 'home'" (click)="setCategory('home')">Home</button>
+      <button class="tag-btn" [class.active]="selectedCategory === 'work'" (click)="setCategory('work')">Work</button>
+    </div>
+  </div>
 
-<!-- Floating Action Button -->
-<app-fab-button
-  icon="add"
-  ariaLabel="Add Task"
-  (click)="openAddTaskDialog()"
-></app-fab-button>
+  <div *ngIf="loading()">
+    <app-loading-spinner [translationKey]="'loading.default'"></app-loading-spinner>
+  </div>
+  <div *ngIf="!loading()">
+    <div *ngIf="error(); else showTasks">
+      <p class="error">{{ error() }}</p>
+    </div>
+    <ng-template #showTasks>
+      <div *ngIf="filteredTasks.length; else noTasks" class="tasks-list">
+        <app-item-card
+          *ngFor="let task of filteredTasks"
+          [item]="task"
+          (edit)="startEdit(task)"
+          (delete)="deleteTask(task.id)"
+        >
+          <div class="task-meta-row">
+            <span class="task-title">{{ task.title }}</span>
+            <span class="task-priority-badge" [ngClass]="task.priority.toLowerCase()">{{ task.priority }}</span>
+            <span *ngIf="task.dueDate" class="task-due-date">
+              <mat-icon class="due-date-icon">error</mat-icon>
+              <span [ngClass]="{'overdue': isOverdue(task)}">{{ task.dueDate | date:'MMM d, yyyy' }}</span>
+            </span>
+          </div>
+        </app-item-card>
+      </div>
+      <ng-template #noTasks>
+        <p>No tasks found.</p>
+      </ng-template>
+    </ng-template>
+  </div>
+</div>

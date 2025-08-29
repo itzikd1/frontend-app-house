@@ -14,10 +14,10 @@ export class GoalService {
   constructor(private http: HttpClient) {}
 
   getGoals(): Observable<Goal[]> {
-    return this.http.get<{ data?: Goal[]; error?: string }>(this.baseUrl).pipe(
+    return this.http.get<{ data?: { goals?: Goal[]; success?: boolean }; error?: string }>(this.baseUrl).pipe(
       map(res => {
         if (res.error) throw res.error;
-        return res.data ?? [];
+        return res.data?.goals ?? [];
       }),
       catchError(err => throwError(() => err))
     );
@@ -66,4 +66,3 @@ export class GoalService {
     );
   }
 }
-

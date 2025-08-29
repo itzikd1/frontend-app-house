@@ -45,3 +45,19 @@
   color: #555;
   font-size: 0.98rem;
 }
+.icon-btn.edit mat-icon {
+  color: #528bc5;
+  font-size: 22px;
+  transition: color 0.2s;
+}
+.icon-btn.edit:hover mat-icon {
+  color: #2464ba;
+}
+.icon-btn.delete mat-icon {
+  color: #ef5858;
+  font-size: 22px;
+  transition: color 0.2s;
+}
+.icon-btn.delete:hover mat-icon {
+  color: #b82d2d;
+}

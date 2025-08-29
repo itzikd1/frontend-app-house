@@ -16,6 +16,7 @@ import { ItemDialogComponent } from './components/item-dialog/item-dialog.compon
 import { ItemFormComponent } from './components/item-form/item-form.component';
 import { ItemListComponent } from './components/item-list/item-list.component';
 import { ModalDialogComponent } from './components/modal-dialog.component';
+import { DashboardSummaryCardsComponent } from './components/dashboard-summary-cards/dashboard-summary-cards.component';
 
 const MATERIAL_MODULES = [
   MatToolbarModule,
@@ -39,7 +40,8 @@ const MATERIAL_MODULES = [
     ItemDialogComponent,
     ItemFormComponent,
     ItemListComponent,
-    ModalDialogComponent
+    ModalDialogComponent,
+    DashboardSummaryCardsComponent
   ],
   exports: [
     ...MATERIAL_MODULES,
@@ -53,7 +55,8 @@ const MATERIAL_MODULES = [
     ItemDialogComponent,
     ItemFormComponent,
     ItemListComponent,
-    ModalDialogComponent
+    ModalDialogComponent,
+    DashboardSummaryCardsComponent
   ]
 })
 export class SharedModule {}
