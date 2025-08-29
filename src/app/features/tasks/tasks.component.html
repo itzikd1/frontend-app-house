@@ -18,11 +18,8 @@
     </div>
 
     <div class="tasks-filters">
-      <div class="status-filters">
-        <button class="status-btn" [class.active]="selectedStatus === 'all'" (click)="setStatus('all')">All ({{ tasks().length }})</button>
-      </div>
       <div class="tag-filters">
-        <button class="tag-btn" [class.active]="selectedCategory === 'all'" (click)="setCategory('all')">All</button>
+        <button class="tag-btn" [class.active]="selectedCategory === 'all'" (click)="setCategory('all')">All ({{ tasks().length }})</button>
         <button
           class="tag-btn"
           *ngFor="let category of categories()"
@@ -50,10 +47,13 @@
             (delete)="deleteTask(task.id)"
           >
             <div class="task-meta-row">
-              <span class="task-priority-badge" [ngClass]="task.priority?.toLowerCase()">{{ task.priority }}</span>
+              <span class="task-priority-badge" [ngClass]="task.priority && task.priority.toLowerCase()">{{ task.priority }}</span>
               <span *ngIf="task.dueDate" class="task-due-date">
                 <mat-icon class="due-date-icon">error</mat-icon>
                 <span [ngClass]="{'overdue': isOverdue(task)}">{{ task.dueDate | date:'MMM d, yyyy' }}</span>
+              </span>
+              <span *ngIf="task.category && task.category.id !== 'None'" class="task-category-name">
+                {{ getCategoryName(task.category.id) }}
               </span>
             </div>
           </app-item-card>

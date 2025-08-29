@@ -11,7 +11,6 @@ import { AddTaskDialogWrapperComponent } from './add-task-dialog-wrapper.compone
 import { ItemCardComponent } from '../../shared/components/item-card/item-card.component';
 import { DashboardCardConfig } from '../../shared/components/dashboard-summary-cards/dashboard-summary-cards.component';
 import { DashboardSummaryCardsComponent } from '../../shared/components/dashboard-summary-cards/dashboard-summary-cards.component';
-import { RouterLink } from '@angular/router';
 import { TaskCategoryService, TaskCategory } from '../../core/services/item-category.service';
 
 @Component({
@@ -98,7 +97,16 @@ export class TasksComponent implements OnInit {
     if (this.adding()) return;
     if (!task.title) return;
     this.adding.set(true);
-    this.taskService.createTask(task).subscribe({
+    // Only send relevant fields, including categoryId
+    const payload: Partial<Task> = {
+      title: task.title,
+      description: task.description,
+      priority: task.priority,
+      dueDate: task.dueDate,
+      repeat: task.repeat,
+      categoryId: task.categoryId,
+    };
+    this.taskService.createTask(payload).subscribe({
       next: (newTask: Task) => {
         this.tasks.set([newTask, ...this.tasks()]);
         this.adding.set(false);
@@ -209,7 +217,7 @@ export class TasksComponent implements OnInit {
   public get filteredTasks(): Task[] {
     let filtered = this.tasks();
     if (this.selectedCategory !== 'all') {
-      filtered = filtered.filter(t => t.category === this.selectedCategory);
+      filtered = filtered.filter(t => t.categoryId === this.selectedCategory);
     }
     return filtered;
   }
@@ -220,6 +228,11 @@ export class TasksComponent implements OnInit {
 
   public setCategory(category: string): void {
     this.selectedCategory = category;
+  }
+
+  public getCategoryName(categoryId: string): string {
+    const category = this.categories().find(cat => cat.id === categoryId);
+    return category ? category.name : 'Unknown Category';
   }
 
   isOverdue(task: Task): boolean {

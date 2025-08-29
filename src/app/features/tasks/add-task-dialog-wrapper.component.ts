@@ -50,11 +50,11 @@ import { CommonModule } from '@angular/common';
       <div class="form-group">
         <label for="category" class="input-label">Category</label>
         <select id="category"
-          [value]="task().category"
+          [value]="task().categoryId"
           (change)="onCategoryChange($event)"
           name="category">
-          <option value="None">None</option>
-          <option *ngFor="let category of categories()" [value]="category.name">{{ category.name }}</option>
+          <option value="">None</option>
+          <option *ngFor="let category of categories()" [value]="category.id">{{ category.name }}</option>
         </select>
       </div>
       <div class="form-group">
@@ -96,7 +96,7 @@ export class AddTaskDialogWrapperComponent {
   task = signal<Partial<Task>>({
     title: '',
     description: '',
-    category: 'None',
+    categoryId: '',
     priority: 'Medium',
     dueDate: '',
     repeat: 'None',
@@ -148,7 +148,7 @@ export class AddTaskDialogWrapperComponent {
 
   onCategoryChange(event: Event): void {
     const value = (event.target as HTMLSelectElement).value;
-    this.task.update(t => ({ ...t, category: value }));
+    this.task.update(t => ({ ...t, categoryId: value }));
   }
 
   onPriorityChange(event: Event): void {
