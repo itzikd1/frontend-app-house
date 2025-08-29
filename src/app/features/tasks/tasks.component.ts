@@ -71,11 +71,18 @@ export class TasksComponent implements OnInit {
     this.loadCategories();
   }
 
+  private sortTasks(tasks: Task[]): Task[] {
+    return tasks.slice().sort((a, b) => {
+      if (a.completed === b.completed) return 0;
+      return a.completed ? 1 : -1;
+    });
+  }
+
   fetchTasks(): void {
     this.loading.set(true);
     this.taskService.getTasks().subscribe({
       next: (tasks) => {
-        this.tasks.set(tasks);
+        this.tasks.set(this.sortTasks(tasks));
         this.loading.set(false);
       },
       error: () => {
@@ -127,8 +134,7 @@ export class TasksComponent implements OnInit {
             updatedAt: newTask.updatedAt ?? new Date().toISOString(),
             createdBy: newTask.createdBy ?? '',
           };
-          this.tasks.set([safeTask, ...this.tasks()]);
-          // Use signal setter for selectedCategory
+          this.tasks.set(this.sortTasks([safeTask, ...this.tasks()]));
           this.selectedCategory.set('all');
         }
         this.adding.set(false);
@@ -403,3 +409,4 @@ export class TasksComponent implements OnInit {
     });
   }
 }
+
