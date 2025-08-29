@@ -13,6 +13,7 @@ import { DashboardCardConfig } from '../../shared/components/dashboard-summary-c
 import { DashboardSummaryCardsComponent } from '../../shared/components/dashboard-summary-cards/dashboard-summary-cards.component';
 import { TaskCategoryService, TaskCategory } from '../../core/services/item-category.service';
 import { AddCategoryDialogWrapperComponent } from './add-category-dialog-wrapper.component';
+import { FabButtonComponent } from '../../shared/components/fab-button/fab-button.component';
 
 @Component({
   selector: 'app-tasks',
@@ -26,6 +27,7 @@ import { AddCategoryDialogWrapperComponent } from './add-category-dialog-wrapper
     MatButtonModule,
     ItemCardComponent,
     DashboardSummaryCardsComponent,
+    FabButtonComponent,
   ],
   templateUrl: './tasks.component.html',
   styleUrl: './tasks.component.scss',
@@ -409,4 +411,3 @@ export class TasksComponent implements OnInit {
     });
   }
 }
-

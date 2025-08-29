@@ -2,13 +2,22 @@
   <div class="tasks-header">
     <h1>Tasks</h1>
     <p class="tasks-subtitle">Manage your tasks and stay organized</p>
-    <ng-container *ngIf="selectedTab() === 'tasks'; else addCategoryBtn">
-      <button class="add-task-btn" (click)="openAddTaskDialog()">+ Add Task</button>
-    </ng-container>
-    <ng-template #addCategoryBtn>
-      <button class="add-task-btn" (click)="openAddCategoryDialog()">+ Add Category</button>
-    </ng-template>
   </div>
+
+  <app-fab-button
+    *ngIf="selectedTab() === 'tasks'"
+    icon="add"
+    color="primary"
+    ariaLabel="Add Task"
+    (click)="openAddTaskDialog()"
+  ></app-fab-button>
+  <app-fab-button
+    *ngIf="selectedTab() === 'categories'"
+    icon="add"
+    color="accent"
+    ariaLabel="Add Category"
+    (click)="openAddCategoryDialog()"
+  ></app-fab-button>
 
   <div class="tasks-tabs">
     <button class="tab" [class.active]="selectedTab() === 'tasks'" (click)="setTab('tasks')">Tasks</button>
