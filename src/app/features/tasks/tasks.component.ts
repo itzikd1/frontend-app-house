@@ -118,10 +118,43 @@ export class TasksComponent implements OnInit {
     });
   }
 
+  openEditTaskDialog(task: Task): void {
+    const dialogRef = this.dialog.open(AddTaskDialogWrapperComponent, {
+      width: '400px',
+      data: { task }
+    });
+    dialogRef.afterClosed().subscribe((result: Partial<Task> | null) => {
+      if (result && result.title) {
+        this.updateTask(task.id, result);
+      }
+    });
+  }
+
+  updateTask(id: string, changes: Partial<Task>): void {
+    this.loading.set(true);
+    // Ensure repeatFrequency is always a string in the payload
+    const originalTask = this.tasks().find(t => t.id === id);
+    const repeatFrequency = (changes as any).repeatFrequency ?? (originalTask as any)?.repeatFrequency ?? '';
+    const payload = { ...changes, repeatFrequency };
+    this.taskService.updateTask(id, payload).subscribe({
+      next: (updatedTask: Task) => {
+        this.tasks.set(
+          this.tasks().map(t => t.id === id ? updatedTask : t)
+        );
+        this.loading.set(false);
+        this.editing.set(false);
+        this.editTask.set(null);
+        this.editTaskForm = null;
+      },
+      error: () => {
+        this.error.set('Failed to update task.');
+        this.loading.set(false);
+      }
+    });
+  }
+
   startEdit(task: Task): void {
-    this.editing.set(true);
-    this.editTask.set({ ...task });
-    this.editTaskForm = { ...task };
+    this.openEditTaskDialog(task);
   }
 
   deleteTask(id: string): void {

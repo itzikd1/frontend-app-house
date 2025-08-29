@@ -27,8 +27,8 @@ import { CommonModule } from '@angular/common';
   ],
   template: `
     <app-modal-dialog
-      [title]="'Create New Task'"
-      [submitLabel]="'Create Task'"
+      [title]="isEditMode ? 'Edit Task' : 'Create New Task'"
+      [submitLabel]="isEditMode ? 'Save Changes' : 'Create Task'"
       [cancelLabel]="'Cancel'"
       (submit)="onSubmit()"
       (cancel)="onCancel()"
@@ -93,6 +93,7 @@ import { CommonModule } from '@angular/common';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AddTaskDialogWrapperComponent {
+  isEditMode: boolean = false;
   task = signal<Partial<Task>>({
     title: '',
     description: '',
@@ -111,6 +112,10 @@ export class AddTaskDialogWrapperComponent {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private categoryService: TaskCategoryService
   ) {
+    this.isEditMode = !!data?.task;
+    if (this.isEditMode && data.task) {
+      this.task.set({ ...data.task });
+    }
     this.loadCategories();
   }
 
