@@ -35,4 +35,12 @@ export class NoteService {
   delete(id: string): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/${id}`);
   }
+
+  getById(id: string): Observable<Note> {
+    return this.http.get<Note>(`${this.baseUrl}/${id}`);
+  }
+
+  update(id: string, note: Partial<Note>): Observable<Note> {
+    return this.http.put<Note>(`${this.baseUrl}/${id}`, note);
+  }
 }
