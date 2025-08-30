@@ -2,7 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { Family } from '../../shared/models/family.model';
+import { Family } from '../interfaces/family.model';
 import { environment } from '../../../environments/environment';
 
 @Injectable({

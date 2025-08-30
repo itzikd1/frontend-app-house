@@ -1,6 +1,6 @@
 import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HealthStatus } from '../../../core/services/health.service';
+import {HealthStatus} from '../../../core/interfaces/health.model';
 
 @Component({
   selector: 'app-health-status-card',

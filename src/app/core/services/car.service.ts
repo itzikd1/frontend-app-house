@@ -2,17 +2,8 @@ import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import {environment} from '../../../environments/environment';
-
-export interface Car {
-  id: string;
-  make: string;
-  model: string;
-  year: number;
-  licensePlate: string;
-  createdAt: string;
-  updatedAt: string;
-}
+import { environment } from '../../../environments/environment';
+import { Car } from '../../shared/models/car.model';
 
 @Injectable({ providedIn: 'root' })
 export class CarService {

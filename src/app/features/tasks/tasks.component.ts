@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy, OnInit, signal, inject } from '@angular/core';
 import { TaskService } from '../../core/services/task.service';
-import { Task } from '../../shared/models/task.model';
+import { Task } from '../../core/interfaces/task.model';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { LoadingSpinnerComponent } from '../../shared/components/loading-spinner/loading-spinner.component';
@@ -11,9 +11,10 @@ import { AddTaskDialogWrapperComponent } from './add-task-dialog-wrapper.compone
 import { ItemCardComponent } from '../../shared/components/item-card/item-card.component';
 import { DashboardCardConfig } from '../../shared/components/dashboard-summary-cards/dashboard-summary-cards.component';
 import { DashboardSummaryCardsComponent } from '../../shared/components/dashboard-summary-cards/dashboard-summary-cards.component';
-import { TaskCategoryService, TaskCategory } from '../../core/services/item-category.service';
+import { TaskCategoryService } from '../../core/services/item-category.service';
 import { AddCategoryDialogWrapperComponent } from './add-category-dialog-wrapper.component';
 import { FabButtonComponent } from '../../shared/components/fab-button/fab-button.component';
+import { TaskCategory } from '../../core/interfaces/item-category.model';
 
 @Component({
   selector: 'app-tasks',

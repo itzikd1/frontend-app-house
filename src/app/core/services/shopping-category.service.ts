@@ -3,13 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { map } from 'rxjs/operators';
-
-export interface ShoppingCategory {
-  id: string;
-  name: string;
-  createdAt: string;
-  updatedAt: string;
-}
+import {ShoppingCategory} from '../interfaces/shopping-category.model';
 
 @Injectable({ providedIn: 'root' })
 export class ShoppingCategoryService {

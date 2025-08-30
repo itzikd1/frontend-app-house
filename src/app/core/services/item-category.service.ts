@@ -3,13 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
-
-export interface TaskCategory {
-  id: string;
-  name: string;
-  createdAt: string;
-  updatedAt: string;
-}
+import {TaskCategory} from '../interfaces/item-category.model';
 
 @Injectable({ providedIn: 'root' })
 export class TaskCategoryService {

@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
-import {ShoppingList, ShoppingListItem} from '../../shared/models/shopping-list.model';
+import {ShoppingList, ShoppingListItem} from '../interfaces/shopping-list.model';
 
 
 

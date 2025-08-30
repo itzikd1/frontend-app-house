@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
 import { FamilyService } from '../../core/services/family.service';
-import { Family } from '../../shared/models/family.model';
+import { Family } from '../../core/interfaces/family.model';
 import { CommonModule } from '@angular/common';
 import { LoadingSpinnerComponent } from '../../shared/components/loading-spinner/loading-spinner.component';
 
