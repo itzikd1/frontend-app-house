@@ -1,12 +1,103 @@
-<div class="shopping-list-container">
-  <button mat-raised-button color="primary" (click)="openAddDialog()">Add Shopping Item</button>
-  <div *ngIf="loading()">Loading...</div>
-  <div *ngIf="!loading() && shoppingItems().length === 0">No shopping items found.</div>
-  <div *ngFor="let item of shoppingItems()" class="shopping-list-card">
-    <h3>{{ item.name }}</h3>
-    <p>Quantity: {{ item.quantity }}</p>
-    <p>Status: <span [class.checked]="item.purchased">{{ item.purchased ? 'Purchased' : 'Not Purchased' }}</span></p>
-    <button mat-button color="accent" (click)="editList(item)">Edit</button>
-    <button mat-button color="warn" (click)="deleteList(item.id)">Delete</button>
+<div class="shopping-list-page">
+  <div class="shopping-list-header">
+    <h1>Shopping List</h1>
+    <p class="shopping-list-subtitle">Manage your shopping items</p>
   </div>
+
+  <!-- Tabs for items and categories -->
+  <div class="shopping-list-tabs">
+    <button mat-raised-button class="tab" [class.active]="selectedTab() === 'items'" (click)="setTab('items')">Items</button>
+    <button mat-raised-button class="tab" [class.active]="selectedTab() === 'categories'" (click)="setTab('categories')">Categories</button>
+  </div>
+
+  <!-- Items tab -->
+  <ng-container *ngIf="selectedTab() === 'items'">
+    <!-- Dashboard summary cards -->
+    <app-dashboard-summary-cards
+      [cards]="dashboardCards()"
+      [activeFilter]="dashboardFilter()"
+      (cardClick)="setDashboardFilter($event)"
+    ></app-dashboard-summary-cards>
+
+    <!-- Category filters -->
+    <div class="shopping-category-filters">
+      <button mat-raised-button class="category-btn" [class.active]="selectedCategory() === 'all'" (click)="setCategory('all')">All ({{ shoppingItems().length }})</button>
+      <button
+        mat-raised-button
+        class="category-btn"
+        *ngFor="let category of categories()"
+        [class.active]="selectedCategory() === category.id"
+        (click)="setCategory(category.id)"
+      >
+        {{ category.name }}
+      </button>
+    </div>
+
+    <app-fab-button
+      icon="add"
+      color="primary"
+      ariaLabel="Add Shopping Item"
+      (click)="openAddDialog()"
+    ></app-fab-button>
+
+    <div *ngIf="loading()">
+      <app-loading-spinner></app-loading-spinner>
+    </div>
+
+    <div *ngIf="!loading() && filteredItems().length === 0">
+      <p>No shopping items found.</p>
+    </div>
+
+    <div *ngIf="!loading() && filteredItems().length" class="shopping-list-items">
+      <app-item-card
+        *ngFor="let item of filteredItems()"
+        [item]="{ title: item.name, description: 'Quantity: ' + item.quantity }"
+        [completed]="item.purchased"
+        [showCheckbox]="true"
+        (edit)="editList(item)"
+        (delete)="deleteList(item.id)"
+        (toggleComplete)="togglePurchased(item, $event)"
+      >
+        <div class="shopping-meta-row">
+          <span>Status: <span [class.checked]="item.purchased">{{ item.purchased ? 'Purchased' : 'Not Purchased' }}</span></span>
+        </div>
+      </app-item-card>
+    </div>
+  </ng-container>
+
+  <!-- Categories tab -->
+  <ng-container *ngIf="selectedTab() === 'categories'">
+    <div class="category-management">
+      <h2>Manage Shopping Categories</h2>
+      <form (ngSubmit)="editingCategory() ? updateCategory() : addCategory()" class="category-form">
+        <input
+          type="text"
+          [ngModel]="categoryFormName()"
+          (ngModelChange)="categoryFormName.set($event)"
+          name="categoryName"
+          placeholder="Category name"
+          required
+        />
+        <button mat-raised-button color="primary" type="submit">
+          {{ editingCategory() ? 'Update' : 'Add' }} Category
+        </button>
+        <button *ngIf="editingCategory()" mat-button type="button" (click)="editingCategory.set(null); categoryFormName.set('')">Cancel</button>
+      </form>
+      <div *ngIf="categoryLoading()">
+        <app-loading-spinner></app-loading-spinner>
+      </div>
+      <div *ngIf="categoryError()">
+        <p class="error">{{ categoryError() }}</p>
+      </div>
+      <div *ngIf="!categoryLoading() && categories().length">
+        <div class="categories-list">
+          <div *ngFor="let category of categories()" class="category-card">
+            <span>{{ category.name }}</span>
+            <button mat-icon-button color="accent" (click)="editCategory(category)"><mat-icon>edit</mat-icon></button>
+            <button mat-icon-button color="warn" (click)="deleteCategory(category.id)"><mat-icon>delete</mat-icon></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
 </div>

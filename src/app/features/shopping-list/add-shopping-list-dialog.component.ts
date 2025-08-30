@@ -24,28 +24,30 @@ import { ShoppingList, ShoppingListItem } from '../../shared/models/shopping-lis
     MatIconModule
   ],
   template: `
-    <form [formGroup]="form" (ngSubmit)="onSubmit()">
-      <mat-form-field>
-        <input matInput placeholder="List Name" formControlName="name" required />
-      </mat-form-field>
-      <div formArrayName="items">
-        <div *ngFor="let item of items.controls; let i = index" [formGroupName]="i">
-          <mat-form-field>
-            <input matInput placeholder="Item Name" formControlName="name" required />
-          </mat-form-field>
-          <mat-form-field>
-            <input matInput type="number" placeholder="Quantity" formControlName="quantity" required />
-          </mat-form-field>
-          <mat-checkbox formControlName="checked">Checked</mat-checkbox>
-          <button mat-icon-button color="warn" type="button" (click)="removeItem(i)"><mat-icon>delete</mat-icon></button>
+    <div class="dialog-container">
+      <div class="dialog-header">{{ data ? 'Edit Shopping List' : 'Add Shopping List' }}</div>
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" class="dialog-form">
+        <mat-form-field>
+          <input matInput placeholder="List Name" formControlName="name" required />
+        </mat-form-field>
+        <div formArrayName="items">
+          <div *ngFor="let item of items.controls; let i = index" [formGroupName]="i">
+            <mat-form-field>
+              <input matInput placeholder="Item Name" formControlName="name" required />
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput type="number" placeholder="Quantity" formControlName="quantity" required />
+            </mat-form-field>
+            <mat-checkbox formControlName="checked">Checked</mat-checkbox>
+            <button mat-icon-button color="warn" type="button" (click)="removeItem(i)"><mat-icon>delete</mat-icon></button>
+          </div>
         </div>
-      </div>
-      <button mat-button type="button" (click)="addItem()">Add Item</button>
-      <div>
-        <button mat-raised-button color="primary" type="submit">Save</button>
-        <button mat-button type="button" (click)="close.emit(null)">Cancel</button>
-      </div>
-    </form>
+        <div class="actions">
+          <button mat-raised-button color="primary" type="submit">{{ data ? 'Update' : 'Add' }} List</button>
+          <button mat-button type="button" (click)="onClose()">Cancel</button>
+        </div>
+      </form>
+    </div>
   `
 })
 export class AddShoppingListDialogComponent {
@@ -98,5 +100,9 @@ export class AddShoppingListDialogComponent {
         this.close.emit(result);
       });
     }
+  }
+
+  onClose(): void {
+    this.close.emit(null);
   }
 }

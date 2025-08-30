@@ -13,6 +13,7 @@ export interface ShoppingListItem {
   purchased: boolean;
   createdAt: string;
   updatedAt: string;
+  categoryId: string | null;
 }
 
 
