@@ -12,7 +12,7 @@
     >
       <app-item-card
         *ngFor="let car of cars()"
-        [item]="car"
+        [item]="{ title: car.make + ' ' + car.model, description: car.licensePlate }"
         (delete)="deleteCar(car)"
       >
         <span>{{ car.make }} {{ car.model }} ({{ car.year }}) - {{ car.licensePlate }}</span>

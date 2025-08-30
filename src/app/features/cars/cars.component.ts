@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, signal, OnInit } from '@angular/core';
+import { Component, ChangeDetectionStrategy, signal, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CarService, Car } from '../../core/services/car.service';
@@ -36,7 +36,8 @@ export class CarsComponent implements OnInit {
   adding = signal<boolean>(false);
   newCar = signal<Partial<Car>>({ make: '', model: '', year: new Date().getFullYear(), licensePlate: '' });
 
-  constructor(private carService: CarService, private dialog: MatDialog) {}
+  private carService = inject(CarService);
+  private dialog = inject(MatDialog);
 
   ngOnInit(): void {
     this.fetchCars();

@@ -1,6 +1,5 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
 import { FamilyService } from '../../core/services/family.service';
-import { Observable } from 'rxjs';
 import { Family } from '../../shared/models/family.model';
 import { CommonModule } from '@angular/common';
 import { LoadingSpinnerComponent } from '../../shared/components/loading-spinner/loading-spinner.component';
@@ -17,8 +16,9 @@ export class FamilyComponent {
   families: Family[] = [];
   error: string | null = null;
   loading = true;
+  private familyService = inject(FamilyService);
 
-  constructor(private familyService: FamilyService) {
+  constructor() {
     this.familyService.getFamilies().subscribe({
       next: (families) => {
         this.families = families;

@@ -1,4 +1,4 @@
-import { Component, Inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -42,10 +42,11 @@ export class AddCategoryDialogWrapperComponent {
   categoryName: string = '';
   categoryId: string | null = null;
 
-  constructor(
-    private dialogRef: MatDialogRef<AddCategoryDialogWrapperComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any
-  ) {
+  private dialogRef = inject(MatDialogRef<AddCategoryDialogWrapperComponent>);
+  public data: unknown = inject(MAT_DIALOG_DATA);
+
+  constructor() {
+    const data = this.data as { category?: { name: string; id: string } };
     this.isEditMode = !!data?.category;
     if (this.isEditMode && data.category) {
       this.categoryName = data.category.name;

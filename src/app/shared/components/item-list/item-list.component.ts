@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LoadingSpinnerComponent } from '../loading-spinner/loading-spinner.component';
 
@@ -20,10 +20,11 @@ import { LoadingSpinnerComponent } from '../loading-spinner/loading-spinner.comp
       </ng-template>
     </ng-template>
   `,
-  styleUrls: ['./item-list.component.scss']
+  styleUrls: ['./item-list.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ItemListComponent {
-  @Input() items: any[] = [];
+  @Input() items: unknown[] = [];
   @Input() loading = false;
   @Input() error: string | null = null;
   @Input() emptyMessage = 'No items found.';

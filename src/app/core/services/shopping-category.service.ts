@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
@@ -14,8 +14,7 @@ export interface ShoppingCategory {
 @Injectable({ providedIn: 'root' })
 export class ShoppingCategoryService {
   private readonly baseUrl = `${environment.apiUrl}/shopping-category`;
-
-  constructor(private http: HttpClient) {}
+  private readonly http = inject(HttpClient);
 
   getAll(): Observable<ShoppingCategory[]> {
     return this.http.get<{ success: boolean; data: ShoppingCategory[] }>(this.baseUrl)

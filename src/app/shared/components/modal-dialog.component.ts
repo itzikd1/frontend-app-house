@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -29,21 +29,21 @@ import { MatButtonModule } from '@angular/material/button';
       </form>
     </div>
   `,
-  styleUrls: ['./modal-dialog.component.scss']
+  styleUrls: ['./modal-dialog.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ModalDialogComponent {
   @Input() title = '';
   @Input() submitLabel = 'Submit';
   @Input() cancelLabel = 'Cancel';
-  @Output() submit = new EventEmitter<void>();
-  @Output() cancel = new EventEmitter<void>();
+  @Output() formSubmit = new EventEmitter<void>();
+  @Output() formCancel = new EventEmitter<void>();
 
   onSubmit(): void {
-    this.submit.emit();
+    this.formSubmit.emit();
   }
 
   onCancel(): void {
-    this.cancel.emit();
+    this.formCancel.emit();
   }
 }
-

@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, OnInit, signal } from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnInit, signal, inject } from '@angular/core';
 import { TaskService } from '../../core/services/task.service';
 import { Task } from '../../shared/models/task.model';
 import { CommonModule } from '@angular/common';
@@ -28,6 +28,7 @@ import { FabButtonComponent } from '../../shared/components/fab-button/fab-butto
     ItemCardComponent,
     DashboardSummaryCardsComponent,
     FabButtonComponent,
+    AddCategoryDialogWrapperComponent,
   ],
   templateUrl: './tasks.component.html',
   styleUrl: './tasks.component.scss',
@@ -45,28 +46,22 @@ export class TasksComponent implements OnInit {
 
   private adding = signal<boolean>(false);
 
-  public selectedStatus: 'all' = 'all';
   public selectedCategory = signal<string>('all');
 
   // Tab logic
-  selectedTab = signal<'tasks' | 'categories'>('tasks');
+  selectedTab = signal<'tasks' | 'categories'>('tasks' as const);
 
   // Category management state
   categories = signal<TaskCategory[]>([]);
   categoryLoading = signal<boolean>(false);
   categoryError = signal<string | null>(null);
-  editingCategory = signal<TaskCategory | null>(null);
-  // Change from signal to property
-  public categoryFormName: string = '';
 
   // New dashboard filter state
   public dashboardFilter = signal<'all' | 'overdue' | 'complete' | 'uncomplete'>('all');
 
-  constructor(
-    private taskService: TaskService,
-    private dialog: MatDialog,
-    private categoryService: TaskCategoryService
-  ) {}
+  private taskService = inject(TaskService);
+  private dialog = inject(MatDialog);
+  private categoryService = inject(TaskCategoryService);
 
   ngOnInit(): void {
     this.fetchTasks();
@@ -147,7 +142,7 @@ export class TasksComponent implements OnInit {
   updateTask(id: string, changes: Partial<Task>): void {
     this.loading.set(true);
     const originalTask = this.tasks().find(t => t.id === id);
-    const repeatFrequency = (changes as any).repeatFrequency ?? (originalTask as any)?.repeatFrequency ?? '';
+    const repeatFrequency = (changes as { repeatFrequency?: string }).repeatFrequency ?? (originalTask as { repeatFrequency?: string })?.repeatFrequency ?? '';
     const payload = { ...changes, repeatFrequency };
     this.taskService.updateTask(id, payload).subscribe({
       next: (updatedTask: Task) => {
@@ -206,45 +201,24 @@ export class TasksComponent implements OnInit {
     });
   }
 
-  submitCategory(): void {
-    const name = this.categoryFormName;
-    if (!name) return;
-    if (this.editingCategory()) {
-      const editing = this.editingCategory();
-      if (!editing) return;
-      this.categoryService.update(editing.id, { name }).subscribe(() => {
-        this.editingCategory.set(null);
-        this.categoryFormName = '';
-        this.loadCategories();
-      });
-    } else {
-      this.categoryService.create({ name }).subscribe(() => {
-        this.categoryFormName = '';
-        this.loadCategories();
-      });
-    }
-  }
-
   openEditCategoryDialog(category: TaskCategory): void {
     const dialogRef = this.dialog.open(AddCategoryDialogWrapperComponent, {
       width: '400px',
       data: { category }
     });
     dialogRef.afterClosed().subscribe((result: { name: string; id?: string; isEdit: boolean } | null) => {
-      if (result && result.name) {
+      if (result && result.name && result.id) {
         this.categoryLoading.set(true);
-        if (result.isEdit && result.id) {
-          this.categoryService.update(result.id, { name: result.name }).subscribe({
-            next: () => {
-              this.loadCategories();
-              this.categoryLoading.set(false);
-            },
-            error: () => {
-              this.categoryError.set('Failed to update category.');
-              this.categoryLoading.set(false);
-            }
-          });
-        }
+        this.categoryService.update(result.id, { name: result.name }).subscribe({
+          next: () => {
+            this.loadCategories();
+            this.categoryLoading.set(false);
+          },
+          error: () => {
+            this.categoryError.set('Failed to update category.');
+            this.categoryLoading.set(false);
+          }
+        });
       }
     });
   }
@@ -327,10 +301,6 @@ export class TasksComponent implements OnInit {
         break;
     }
     return filtered;
-  }
-
-  public setStatus(status: 'all'): void {
-    this.selectedStatus = status;
   }
 
   public setCategory(category: string): void {

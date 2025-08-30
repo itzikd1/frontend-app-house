@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -31,15 +31,14 @@ import { MatSelectModule } from '@angular/material/select';
       </form>
     </div>
   `,
-  styleUrls: ['./add-task-dialog.component.scss']
+  styleUrls: ['./add-task-dialog.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AddTaskDialogComponent {
   task: Partial<Task> = { title: '', description: '', priority: 'Medium', dueDate: '' };
 
-  constructor(
-    public dialogRef: MatDialogRef<AddTaskDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any
-  ) {}
+  private dialogRef = inject(MatDialogRef<AddTaskDialogComponent>);
+  public data: unknown = inject(MAT_DIALOG_DATA);
 
   onSubmit(): void {
     if (this.task.title) {

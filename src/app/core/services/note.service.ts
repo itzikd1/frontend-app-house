@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
@@ -15,8 +15,7 @@ export interface Note {
 @Injectable({ providedIn: 'root' })
 export class NoteService {
   private readonly baseUrl = `${environment.apiUrl}/note`;
-
-  constructor(private http: HttpClient) {}
+  private readonly http = inject(HttpClient);
 
   getAll(): Observable<Note[]> {
     return this.http.get<{ data?: { success: boolean; notes: Note[] }; error?: string }>(this.baseUrl).pipe(

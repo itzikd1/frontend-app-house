@@ -95,12 +95,16 @@
       </div>
       <div *ngIf="!categoryLoading() && categories().length">
         <div class="categories-list">
-          <app-item-card
-            *ngFor="let category of categories()"
-            [item]="{ title: category.name }"
-            (edit)="openEditCategoryDialog(category)"
-            (delete)="deleteCategory(category)"
-          ></app-item-card>
+          <div *ngFor="let category of categories()" class="category-item">
+            <span>{{ category.name }}</span>
+            <button
+              mat-icon-button
+              aria-label="Edit Category"
+              (click)="openEditCategoryDialog(category)"
+            >
+              <mat-icon>edit</mat-icon>
+            </button>
+          </div>
         </div>
       </div>
       <div *ngIf="!categoryLoading() && !categories().length">

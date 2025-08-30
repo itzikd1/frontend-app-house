@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, signal, OnInit } from '@angular/core';
+import { Component, ChangeDetectionStrategy, signal, OnInit, inject } from '@angular/core';
 import { RecipeService } from '../../core/services/recipe.service';
 import { Recipe } from '../../shared/models/recipe.model';
 import { CommonModule } from '@angular/common';
@@ -9,7 +9,6 @@ import { LoadingSpinnerComponent } from '../../shared/components/loading-spinner
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { AddRecipeDialogWrapperComponent } from './add-recipe-dialog-wrapper.component';
-import { ModalDialogComponent } from '../../shared/components/modal-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import {FormsModule} from '@angular/forms';
 
@@ -36,7 +35,8 @@ export class RecipesComponent implements OnInit {
   loading = signal<boolean>(true);
   adding = signal<boolean>(false);
 
-  constructor(private recipeService: RecipeService, private dialog: MatDialog) {}
+  private recipeService = inject(RecipeService);
+  private dialog = inject(MatDialog);
 
   ngOnInit(): void {
     this.fetchRecipes();

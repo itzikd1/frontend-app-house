@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Car } from '../../shared/models/car.model';
 import { FormsModule } from '@angular/forms';
@@ -43,15 +43,13 @@ import { ModalDialogComponent } from '../../shared/components/modal-dialog.compo
       </mat-form-field>
     </app-modal-dialog>
   `,
-  styleUrls: ['../../shared/components/modal-dialog.component.scss']
+  styleUrls: ['../../shared/components/modal-dialog.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AddCarDialogWrapperComponent {
   car: Partial<Car> = { make: '', model: '', year: new Date().getFullYear(), licensePlate: '' };
-
-  constructor(
-    private dialogRef: MatDialogRef<AddCarDialogWrapperComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any
-  ) {}
+  private dialogRef = inject(MatDialogRef<AddCarDialogWrapperComponent>);
+  public data: unknown = inject(MAT_DIALOG_DATA);
 
   onSubmit(): void {
     this.dialogRef.close(this.car);
@@ -61,4 +59,3 @@ export class AddCarDialogWrapperComponent {
     this.dialogRef.close(null);
   }
 }
-

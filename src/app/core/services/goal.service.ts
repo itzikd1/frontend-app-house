@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
@@ -10,8 +10,7 @@ import { environment } from '../../../environments/environment';
 })
 export class GoalService {
   private readonly baseUrl = `${environment.apiUrl}/goal`;
-
-  constructor(private http: HttpClient) {}
+  private readonly http = inject(HttpClient);
 
   getGoals(): Observable<Goal[]> {
     return this.http.get<{ data?: { goals?: Goal[]; success?: boolean }; error?: string }>(this.baseUrl).pipe(

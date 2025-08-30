@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
@@ -17,8 +17,7 @@ export interface Car {
 @Injectable({ providedIn: 'root' })
 export class CarService {
   private readonly baseUrl = `${environment.apiUrl}/car`;
-
-  constructor(private http: HttpClient) {}
+  private readonly http = inject(HttpClient);
 
   getAll(): Observable<Car[]> {
     return this.http.get<{ data?: { success: boolean; cars: Car[] }; error?: string }>(this.baseUrl).pipe(

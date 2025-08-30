@@ -1,4 +1,4 @@
-import { Component, Inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Task } from '../../shared/models/task.model';
 import { FormsModule } from '@angular/forms';
@@ -49,13 +49,13 @@ import { CommonModule } from '@angular/common';
       </div>
       <div class="form-group">
         <label for="category" class="input-label">Category</label>
-        <select id="category"
-          [value]="task().categoryId"
-          (change)="onCategoryChange($event)"
-          name="category">
-          <option value="">None</option>
-          <option *ngFor="let category of categories()" [value]="category.id">{{ category.name }}</option>
-        </select>
+        <mat-form-field appearance="fill">
+          <mat-select id="category" [(ngModel)]="task().categoryId" name="categoryId" required>
+            <mat-option *ngFor="let category of categories()" [value]="category.id">
+              {{ category.name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
       </div>
       <div class="form-group">
         <label for="priority" class="input-label">Priority</label>
@@ -107,14 +107,15 @@ export class AddTaskDialogWrapperComponent {
   categoriesLoading = signal<boolean>(false);
   categoriesError = signal<string | null>(null);
 
-  constructor(
-    private dialogRef: MatDialogRef<AddTaskDialogWrapperComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any,
-    private categoryService: TaskCategoryService
-  ) {
+  private dialogRef = inject(MatDialogRef<AddTaskDialogWrapperComponent>);
+  public data: unknown = inject(MAT_DIALOG_DATA);
+  private categoryService = inject(TaskCategoryService);
+
+  constructor() {
+    const data = this.data as { task?: Task };
     this.isEditMode = !!data?.task;
     if (this.isEditMode && data.task) {
-      this.task.set({ ...data.task });
+      this.task.set(data.task);
     }
     this.loadCategories();
   }

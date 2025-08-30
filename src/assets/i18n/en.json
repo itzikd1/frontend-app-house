@@ -25,7 +25,7 @@
     "users": "Users",
     "notes": "Notes",
     "goals": "Goals",
-    "shoppingList": "Shopping List"
+    "shoppinglist": "Shopping List"
   },
   "register": {
     "title": "Create an Account",
@@ -52,5 +52,8 @@
   },
   "loading": {
     "default": "Loading..."
+  },
+  "dashboard": {
+    "checkingStatus": "Checking system status..."
   }
 }

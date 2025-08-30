@@ -29,7 +29,8 @@ export default [
     rules: {
       ...angularEslintPlugin.configs.recommended.rules,
       ...typescriptEslintPlugin.configs.recommended.rules,
-      'require-onpush/require-onpush': 'error'
+      'require-onpush/require-onpush': 'error',
+      '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
     },
   },
 ];
