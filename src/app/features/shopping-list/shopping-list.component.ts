@@ -13,6 +13,7 @@ import { DashboardSummaryCardsComponent } from '../../shared/components/dashboar
 import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import {MatCard, MatCardActions, MatCardContent} from '@angular/material/card';
 
 @Component({
   selector: 'app-shopping-list',
@@ -27,6 +28,9 @@ import { MatButtonModule } from '@angular/material/button';
     FormsModule,
     MatIconModule,
     MatButtonModule,
+    MatCardContent,
+    MatCard,
+    MatCardActions,
   ],
   templateUrl: './shopping-list.component.html',
   styleUrls: ['./shopping-list.component.scss'],
