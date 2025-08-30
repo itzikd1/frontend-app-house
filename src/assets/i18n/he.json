@@ -24,7 +24,8 @@
     "cars": "מכוניות",
     "users": "משתמשים",
     "notes": "פתקים",
-    "goals": "מטרות"
+    "goals": "מטרות",
+    "shoppingList": "רשימת קניות"
   },
   "register": {
     "title": "צור חשבון חדש",

@@ -24,7 +24,8 @@
     "cars": "Cars",
     "users": "Users",
     "notes": "Notes",
-    "goals": "Goals"
+    "goals": "Goals",
+    "shoppingList": "Shopping List"
   },
   "register": {
     "title": "Create an Account",

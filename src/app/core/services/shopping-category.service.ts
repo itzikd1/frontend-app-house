@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
+import { map } from 'rxjs/operators';
 
 export interface ShoppingCategory {
   id: string;
@@ -17,7 +18,8 @@ export class ShoppingCategoryService {
   constructor(private http: HttpClient) {}
 
   getAll(): Observable<ShoppingCategory[]> {
-    return this.http.get<ShoppingCategory[]>(this.baseUrl);
+    return this.http.get<{ success: boolean; data: ShoppingCategory[] }>(this.baseUrl)
+      .pipe(map(response => response.data));
   }
 
   create(category: Partial<ShoppingCategory>): Observable<ShoppingCategory> {
@@ -32,4 +34,3 @@ export class ShoppingCategoryService {
     return this.http.delete<void>(`${this.baseUrl}/${id}`);
   }
 }
-

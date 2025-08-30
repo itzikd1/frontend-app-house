@@ -108,7 +108,7 @@ export class HeaderComponent implements OnInit {
 
   public get protectedNavigationItems(): NavigationItem[] {
     return this.navigationItems.filter(item =>
-      ['/dashboard', '/tasks', '/family', '/cars', '/notes', '/users', '/goals', '/recipes', '/profile', '/settings'].includes(item.path)
+      ['/dashboard', '/tasks', '/shopping-list', '/family', '/cars', '/notes', '/users', '/goals', '/recipes', '/profile', '/settings'].includes(item.path)
     );
   }
 
