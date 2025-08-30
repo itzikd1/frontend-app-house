@@ -310,8 +310,8 @@ a {
   padding: 1.5rem;
 }
 
+// Remove redundant color and font-family from icons
 .material-icons, .material-icons-outlined, .material-icons-round, .material-icons-sharp, .material-icons-two-tone {
-  color: white; // default blue
   transition: color 0.2s;
 }
 .icon-green {
@@ -330,9 +330,8 @@ a {
   color: #959595;
 }
 
+// Remove redundant font-family and color from .mat-icon
 .mat-icon {
-  font-family: 'Material Icons', 'Material Icons Outlined', 'Material Icons Round', 'Material Icons Sharp', sans-serif !important;
-  color: white;
   font-size: 24px;
   font-style: normal;
   font-weight: normal;

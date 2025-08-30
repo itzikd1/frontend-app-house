@@ -8,7 +8,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { ShoppingListService } from '../../core/services/shopping-list.service';
-import { ShoppingList, ShoppingListItem } from '../../shared/models/shopping-list.model';
+import { ShoppingList, ShoppingListItem } from '../../core/interfaces/shopping-list.model';
 
 @Component({
   selector: 'app-add-shopping-list-dialog',

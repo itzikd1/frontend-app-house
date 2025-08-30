@@ -1,11 +1,12 @@
 import { Component, OnInit, ChangeDetectionStrategy, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HealthService, HealthStatus } from '../../core/services/health.service';
+import { HealthService } from '../../core/services/health.service';
 import { catchError, of, Subscription } from 'rxjs';
 import { HealthStatusCardComponent } from '../../shared/components/health-status-card/health-status-card.component';
 import { LoadingSpinnerComponent } from '../../shared/components/loading-spinner/loading-spinner.component';
 import { ErrorMessageComponent } from '../../shared/components/error-message/error-message.component';
 import { signal } from '@angular/core';
+import {HealthStatus} from '../../core/interfaces/health.model';
 
 @Component({
   selector: 'app-dashboard',

@@ -2,7 +2,7 @@ import { Component, ChangeDetectionStrategy, OnInit, signal, inject } from '@ang
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { GoalService } from '../../core/services/goal.service';
-import { Goal } from '../../shared/models/goal.model';
+import { Goal } from '../../core/interfaces/goal.model';
 import { FabButtonComponent } from '../../shared/components/fab-button/fab-button.component';
 import { AddGoalDialogWrapperComponent } from './add-goal-dialog-wrapper.component';
 import { MatDialog } from '@angular/material/dialog';

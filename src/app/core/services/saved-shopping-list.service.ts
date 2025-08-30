@@ -2,23 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
-
-export interface SavedShoppingList {
-  id: string;
-  name: string;
-  items: SavedShoppingListItem[];
-  createdAt: string;
-  updatedAt: string;
-}
-
-export interface SavedShoppingListItem {
-  id: string;
-  name: string;
-  quantity: number;
-  checked: boolean;
-  createdAt: string;
-  updatedAt: string;
-}
+import { SavedShoppingList, SavedShoppingListItem } from '../../interfaces/saved-shopping-list.model';
 
 @Injectable({ providedIn: 'root' })
 export class SavedShoppingListService {

@@ -3,17 +3,18 @@ import { MatDialogModule, MatDialog } from '@angular/material/dialog';
 import { CommonModule } from '@angular/common';
 import { ShoppingListService } from '../../core/services/shopping-list.service';
 import { AddShoppingListDialogWrapperComponent } from './add-shopping-list-dialog-wrapper.component';
-import { ShoppingListItem } from '../../shared/models/shopping-list.model';
+import { ShoppingListItem } from '../../core/interfaces/shopping-list.model';
 import { signal, computed } from '@angular/core';
 import {FabButtonComponent} from '../../shared/components/fab-button/fab-button.component';
 import {LoadingSpinnerComponent} from '../../shared/components/loading-spinner/loading-spinner.component';
 import {ItemCardComponent} from '../../shared/components/item-card/item-card.component';
-import { ShoppingCategoryService, ShoppingCategory } from '../../core/services/shopping-category.service';
+import { ShoppingCategoryService } from '../../core/services/shopping-category.service';
 import { DashboardSummaryCardsComponent } from '../../shared/components/dashboard-summary-cards/dashboard-summary-cards.component';
 import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import {MatCard, MatCardActions, MatCardContent} from '@angular/material/card';
+import {ShoppingCategory} from '../../core/interfaces/shopping-category.model';
 
 @Component({
   selector: 'app-shopping-list',

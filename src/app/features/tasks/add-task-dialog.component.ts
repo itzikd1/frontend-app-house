@@ -2,7 +2,7 @@ import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { Task } from '../../shared/models/task.model';
+import { Task } from '../../core/interfaces/task.model';
 import { MatSelectModule } from '@angular/material/select';
 
 @Component({

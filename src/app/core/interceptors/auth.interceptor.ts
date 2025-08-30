@@ -1,5 +1,7 @@
 import { HttpHandlerFn, HttpRequest } from '@angular/common/http';
 
+const AUTH_ENDPOINT_IDENTIFIER = '/auth/';
+
 /**
  * Get the authentication token from local storage
  */
@@ -12,7 +14,7 @@ function getAuthToken(): string | null {
  * Check if the request is for an auth endpoint
  */
 function isAuthRequest(request: HttpRequest<unknown>): boolean {
-  return request.url.includes('/auth/');
+  return request.url.includes(AUTH_ENDPOINT_IDENTIFIER);
 }
 
 /**
@@ -26,20 +28,20 @@ export function authInterceptor(
   if (isAuthRequest(request)) {
     return next(request);
   }
-  
+
   // Get the auth token from local storage
   const authToken = getAuthToken();
-  
+
   // If we have a token, add it to the request
   if (authToken) {
     request = request.clone({
       setHeaders: {
         Authorization: `Bearer ${authToken}`,
         'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      }
+        Accept: 'application/json',
+      },
     });
   }
-  
+
   return next(request);
 }

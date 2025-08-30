@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy, signal, OnInit, inject } from '@angular/core';
 import { RecipeService } from '../../core/services/recipe.service';
-import { Recipe } from '../../shared/models/recipe.model';
+import { Recipe } from '../../core/interfaces/recipe.model';
 import { CommonModule } from '@angular/common';
 import { ItemListComponent } from '../../shared/components/item-list/item-list.component';
 import { FabButtonComponent } from '../../shared/components/fab-button/fab-button.component';

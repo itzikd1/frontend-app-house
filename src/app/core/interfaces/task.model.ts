@@ -1,4 +1,4 @@
-import { TaskCategory } from '../../core/services/item-category.service';
+import {TaskCategory} from './item-category.model';
 
 export interface BaseModel {
   id: string;

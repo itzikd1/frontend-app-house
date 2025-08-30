@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy, signal, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { CarService, Car } from '../../core/services/car.service';
+import { CarService } from '../../core/services/car.service';
 import { ItemListComponent } from '../../shared/components/item-list/item-list.component';
 import { FabButtonComponent } from '../../shared/components/fab-button/fab-button.component';
 import { ItemCardComponent } from '../../shared/components/item-card/item-card.component';
@@ -10,6 +10,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { AddCarDialogWrapperComponent } from './add-car-dialog-wrapper.component';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { LoadingSpinnerComponent } from '../../shared/components/loading-spinner/loading-spinner.component';
+import {Car} from '../../shared/models/car.model';
 
 @Component({
   selector: 'app-cars',

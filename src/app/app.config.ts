@@ -12,7 +12,7 @@ import { provideServiceWorker } from '@angular/service-worker';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideZoneChangeDetection({ 
+    provideZoneChangeDetection({
       eventCoalescing: true,
       runCoalescing: true,
     }),
@@ -21,9 +21,6 @@ export const appConfig: ApplicationConfig = {
       withComponentInputBinding(),
       withViewTransitions({
         skipInitialTransition: true,
-        onViewTransitionCreated(transitionInfo) {
-          console.log('View transition started', transitionInfo);
-        },
       })
     ),
     provideHttpClient(

@@ -77,6 +77,5 @@ export class TranslationService {
     if (typeof window !== 'undefined' && window.location.hostname === 'localhost') {
       console.warn(message);
     }
-    // TODO: Integrate with error tracking service (e.g., Sentry)
   }
 }
