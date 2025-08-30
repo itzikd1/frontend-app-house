@@ -115,7 +115,12 @@ export class AddTaskDialogWrapperComponent {
     const data = this.data as { task?: Task };
     this.isEditMode = !!data?.task;
     if (this.isEditMode && data.task) {
-      this.task.set(data.task);
+      // Normalize categoryId: always a string
+      const normalizedTask: Partial<Task> = {
+        ...data.task,
+        categoryId: String(data.task.categoryId ?? data.task.category?.id ?? ''),
+      };
+      this.task.set(normalizedTask);
     }
     this.loadCategories();
   }
@@ -150,11 +155,6 @@ export class AddTaskDialogWrapperComponent {
   onDescriptionChange(event: Event): void {
     const value = (event.target as HTMLTextAreaElement).value;
     this.task.update(t => ({ ...t, description: value }));
-  }
-
-  onCategoryChange(event: Event): void {
-    const value = (event.target as HTMLSelectElement).value;
-    this.task.update(t => ({ ...t, categoryId: value }));
   }
 
   onPriorityChange(event: Event): void {

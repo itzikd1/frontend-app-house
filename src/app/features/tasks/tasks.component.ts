@@ -28,7 +28,6 @@ import { FabButtonComponent } from '../../shared/components/fab-button/fab-butto
     ItemCardComponent,
     DashboardSummaryCardsComponent,
     FabButtonComponent,
-    AddCategoryDialogWrapperComponent,
   ],
   templateUrl: './tasks.component.html',
   styleUrl: './tasks.component.scss',
@@ -143,7 +142,11 @@ export class TasksComponent implements OnInit {
     this.loading.set(true);
     const originalTask = this.tasks().find(t => t.id === id);
     const repeatFrequency = (changes as { repeatFrequency?: string }).repeatFrequency ?? (originalTask as { repeatFrequency?: string })?.repeatFrequency ?? '';
-    const payload = { ...changes, repeatFrequency };
+    // Always include categoryId as a string
+    const categoryId = (typeof changes.categoryId === 'string' && changes.categoryId)
+      ? changes.categoryId
+      : originalTask?.categoryId ?? '';
+    const payload = { ...changes, repeatFrequency, categoryId };
     this.taskService.updateTask(id, payload).subscribe({
       next: (updatedTask: Task) => {
         if (updatedTask && updatedTask.id) {

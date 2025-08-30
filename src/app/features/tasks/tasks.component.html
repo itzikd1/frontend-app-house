@@ -9,14 +9,14 @@
     icon="add"
     color="primary"
     ariaLabel="Add Task"
-    (click)="openAddTaskDialog()"
+    (fabClick)="openAddTaskDialog()"
   ></app-fab-button>
   <app-fab-button
     *ngIf="selectedTab() === 'categories'"
     icon="add"
     color="accent"
     ariaLabel="Add Category"
-    (click)="openAddCategoryDialog()"
+    (fabClick)="openAddCategoryDialog()"
   ></app-fab-button>
 
   <div class="tasks-tabs">
