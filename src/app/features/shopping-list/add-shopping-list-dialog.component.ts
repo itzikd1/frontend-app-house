@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Inject, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ChangeDetectionStrategy, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
@@ -38,7 +38,7 @@ import { ShoppingList, ShoppingListItem } from '../../shared/models/shopping-lis
             <mat-form-field>
               <input matInput type="number" placeholder="Quantity" formControlName="quantity" required />
             </mat-form-field>
-            <mat-checkbox formControlName="checked">Checked</mat-checkbox>
+            <mat-checkbox formControlName="purchased">Purchased</mat-checkbox>
             <button mat-icon-button color="warn" type="button" (click)="removeItem(i)"><mat-icon>delete</mat-icon></button>
           </div>
         </div>
@@ -48,25 +48,26 @@ import { ShoppingList, ShoppingListItem } from '../../shared/models/shopping-lis
         </div>
       </form>
     </div>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AddShoppingListDialogComponent {
   @Input() data: ShoppingList | null = null;
-  @Output() close = new EventEmitter<any>();
+  @Output() dialogClose = new EventEmitter<ShoppingList | null>();
 
   form: FormGroup;
 
-  constructor(
-    private fb: FormBuilder,
-    private shoppingListService: ShoppingListService,
-    @Inject(MAT_DIALOG_DATA) public dialogData: ShoppingList | null
-  ) {
+  private fb = inject(FormBuilder);
+  private shoppingListService = inject(ShoppingListService);
+  public dialogData: ShoppingList | null = inject(MAT_DIALOG_DATA);
+
+  constructor() {
     this.form = this.fb.group({
-      name: [dialogData?.name || '', Validators.required],
+      name: [this.dialogData?.name || '', Validators.required],
       items: this.fb.array([])
     });
-    if (dialogData?.items) {
-      dialogData.items.forEach(item => this.addItem(item));
+    if (this.dialogData?.items) {
+      this.dialogData.items.forEach(item => this.addItem(item));
     } else {
       this.addItem();
     }
@@ -80,7 +81,7 @@ export class AddShoppingListDialogComponent {
     this.items.push(this.fb.group({
       name: [item?.name || '', Validators.required],
       quantity: [item?.quantity || 1, Validators.required],
-      checked: [item?.purchased || false]
+      purchased: [item?.purchased || false]
     }));
   }
 
@@ -93,16 +94,16 @@ export class AddShoppingListDialogComponent {
     const value = this.form.value;
     if (this.dialogData) {
       this.shoppingListService.update(this.dialogData.id, value).subscribe(result => {
-        this.close.emit(result);
+        this.dialogClose.emit(result);
       });
     } else {
       this.shoppingListService.create(value).subscribe(result => {
-        this.close.emit(result);
+        this.dialogClose.emit(result);
       });
     }
   }
 
   onClose(): void {
-    this.close.emit(null);
+    this.dialogClose.emit(null);
   }
 }

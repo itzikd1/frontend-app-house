@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -12,14 +12,14 @@ import { FormsModule } from '@angular/forms';
       <button type="submit" [disabled]="form.invalid">{{ submitLabel }}</button>
     </form>
   `,
-  styleUrls: ['./item-form.component.scss']
+  styleUrls: ['./item-form.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ItemFormComponent {
   @Input() submitLabel = 'Add';
-  @Output() submit = new EventEmitter<void>();
+  @Output() formSubmit = new EventEmitter<void>();
 
   onSubmit(): void {
-    this.submit.emit();
+    this.formSubmit.emit();
   }
 }
-

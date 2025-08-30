@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, OnInit, signal } from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnInit, signal, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { GoalService } from '../../core/services/goal.service';
@@ -21,7 +21,8 @@ export class GoalsComponent implements OnInit {
   loading = signal<boolean>(true);
   adding = signal<boolean>(false);
 
-  constructor(private goalService: GoalService, private dialog: MatDialog) {}
+  private goalService = inject(GoalService);
+  private dialog = inject(MatDialog);
 
   ngOnInit(): void {
     this.fetchGoals();

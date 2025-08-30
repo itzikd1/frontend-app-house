@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
@@ -10,8 +10,7 @@ import { environment } from '../../../environments/environment';
 })
 export class RecipeService {
   private readonly baseUrl = `${environment.apiUrl}/recipe`;
-
-  constructor(private http: HttpClient) {}
+  private readonly http = inject(HttpClient);
 
   getRecipes(): Observable<Recipe[]> {
     return this.http.get<{ data?: Recipe[]; error?: string }>(this.baseUrl).pipe(

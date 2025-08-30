@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Goal } from '../../shared/models/goal.model';
 import { FormsModule } from '@angular/forms';
@@ -35,15 +35,13 @@ import { ModalDialogComponent } from '../../shared/components/modal-dialog.compo
       </mat-form-field>
     </app-modal-dialog>
   `,
-  styleUrls: ['../../shared/components/modal-dialog.component.scss']
+  styleUrls: ['../../shared/components/modal-dialog.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AddGoalDialogWrapperComponent {
   goal: Partial<Goal> = { title: '', description: '' };
-
-  constructor(
-    private dialogRef: MatDialogRef<AddGoalDialogWrapperComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any
-  ) {}
+  private dialogRef = inject(MatDialogRef<AddGoalDialogWrapperComponent>);
+  public data: unknown = inject(MAT_DIALOG_DATA);
 
   onSubmit(): void {
     this.dialogRef.close(this.goal);

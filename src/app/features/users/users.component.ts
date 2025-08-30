@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, OnInit, signal } from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnInit, signal, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UserService, User } from '../../core/services/user.service';
 import { LoadingSpinnerComponent } from '../../shared/components/loading-spinner/loading-spinner.component';
@@ -16,12 +16,11 @@ export class UsersComponent implements OnInit {
   loading = signal<boolean>(true);
   error = signal<string | null>(null);
 
-  constructor(private userService: UserService) {}
+  private userService = inject(UserService);
 
   ngOnInit(): void {
     this.userService.getAll().subscribe({
-      next: (response: any) => {
-        const users = response?.data?.users ?? [];
+      next: (users: User[]) => {
         this.users.set(users);
         this.loading.set(false);
       },

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import {environment} from '../../../environments/environment';
@@ -15,8 +15,7 @@ export interface User {
 @Injectable({ providedIn: 'root' })
 export class UserService {
   private readonly baseUrl = `${environment.apiUrl}/users`;
-
-  constructor(private http: HttpClient) {}
+  private readonly http = inject(HttpClient);
 
   getAll(): Observable<User[]> {
     return this.http.get<User[]>(this.baseUrl);

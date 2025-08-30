@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialogRef, MatDialogModule } from '@angular/material/dialog';
 import { AddShoppingListDialogComponent } from './add-shopping-list-dialog.component';
@@ -12,15 +12,14 @@ import { ShoppingList } from '../../shared/models/shopping-list.model';
     MatDialogModule,
     AddShoppingListDialogComponent
   ],
-  template: `<app-add-shopping-list-dialog [data]="data" (close)="onClose($event)"></app-add-shopping-list-dialog>`
+  template: `<app-add-shopping-list-dialog [data]="data" (close)="onClose($event)"></app-add-shopping-list-dialog>`,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AddShoppingListDialogWrapperComponent {
-  constructor(
-    public dialogRef: MatDialogRef<AddShoppingListDialogWrapperComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: ShoppingList | null
-  ) {}
+  public dialogRef = inject(MatDialogRef<AddShoppingListDialogWrapperComponent>);
+  public data: ShoppingList | null = inject(MAT_DIALOG_DATA);
 
-  onClose(result: any): void {
+  onClose(result: unknown): void {
     this.dialogRef.close(result);
   }
 }

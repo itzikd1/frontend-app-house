@@ -25,7 +25,7 @@
     "users": "משתמשים",
     "notes": "פתקים",
     "goals": "מטרות",
-    "shoppingList": "רשימת קניות"
+    "shoppinglist": "רשימת קניות"
   },
   "register": {
     "title": "צור חשבון חדש",
@@ -52,5 +52,8 @@
   },
   "loading": {
     "default": "טוען..."
+  },
+  "dashboard": {
+    "checkingStatus": "בודק מצב מערכת..."
   }
 }

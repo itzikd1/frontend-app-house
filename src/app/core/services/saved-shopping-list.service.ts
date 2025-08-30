@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
@@ -23,8 +23,7 @@ export interface SavedShoppingListItem {
 @Injectable({ providedIn: 'root' })
 export class SavedShoppingListService {
   private readonly baseUrl = `${environment.apiUrl}/saved-shopping-list`;
-
-  constructor(private http: HttpClient) {}
+  private readonly http = inject(HttpClient);
 
   getAll(): Observable<SavedShoppingList[]> {
     return this.http.get<SavedShoppingList[]>(this.baseUrl);
@@ -62,4 +61,3 @@ export class SavedShoppingListService {
     return this.http.delete<void>(`${this.baseUrl}/items/${itemId}`);
   }
 }
-

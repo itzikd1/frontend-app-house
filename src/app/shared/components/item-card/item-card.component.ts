@@ -1,6 +1,7 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
+import { Item } from '../../models/item.model';
 
 @Component({
   selector: 'app-item-card',
@@ -28,19 +29,20 @@ import { MatIconModule } from '@angular/material/icon';
         </div>
       </div>
       <div class="item-body">
-        <span *ngIf="item?.description" class="item-desc">{{ item.description }}</span>
+        <span *ngIf="item?.description" class="item-desc">{{ item?.description }}</span>
         <ng-content></ng-content>
       </div>
     </div>
   `,
-  styleUrls: ['./item-card.component.scss']
+  styleUrls: ['./item-card.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ItemCardComponent {
-  @Input() item: any;
+  @Input() item: Item | null = null;
   @Input() completed: boolean = false;
   @Input() showCheckbox: boolean = false;
-  @Output() edit = new EventEmitter<any>();
-  @Output() delete = new EventEmitter<any>();
+  @Output() edit = new EventEmitter<Item | null>();
+  @Output() delete = new EventEmitter<Item | null>();
   @Output() toggleComplete = new EventEmitter<boolean>();
 
   onToggleComplete(event: Event): void {

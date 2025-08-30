@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, signal, OnInit } from '@angular/core';
+import { Component, ChangeDetectionStrategy, signal, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NoteService, Note } from '../../core/services/note.service';
@@ -35,7 +35,8 @@ export class NotesComponent implements OnInit {
   adding = signal<boolean>(false);
   newNote = signal<Partial<Note>>({ title: '', content: '' });
 
-  constructor(private noteService: NoteService, private dialog: MatDialog) {}
+  private noteService = inject(NoteService);
+  private dialog = inject(MatDialog);
 
   ngOnInit(): void {
     this.fetchNotes();

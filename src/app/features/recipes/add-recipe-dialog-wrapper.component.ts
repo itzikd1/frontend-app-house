@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Recipe } from '../../shared/models/recipe.model';
 import { FormsModule } from '@angular/forms';
@@ -52,16 +52,14 @@ import { MatOptionModule } from '@angular/material/core';
       </mat-form-field>
     </app-modal-dialog>
   `,
-  styleUrls: ['../../shared/components/modal-dialog.component.scss']
+  styleUrls: ['../../shared/components/modal-dialog.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AddRecipeDialogWrapperComponent {
   recipe: Partial<Recipe> = { title: '', description: '', servings: 1, instructions: '', ingredients: [] };
   ingredientsInput = '';
-
-  constructor(
-    private dialogRef: MatDialogRef<AddRecipeDialogWrapperComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any
-  ) {}
+  private dialogRef = inject(MatDialogRef<AddRecipeDialogWrapperComponent>);
+  public data: unknown = inject(MAT_DIALOG_DATA);
 
   onSubmit(): void {
     this.recipe.ingredients = this.ingredientsInput

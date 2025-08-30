@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -14,8 +14,7 @@ export interface TaskCategory {
 @Injectable({ providedIn: 'root' })
 export class TaskCategoryService {
   private readonly baseUrl = `${environment.apiUrl}/task-category`;
-
-  constructor(private http: HttpClient) {}
+  private readonly http = inject(HttpClient);
 
   getAll(): Observable<TaskCategory[]> {
     return this.http.get<{ success: boolean; data: TaskCategory[] }>(this.baseUrl)

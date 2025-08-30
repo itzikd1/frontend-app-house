@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -16,16 +16,17 @@ import { MatButtonModule } from '@angular/material/button';
       <mat-icon>{{ icon }}</mat-icon>
     </button>
   `,
-  styleUrls: ['./fab-button.component.scss']
+  styleUrls: ['./fab-button.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FabButtonComponent {
   @Input() icon = 'add';
   @Input() color: 'primary' | 'accent' | 'warn' = 'primary';
   @Input() ariaLabel = 'Add';
-  @Output() click = new EventEmitter<void>();
+  @Output() fabClick = new EventEmitter<void>();
 
   onClick(event: MouseEvent): void {
     event.stopPropagation();
-    this.click.emit();
+    this.fabClick.emit();
   }
 }

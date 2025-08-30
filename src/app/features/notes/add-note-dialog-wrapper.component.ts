@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Note } from '../../shared/models/note.model';
 import { FormsModule } from '@angular/forms';
@@ -35,15 +35,13 @@ import { ModalDialogComponent } from '../../shared/components/modal-dialog.compo
       </mat-form-field>
     </app-modal-dialog>
   `,
-  styleUrls: ['../../shared/components/modal-dialog.component.scss']
+  styleUrls: ['../../shared/components/modal-dialog.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AddNoteDialogWrapperComponent {
   note: Partial<Note> = { title: '', content: '' };
-
-  constructor(
-    private dialogRef: MatDialogRef<AddNoteDialogWrapperComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any
-  ) {}
+  private dialogRef = inject(MatDialogRef<AddNoteDialogWrapperComponent>);
+  public data: unknown = inject(MAT_DIALOG_DATA);
 
   onSubmit(): void {
     this.dialogRef.close(this.note);
@@ -53,4 +51,3 @@ export class AddNoteDialogWrapperComponent {
     this.dialogRef.close(null);
   }
 }
-
