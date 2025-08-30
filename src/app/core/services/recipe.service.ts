@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { Recipe } from '../interfaces/recipe.model';
 import { environment } from '../../../environments/environment';
 
@@ -17,8 +17,7 @@ export class RecipeService {
       map(res => {
         if (res.error) throw res.error;
         return res.data ?? [];
-      }),
-      catchError(err => throwError(() => err))
+      })
     );
   }
 
@@ -27,8 +26,7 @@ export class RecipeService {
       map(res => {
         if (res.error) throw res.error;
         return res.data as Recipe;
-      }),
-      catchError(err => throwError(() => err))
+      })
     );
   }
 
@@ -37,8 +35,7 @@ export class RecipeService {
       map(res => {
         if (res.error) throw res.error;
         return res.data as Recipe;
-      }),
-      catchError(err => throwError(() => err))
+      })
     );
   }
 
@@ -47,8 +44,7 @@ export class RecipeService {
       map(res => {
         if (res.error) throw res.error;
         return res.data as Recipe;
-      }),
-      catchError(err => throwError(() => err))
+      })
     );
   }
 
@@ -57,8 +53,7 @@ export class RecipeService {
       map(res => {
         if (res.error) throw res.error;
         return res.data;
-      }),
-      catchError(err => throwError(() => err))
+      })
     );
   }
 }

@@ -17,8 +17,7 @@ export class TaskService {
       map(res => {
         if (res.data?.error) throw res.data.error;
         return res.data?.tasks ?? [];
-      }),
-      catchError(err => throwError(() => err))
+      })
     );
   }
 
@@ -27,8 +26,7 @@ export class TaskService {
       map(res => {
         if (res.error) throw res.error;
         return res.data as Task;
-      }),
-      catchError(err => throwError(() => err))
+      })
     );
   }
 
@@ -37,8 +35,7 @@ export class TaskService {
       map(res => {
         if (res.error) throw res.error;
         return res.data as Task;
-      }),
-      catchError(err => throwError(() => err))
+      })
     );
   }
 
@@ -47,8 +44,7 @@ export class TaskService {
       map(res => {
         if (res.error) throw res.error;
         return res.data as Task;
-      }),
-      catchError(err => throwError(() => err))
+      })
     );
   }
 
@@ -57,8 +53,7 @@ export class TaskService {
       map(res => {
         if (res.error) throw res.error;
         return res.data;
-      }),
-      catchError(err => throwError(() => err))
+      })
     );
   }
 }

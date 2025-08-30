@@ -15,8 +15,7 @@ export class CarService {
       map(res => {
         if (res.error) throw res.error;
         return res.data?.cars ?? [];
-      }),
-      catchError(err => throwError(() => err))
+      })
     );
   }
 

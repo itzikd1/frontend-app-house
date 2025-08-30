@@ -15,8 +15,7 @@ export class NoteService {
       map(res => {
         if (res.error) throw res.error;
         return res.data?.notes ?? [];
-      }),
-      catchError(err => throwError(() => err))
+      })
     );
   }
 
