@@ -28,6 +28,16 @@ export const routes: Routes = [
     }
   },
   {
+    path: 'shopping-list',
+    loadComponent: () => import('./features/shopping-list/shopping-list.component').then(m => m.ShoppingListComponent),
+    canActivate: [authGuard],
+    title: 'Shopping List | House Manager',
+    data: {
+      title: 'shoppingList',
+      icon: 'shopping_cart'
+    }
+  },
+  {
     path: 'recipes',
     loadComponent: () => import('./features/recipes/recipes.component').then(m => m.RecipesComponent),
     canActivate: [authGuard],

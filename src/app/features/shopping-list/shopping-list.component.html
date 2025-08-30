@@ -1,0 +1,12 @@
+<div class="shopping-list-container">
+  <button mat-raised-button color="primary" (click)="openAddDialog()">Add Shopping Item</button>
+  <div *ngIf="loading()">Loading...</div>
+  <div *ngIf="!loading() && shoppingItems().length === 0">No shopping items found.</div>
+  <div *ngFor="let item of shoppingItems()" class="shopping-list-card">
+    <h3>{{ item.name }}</h3>
+    <p>Quantity: {{ item.quantity }}</p>
+    <p>Status: <span [class.checked]="item.purchased">{{ item.purchased ? 'Purchased' : 'Not Purchased' }}</span></p>
+    <button mat-button color="accent" (click)="editList(item)">Edit</button>
+    <button mat-button color="warn" (click)="deleteList(item.id)">Delete</button>
+  </div>
+</div>
