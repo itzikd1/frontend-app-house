@@ -1,0 +1,26 @@
+<div class="category-management">
+  <h2>Manage Task Categories</h2>
+  <div *ngIf="categoryLoading">
+    <app-loading-spinner [translationKey]="'loading.default'"></app-loading-spinner>
+  </div>
+  <div *ngIf="categoryError">
+    <p class="error">{{ categoryError }}</p>
+  </div>
+  <div *ngIf="!categoryLoading && categories.length">
+    <div class="categories-list">
+      <div *ngFor="let category of categories" class="category-item">
+        <span>{{ category.name }}</span>
+        <button
+          mat-icon-button
+          aria-label="Edit Category"
+          (click)="openEditCategoryDialog.emit(category)"
+        >
+          <mat-icon>edit</mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="!categoryLoading && !categories.length">
+    <p>No categories found.</p>
+  </div>
+</div>

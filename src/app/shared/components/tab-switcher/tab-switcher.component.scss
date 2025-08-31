@@ -1,0 +1,20 @@
+.tab-switcher {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+.tab {
+  background: none;
+  border: none;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #374151;
+  padding: 8px 0;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+}
+.tab.active {
+  border-bottom: 2px solid #3b82f6;
+  color: #2563eb;
+}
+

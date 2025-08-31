@@ -1,0 +1,105 @@
+
+.tasks-dashboard {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  width: 100%;
+  margin-bottom: 45px;
+}
+.tasks-filters {
+  display: flex;
+  flex-wrap: nowrap;
+}
+.tag-filters {
+  display: flex;
+  gap: 8px;
+}
+.tag-btn {
+  background: #e5e7eb;
+  color: #374151;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 16px;
+  font-size: 0.98rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.tag-btn.active {
+  background: #3b82f6;
+  color: #fff;
+}
+.tasks-list {
+  margin-top: 16px;
+}
+.task-meta-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 8px;
+}
+.task-priority-badge {
+  background: #f3f4f6;
+  border-radius: 4px;
+  padding: 2px 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #6b7280;
+}
+.task-priority-badge.high {
+  background: #fee2e2;
+  color: #ef4444;
+}
+.task-priority-badge.medium {
+  background: #fef9c3;
+  color: #fbbf24;
+}
+.task-priority-badge.low {
+  background: #d1fae5;
+  color: #22c55e;
+}
+.task-due-date {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.9rem;
+  color: #6b7280;
+}
+.due-date-icon {
+  font-size: 1rem;
+  color: #ef4444;
+}
+.task-due-date .overdue {
+  color: #ef4444;
+  font-weight: 600;
+}
+.task-category-name {
+  background: #e0e7ff;
+  color: #3730a3;
+  border-radius: 4px;
+  padding: 2px 8px;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+.add-task-btn {
+  background: #3b82f6;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 20px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(59,130,246,0.08);
+  transition: background 0.2s;
+  margin-top: 16px;
+}
+.add-task-btn:hover {
+  background: #2563eb;
+}
+.error {
+  color: #ef4444;
+  font-size: 1rem;
+  margin-top: 12px;
+}
+

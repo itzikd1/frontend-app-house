@@ -1,0 +1,49 @@
+<div class="tasks-filters">
+  <div class="tag-filters">
+    <button class="tag-btn" [class.active]="selectedCategory === 'all'" (click)="setCategory.emit('all')">All ({{ tasks.length }})</button>
+    <button
+      class="tag-btn"
+      *ngFor="let category of categories"
+      [class.active]="selectedCategory === category.id"
+      (click)="setCategory.emit(category.id)"
+    >
+      {{ category.name }}
+    </button>
+  </div>
+</div>
+
+<div *ngIf="loading">
+  <app-loading-spinner [translationKey]="'loading.default'"></app-loading-spinner>
+</div>
+<div *ngIf="!loading">
+  <div *ngIf="error; else showTasks">
+    <p class="error">{{ error }}</p>
+  </div>
+  <ng-template #showTasks>
+    <div *ngIf="filteredTasks.length; else noTasks" class="tasks-list">
+      <app-item-card
+        *ngFor="let task of filteredTasks"
+        [item]="task"
+        [showCheckbox]="true"
+        [completed]="task.completed"
+        (toggleComplete)="onToggleComplete.emit({task: task, completed: $event})"
+        (edit)="startEdit.emit(task)"
+        (delete)="deleteTask.emit(task.id)"
+      >
+        <div class="task-meta-row">
+          <span class="task-priority-badge" [ngClass]="task.priority && task.priority.toLowerCase()">{{ task.priority }}</span>
+          <span *ngIf="task.dueDate" class="task-due-date">
+            <mat-icon class="due-date-icon">error</mat-icon>
+            <span [ngClass]="{'overdue': isOverdue(task.dueDate)}">{{ task.dueDate | date:'MMM d, yyyy' }}</span>
+          </span>
+          <span *ngIf="task.category && task.category.id !== 'None'" class="task-category-name">
+            {{ task.category.name }}
+          </span>
+        </div>
+      </app-item-card>
+    </div>
+    <ng-template #noTasks>
+      <p>No tasks found.</p>
+    </ng-template>
+  </ng-template>
+</div>

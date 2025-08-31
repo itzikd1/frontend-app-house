@@ -3,19 +3,19 @@ import { TaskService } from '../../core/services/task.service';
 import { Task } from '../../core/interfaces/task.model';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { LoadingSpinnerComponent } from '../../shared/components/loading-spinner/loading-spinner.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { AddTaskDialogWrapperComponent } from './add-task-dialog-wrapper.component';
-import { ItemCardComponent } from '../../shared/components/item-card/item-card.component';
-import { DashboardCardConfig } from '../../shared/components/dashboard-summary-cards/dashboard-summary-cards.component';
-import { DashboardSummaryCardsComponent } from '../../shared/components/dashboard-summary-cards/dashboard-summary-cards.component';
+import { FabButtonComponent } from '../../shared/components/fab-button/fab-button.component';
 import { TaskCategoryService } from '../../core/services/item-category.service';
 import { AddCategoryDialogWrapperComponent } from './add-category-dialog-wrapper.component';
-import { FabButtonComponent } from '../../shared/components/fab-button/fab-button.component';
 import { TaskCategory } from '../../core/interfaces/item-category.model';
 import { DashboardCardFilter } from '../../shared/models/dashboard-card-filter.model';
+import { TabOption, TabSwitcherComponent } from '../../shared/components/tab-switcher/tab-switcher.component';
+import { TasksTabComponent } from './tasks-tab/tasks-tab.component';
+import { CategoriesTabComponent } from './categories-tab/categories-tab.component';
+import { DashboardCardConfig } from '../../shared/components/dashboard-summary-cards/dashboard-summary-cards.component';
 
 @Component({
   selector: 'app-tasks',
@@ -23,14 +23,15 @@ import { DashboardCardFilter } from '../../shared/models/dashboard-card-filter.m
   imports: [
     CommonModule,
     FormsModule,
-    LoadingSpinnerComponent,
     MatIconModule,
     MatDialogModule,
     MatButtonModule,
-    ItemCardComponent,
-    DashboardSummaryCardsComponent,
     FabButtonComponent,
+    TabSwitcherComponent,
+    TasksTabComponent,
+    CategoriesTabComponent,
   ],
+
   templateUrl: './tasks.component.html',
   styleUrl: './tasks.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -50,7 +51,7 @@ export class TasksComponent implements OnInit {
   public selectedCategory = signal<string>('all');
 
   // Tab logic
-  selectedTab = signal<'tasks' | 'categories'>('tasks' as const);
+  selectedTab = signal<string>('tasks');
 
   // Category management state
   categories = signal<TaskCategory[]>([]);
@@ -59,6 +60,11 @@ export class TasksComponent implements OnInit {
 
   // New dashboard filter state
   public dashboardFilter = signal<DashboardCardFilter>(DashboardCardFilter.All);
+
+  public tabOptions: TabOption[] = [
+    { id: 'tasks', label: 'Tasks' },
+    { id: 'categories', label: 'Categories' },
+  ];
 
   private taskService = inject(TaskService);
   private dialog = inject(MatDialog);
@@ -187,7 +193,7 @@ export class TasksComponent implements OnInit {
   }
 
   // Tab switching
-  setTab(tab: 'tasks' | 'categories'): void {
+  setTab(tab: string): void {
     this.selectedTab.set(tab);
   }
 
