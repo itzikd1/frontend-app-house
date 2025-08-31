@@ -6,12 +6,7 @@ import { FormsModule } from '@angular/forms';
   selector: 'app-item-form',
   standalone: true,
   imports: [CommonModule, FormsModule],
-  template: `
-    <form (ngSubmit)="onSubmit()" #form="ngForm" class="item-form">
-      <ng-content></ng-content>
-      <button type="submit" [disabled]="form.invalid">{{ submitLabel }}</button>
-    </form>
-  `,
+  templateUrl: './item-form.component.html',
   styleUrls: ['./item-form.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })

@@ -17,18 +17,7 @@ import { MatButtonModule } from '@angular/material/button';
     MatOptionModule,
     MatButtonModule
   ],
-  template: `
-    <div class="dialog-container">
-      <div class="dialog-header">{{ title }}</div>
-      <form class="dialog-form" (ngSubmit)="onSubmit()" #form="ngForm">
-        <ng-content></ng-content>
-        <div class="actions">
-          <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">{{ submitLabel }}</button>
-          <button mat-button type="button" (click)="onCancel()">{{ cancelLabel }}</button>
-        </div>
-      </form>
-    </div>
-  `,
+  templateUrl: './modal-dialog.component.html',
   styleUrls: ['./modal-dialog.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })

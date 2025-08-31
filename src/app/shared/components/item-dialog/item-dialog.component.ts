@@ -6,13 +6,7 @@ import { MatDialogModule } from '@angular/material/dialog';
   selector: 'app-item-dialog',
   standalone: true,
   imports: [CommonModule, MatDialogModule],
-  template: `
-    <h2 class="dialog-title">{{ title }}</h2>
-    <ng-content></ng-content>
-    <div class="dialog-actions">
-      <button type="button" class="btn cancel" (click)="formCancel.emit()">Cancel</button>
-    </div>
-  `,
+  templateUrl: './item-dialog.component.html',
   styleUrls: ['./item-dialog.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })

@@ -1,0 +1,5 @@
+<form (ngSubmit)="onSubmit()" #form="ngForm" class="item-form">
+  <ng-content></ng-content>
+  <button type="submit" [disabled]="form.invalid">{{ submitLabel }}</button>
+</form>
+
