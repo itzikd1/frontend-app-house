@@ -1,3 +1,9 @@
+<app-dashboard-summary-cards
+  [cards]="dashboardCards"
+  [activeFilter]="dashboardFilter"
+  (cardClick)="setDashboardFilter.emit($event)"
+></app-dashboard-summary-cards>
+
 <div class="tasks-filters">
   <div class="tag-filters">
     <button class="tag-btn" [class.active]="selectedCategory === 'all'" (click)="setCategory.emit('all')">All ({{ tasks.length }})</button>

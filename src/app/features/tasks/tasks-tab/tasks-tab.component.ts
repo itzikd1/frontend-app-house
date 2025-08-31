@@ -7,13 +7,14 @@ import {CommonModule} from '@angular/common';
 import {LoadingSpinnerComponent} from '../../../shared/components/loading-spinner/loading-spinner.component';
 import {ItemCardComponent} from '../../../shared/components/item-card/item-card.component';
 import { MatIconModule } from '@angular/material/icon';
+import { DashboardSummaryCardsComponent } from '../../../shared/components/dashboard-summary-cards/dashboard-summary-cards.component';
 
 @Component({
   selector: 'app-tasks-tab',
   templateUrl: './tasks-tab.component.html',
   styleUrls: ['./tasks-tab.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CommonModule, LoadingSpinnerComponent, ItemCardComponent, MatIconModule],
+  imports: [CommonModule, LoadingSpinnerComponent, ItemCardComponent, MatIconModule, DashboardSummaryCardsComponent],
   standalone: true,
 })
 export class TasksTabComponent {
