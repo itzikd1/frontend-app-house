@@ -15,6 +15,7 @@ import { TaskCategoryService } from '../../core/services/item-category.service';
 import { AddCategoryDialogWrapperComponent } from './add-category-dialog-wrapper.component';
 import { FabButtonComponent } from '../../shared/components/fab-button/fab-button.component';
 import { TaskCategory } from '../../core/interfaces/item-category.model';
+import { DashboardCardFilter } from '../../shared/models/dashboard-card-filter.model';
 
 @Component({
   selector: 'app-tasks',
@@ -57,7 +58,7 @@ export class TasksComponent implements OnInit {
   categoryError = signal<string | null>(null);
 
   // New dashboard filter state
-  public dashboardFilter = signal<'all' | 'overdue' | 'complete' | 'uncomplete'>('all');
+  public dashboardFilter = signal<DashboardCardFilter>(DashboardCardFilter.All);
 
   private taskService = inject(TaskService);
   private dialog = inject(MatDialog);
@@ -241,7 +242,7 @@ export class TasksComponent implements OnInit {
     return this.tasks().filter(t => t.completed).length;
   }
 
-  get uncompleteCount(): number {
+  get incompleteCount(): number {
     return this.tasks().filter(t => !t.completed).length;
   }
 
@@ -252,33 +253,33 @@ export class TasksComponent implements OnInit {
         value: this.tasks().length,
         icon: 'list',
         color: '#9ca3af',
-        filter: 'all',
+        filter: DashboardCardFilter.All,
       },
       {
         title: 'Overdue',
         value: this.overdueCount,
         icon: 'error',
         color: '#ef4444',
-        filter: 'overdue',
+        filter: DashboardCardFilter.Overdue,
       },
       {
         title: 'Complete',
         value: this.completeCount,
         icon: 'check_circle',
         color: '#22c55e',
-        filter: 'complete',
+        filter: DashboardCardFilter.Complete,
       },
       {
-        title: 'Uncomplete',
-        value: this.uncompleteCount,
+        title: 'Incomplete',
+        value: this.incompleteCount,
         icon: 'radio_button_unchecked',
         color: '#fbbf24',
-        filter: 'uncomplete',
+        filter: DashboardCardFilter.Incomplete,
       },
     ];
   }
 
-  public setDashboardFilter(filter: 'all' | 'overdue' | 'complete' | 'uncomplete'): void {
+  public setDashboardFilter(filter: DashboardCardFilter): void {
     this.dashboardFilter.set(filter);
   }
 
@@ -290,16 +291,16 @@ export class TasksComponent implements OnInit {
     }
     // Dashboard filter
     switch (this.dashboardFilter()) {
-      case 'overdue':
+      case DashboardCardFilter.Overdue:
         filtered = filtered.filter(t => this.isOverdue(t));
         break;
-      case 'complete':
+      case DashboardCardFilter.Complete:
         filtered = filtered.filter(t => t.completed);
         break;
-      case 'uncomplete':
+      case DashboardCardFilter.Incomplete:
         filtered = filtered.filter(t => !t.completed);
         break;
-      case 'all':
+      case DashboardCardFilter.All:
       default:
         // No additional filter
         break;

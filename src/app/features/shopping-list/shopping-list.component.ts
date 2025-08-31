@@ -15,6 +15,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import {MatCard, MatCardActions, MatCardContent} from '@angular/material/card';
 import {ShoppingCategory} from '../../core/interfaces/shopping-category.model';
+import { DashboardCardFilter } from '../../shared/models/dashboard-card-filter.model';
 
 @Component({
   selector: 'app-shopping-list',
@@ -51,7 +52,7 @@ export class ShoppingListComponent {
   categoryError = signal<string | null>(null);
   selectedTab = signal<'items' | 'categories'>('items');
   selectedCategory = signal<string>('all');
-  dashboardFilter = signal<'all' | 'complete' | 'uncomplete'>('all');
+  dashboardFilter = signal<DashboardCardFilter>(DashboardCardFilter.All);
 
   // Category form state
   editingCategory = signal<ShoppingCategory | null>(null);
@@ -97,9 +98,13 @@ export class ShoppingListComponent {
     this.selectedCategory.set(categoryId);
   }
 
-  setDashboardFilter(filter: 'all' | 'complete' | 'uncomplete' | 'overdue'): void {
+  setDashboardFilter(filter: DashboardCardFilter): void {
     // Only allow valid filters for shopping-list
-    if (filter === 'all' || filter === 'complete' || filter === 'uncomplete') {
+    if (
+      filter === DashboardCardFilter.All ||
+      filter === DashboardCardFilter.Complete ||
+      filter === DashboardCardFilter.Incomplete
+    ) {
       this.dashboardFilter.set(filter);
     }
   }
@@ -170,10 +175,10 @@ export class ShoppingListComponent {
       items = items.filter((item: ShoppingListItem) => item.categoryId === categoryId);
     }
     switch (this.dashboardFilter()) {
-      case 'complete':
+      case DashboardCardFilter.Complete:
         items = items.filter((item: ShoppingListItem) => item.purchased);
         break;
-      case 'uncomplete':
+      case DashboardCardFilter.Incomplete:
         items = items.filter((item: ShoppingListItem) => !item.purchased);
         break;
     }
@@ -188,21 +193,21 @@ export class ShoppingListComponent {
         value: items.length,
         icon: 'list',
         color: '#1976d2',
-        filter: 'all' as const,
+        filter: DashboardCardFilter.All,
       },
       {
         title: 'Purchased',
         value: items.filter((i: ShoppingListItem) => i.purchased).length,
         icon: 'check_circle',
         color: '#43a047',
-        filter: 'complete' as const,
+        filter: DashboardCardFilter.Complete,
       },
       {
         title: 'Unpurchased',
         value: items.filter((i: ShoppingListItem) => !i.purchased).length,
         icon: 'remove_circle',
         color: '#e53935',
-        filter: 'uncomplete' as const,
+        filter: DashboardCardFilter.Incomplete,
       },
     ];
   });

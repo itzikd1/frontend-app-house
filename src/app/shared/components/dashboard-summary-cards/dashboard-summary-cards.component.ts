@@ -1,13 +1,14 @@
 import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
+import { DashboardCardFilter } from '../../models/dashboard-card-filter.model';
 
 export interface DashboardCardConfig {
   title: string;
   value: number;
   icon: string;
   color: string;
-  filter: 'all' | 'overdue' | 'complete' | 'uncomplete';
+  filter: DashboardCardFilter;
 }
 
 @Component({
@@ -20,10 +21,10 @@ export interface DashboardCardConfig {
 })
 export class DashboardSummaryCardsComponent {
   @Input() cards: DashboardCardConfig[] = [];
-  @Input() activeFilter: 'all' | 'overdue' | 'complete' | 'uncomplete' = 'all';
-  @Output() cardClick = new EventEmitter<'all' | 'overdue' | 'complete' | 'uncomplete'>();
+  @Input() activeFilter: DashboardCardFilter = DashboardCardFilter.All;
+  @Output() cardClick = new EventEmitter<DashboardCardFilter>();
 
-  onCardClick(filter: 'all' | 'overdue' | 'complete' | 'uncomplete'): void {
+  onCardClick(filter: DashboardCardFilter): void {
     this.cardClick.emit(filter);
   }
 }
