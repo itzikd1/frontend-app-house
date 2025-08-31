@@ -6,20 +6,7 @@ import { LoadingSpinnerComponent } from '../loading-spinner/loading-spinner.comp
   selector: 'app-item-list',
   standalone: true,
   imports: [CommonModule, LoadingSpinnerComponent],
-  template: `
-    <ng-container *ngIf="loading; else showList">
-      <app-loading-spinner></app-loading-spinner>
-    </ng-container>
-    <ng-template #showList>
-      <div *ngIf="error" class="error">{{ error }}</div>
-      <div *ngIf="items?.length; else emptyState" class="items-grid">
-        <ng-content></ng-content>
-      </div>
-      <ng-template #emptyState>
-        <p class="empty">{{ emptyMessage }}</p>
-      </ng-template>
-    </ng-template>
-  `,
+  templateUrl: './item-list.component.html',
   styleUrls: ['./item-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
