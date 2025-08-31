@@ -26,70 +26,7 @@ import {TaskCategory} from '../../core/interfaces/item-category.model';
     MatOptionModule,
     MatButtonModule
   ],
-  template: `
-    <app-modal-dialog
-      [title]="isEditMode ? 'Edit Task' : 'Create New Task'"
-      [submitLabel]="isEditMode ? 'Save Changes' : 'Create Task'"
-      [cancelLabel]="'Cancel'"
-      (submit)="onSubmit()"
-      (cancel)="onCancel()"
-    >
-      <div class="form-group">
-        <label for="title" class="input-label">Title *</label>
-        <input id="title" type="text" placeholder="Task title"
-          [value]="task().title"
-          (input)="onTitleChange($event)"
-          name="title" required />
-      </div>
-      <div class="form-group">
-        <label for="description" class="input-label">Description</label>
-        <textarea id="description" placeholder="Enter task description"
-          [value]="task().description"
-          (input)="onDescriptionChange($event)"
-          name="description"></textarea>
-      </div>
-      <div class="form-group">
-        <label for="category" class="input-label">Category</label>
-        <mat-form-field appearance="fill">
-          <mat-select id="category" [(ngModel)]="task().categoryId" name="categoryId" required>
-            <mat-option *ngFor="let category of categories()" [value]="category.id">
-              {{ category.name }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-      <div class="form-group">
-        <label for="priority" class="input-label">Priority</label>
-        <select id="priority"
-          [value]="task().priority"
-          (change)="onPriorityChange($event)"
-          name="priority">
-          <option value="Low">Low</option>
-          <option value="Medium">Medium</option>
-          <option value="High">High</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label for="dueDate" class="input-label">Due Date</label>
-        <input id="dueDate" type="date"
-          [value]="task().dueDate"
-          (input)="onDueDateChange($event)"
-          name="dueDate" />
-      </div>
-      <div class="form-group">
-        <label for="repeat" class="input-label">Repeat</label>
-        <select id="repeat"
-          [value]="task().repeat"
-          (change)="onRepeatChange($event)"
-          name="repeat">
-          <option value="None">None</option>
-          <option value="Daily">Daily</option>
-          <option value="Weekly">Weekly</option>
-          <option value="Monthly">Monthly</option>
-        </select>
-      </div>
-    </app-modal-dialog>
-  `,
+  templateUrl: './add-task-dialog-wrapper.component.html',
   styleUrls: ['./add-task-dialog.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })

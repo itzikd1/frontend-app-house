@@ -18,22 +18,7 @@ import { ModalDialogComponent } from '../../shared/components/modal-dialog.compo
     MatInputModule,
     MatButtonModule
   ],
-  template: `
-    <app-modal-dialog
-      [title]="isEditMode ? 'Edit Category' : 'Create New Category'"
-      [submitLabel]="isEditMode ? 'Save Changes' : 'Create Category'"
-      [cancelLabel]="'Cancel'"
-      (submit)="onSubmit()"
-      (cancel)="onCancel()"
-    >
-      <div class="form-group">
-        <label for="categoryName" class="input-label">Category Name *</label>
-        <input id="categoryName" type="text" placeholder="Category name"
-          [(ngModel)]="categoryName"
-          name="categoryName" required />
-      </div>
-    </app-modal-dialog>
-  `,
+  templateUrl: './add-category-dialog-wrapper.component.html',
   styleUrls: ['./add-task-dialog.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
