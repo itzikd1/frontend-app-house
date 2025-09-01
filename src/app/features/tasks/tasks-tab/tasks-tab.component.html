@@ -33,8 +33,8 @@
         [showCheckbox]="true"
         [completed]="task.completed"
         (toggleComplete)="toggleComplete.emit({task: task, completed: $event})"
-        (edit)="startEdit.emit(task)"
-        (delete)="deleteTask.emit(task.id)"
+        (edit)="openEditTaskDialog(task)"
+        (delete)="deleteTask(task.id)"
       >
         <div class="task-meta-row">
           <span class="task-priority-badge" [ngClass]="task.priority && task.priority.toLowerCase()">{{ task.priority }}</span>
@@ -53,3 +53,7 @@
     </ng-template>
   </ng-template>
 </div>
+
+<button class="fab-btn" (click)="openAddTaskDialog()" aria-label="Add Task">
+  <mat-icon>add</mat-icon>
+</button>

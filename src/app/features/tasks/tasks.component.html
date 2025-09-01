@@ -4,21 +4,6 @@
     <p class="tasks-subtitle">Manage your tasks and stay organized</p>
   </div>
 
-  <app-fab-button
-    *ngIf="selectedTab() === 'tasks'"
-    icon="add"
-    color="primary"
-    ariaLabel="Add Task"
-    (fabClick)="openAddTaskDialog()"
-  ></app-fab-button>
-  <app-fab-button
-    *ngIf="selectedTab() === 'categories'"
-    icon="add"
-    color="accent"
-    ariaLabel="Add Category"
-    (fabClick)="openAddCategoryDialog()"
-  ></app-fab-button>
-
   <app-tab-switcher
     [tabs]="tabOptions"
     [selectedTab]="selectedTab()"
@@ -38,8 +23,9 @@
     (setCategory)="setCategory($event)"
     (setDashboardFilter)="setDashboardFilter($event)"
     (toggleComplete)="onToggleComplete($event.task, $event.completed)"
-    (startEdit)="openEditTaskDialog($event)"
-    (deleteTask)="deleteTask($event)"
+    (addTaskEvent)="onAddTask($event)"
+    (editTaskEvent)="onEditTask($event)"
+    (deleteTaskEvent)="onDeleteTaskFromTab($event)"
   ></app-tasks-tab>
 
   <app-categories-tab
@@ -47,7 +33,5 @@
     [categories]="categories()"
     [categoryLoading]="categoryLoading()"
     [categoryError]="categoryError()"
-    (openEditCategoryDialog)="openEditCategoryDialog($event)"
-    (deleteCategory)="onDeleteCategory($event)"
   ></app-categories-tab>
 </div>
