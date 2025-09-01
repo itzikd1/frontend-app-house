@@ -15,6 +15,7 @@
           *ngFor="let note of notes()"
           [item]="note"
           (delete)="deleteNote(note)"
+          (edit)="openEditDialog(note)"
           class="note-card"
         >
           <div class="note-content">

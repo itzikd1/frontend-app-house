@@ -18,13 +18,11 @@ import {Note} from '../../shared/models/note.model';
   imports: [
     CommonModule,
     FormsModule,
-    ItemListComponent,
     FabButtonComponent,
     ItemCardComponent,
     MatButtonModule,
     MatIconModule,
     LoadingSpinnerComponent,
-    AddNoteDialogWrapperComponent
   ],
   templateUrl: './notes.component.html',
   styleUrls: ['./notes.component.scss'],
@@ -97,6 +95,44 @@ export class NotesComponent implements OnInit {
       },
       error: () => {
         this.error.set('Failed to delete note');
+        this.loading.set(false);
+      }
+    });
+  }
+
+  openEditDialog(note: Note): void {
+    const dialogRef = this.dialog.open(AddNoteDialogWrapperComponent, {
+      width: '400px',
+      data: {
+        note: note,
+        isEdit: true
+      }
+    });
+
+    dialogRef.afterClosed().subscribe((result: Partial<Note> | null) => {
+      if (result && result.title) {
+        this.updateNote(note.id, result);
+      }
+    });
+  }
+
+  updateNote(id: string, updatedNote: Partial<Note>): void {
+    this.loading.set(true);
+    this.noteService.update(id, updatedNote).subscribe({
+      next: (updated: Note) => {
+        const currentNotes = this.notes();
+        const index = currentNotes.findIndex((n: Note) => n.id === id);
+
+        if (index !== -1) {
+          const updatedNotes = [...currentNotes];
+          updatedNotes[index] = updated;
+          this.notes.set(updatedNotes);
+        }
+
+        this.loading.set(false);
+      },
+      error: () => {
+        this.error.set('Failed to update note');
         this.loading.set(false);
       }
     });
