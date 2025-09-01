@@ -86,15 +86,15 @@ export class TasksComponent implements OnInit {
     this.selectedTab.set(tab);
   }
 
-  loadCategories(): void {
+  public loadCategories(): void {
     this.categoryLoading.set(true);
     this.categoryService.getAll().subscribe({
-      next: (categories) => {
-        this.categories.set(categories);
+      next: (cats: TaskCategory[]) => {
+        this.categories.set(cats);
         this.categoryLoading.set(false);
       },
       error: () => {
-        this.categoryError.set('Failed to load categories.');
+        this.categoryError.set('Failed to load categories');
         this.categoryLoading.set(false);
       }
     });

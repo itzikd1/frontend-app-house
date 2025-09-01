@@ -12,10 +12,9 @@ export interface Task extends BaseModel {
   description?: string;
   categoryId?: string;
   category?: TaskCategory;
-  repeatFrequency: string;
+  repeatFrequency?: string;
   priority: 'Low' | 'Medium' | 'High';
   dueDate: string | null;
-  repeat?: string;
   completed: boolean;
 }
 

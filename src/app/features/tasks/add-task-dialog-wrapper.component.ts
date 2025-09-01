@@ -31,32 +31,30 @@ import {TaskCategory} from '../../core/interfaces/item-category.model';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AddTaskDialogWrapperComponent {
-  isEditMode: boolean = false;
-  task = signal<Partial<Task>>({
+  public isEditMode = false;
+  public task = signal<Partial<Task>>({
     title: '',
     description: '',
     categoryId: '',
     priority: 'Medium',
+    repeatFrequency: 'None',
     dueDate: '',
-    repeat: 'None',
   });
 
-  categories = signal<TaskCategory[]>([]);
-  categoriesLoading = signal<boolean>(false);
-  categoriesError = signal<string | null>(null);
+  public categories = signal<TaskCategory[]>([]);
+  public categoriesLoading = signal<boolean>(false);
+  public categoriesError = signal<string | null>(null);
 
   private dialogRef = inject(MatDialogRef<AddTaskDialogWrapperComponent>);
-  public data: unknown = inject(MAT_DIALOG_DATA);
   private categoryService = inject(TaskCategoryService);
+  private data = inject(MAT_DIALOG_DATA) as { task?: Task } | undefined;
 
   constructor() {
-    const data = this.data as { task?: Task };
-    this.isEditMode = !!data?.task;
-    if (this.isEditMode && data.task) {
-      // Normalize categoryId: always a string
+    this.isEditMode = !!this.data?.task;
+    if (this.isEditMode && this.data?.task) {
       const normalizedTask: Partial<Task> = {
-        ...data.task,
-        categoryId: String(data.task.categoryId ?? data.task.category?.id ?? ''),
+        ...this.data.task,
+        categoryId: String(this.data.task.categoryId ?? this.data.task.category?.id ?? ''),
       };
       this.task.set(normalizedTask);
     }
@@ -66,7 +64,7 @@ export class AddTaskDialogWrapperComponent {
   private loadCategories(): void {
     this.categoriesLoading.set(true);
     this.categoryService.getAll().subscribe({
-      next: cats => {
+      next: (cats: TaskCategory[]) => {
         this.categories.set(cats);
         this.categoriesLoading.set(false);
       },
@@ -77,25 +75,25 @@ export class AddTaskDialogWrapperComponent {
     });
   }
 
-  onSubmit(): void {
+  public onSubmit(): void {
     this.dialogRef.close(this.task());
   }
 
-  onCancel(): void {
+  public onCancel(): void {
     this.dialogRef.close(null);
   }
 
-  onTitleChange(event: Event): void {
+  public onTitleChange(event: Event): void {
     const value = (event.target as HTMLInputElement).value;
-    this.task.update(t => ({...t, title: value}));
+    this.task.update(t => ({ ...t, title: value }));
   }
 
-  onDescriptionChange(event: Event): void {
+  public onDescriptionChange(event: Event): void {
     const value = (event.target as HTMLTextAreaElement).value;
-    this.task.update(t => ({...t, description: value}));
+    this.task.update(t => ({ ...t, description: value }));
   }
 
-  onPriorityChange(event: Event): void {
+  public onPriorityChange(event: Event): void {
     const value = (event.target as HTMLSelectElement).value;
     const allowedPriorities = ['Low', 'Medium', 'High'];
     this.task.update(t => ({
@@ -104,13 +102,13 @@ export class AddTaskDialogWrapperComponent {
     }));
   }
 
-  onDueDateChange(event: Event): void {
+  public onDueDateChange(event: Event): void {
     const value = (event.target as HTMLInputElement).value;
-    this.task.update(t => ({...t, dueDate: value}));
+    this.task.update(t => ({ ...t, dueDate: value }));
   }
 
-  onRepeatChange(event: Event): void {
+  public onRepeatChange(event: Event): void {
     const value = (event.target as HTMLSelectElement).value;
-    this.task.update(t => ({...t, repeat: value}));
+    this.task.update(t => ({ ...t, repeatFrequency: value }));
   }
 }
