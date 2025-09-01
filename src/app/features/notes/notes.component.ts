@@ -23,7 +23,8 @@ import {Note} from '../../shared/models/note.model';
     ItemCardComponent,
     MatButtonModule,
     MatIconModule,
-    LoadingSpinnerComponent
+    LoadingSpinnerComponent,
+    AddNoteDialogWrapperComponent
   ],
   templateUrl: './notes.component.html',
   styleUrls: ['./notes.component.scss'],
@@ -58,6 +59,7 @@ export class NotesComponent implements OnInit {
   }
 
   openAddDialog(): void {
+    console.log("click")
     const dialogRef = this.dialog.open(AddNoteDialogWrapperComponent, {
       width: '400px',
       data: {}
