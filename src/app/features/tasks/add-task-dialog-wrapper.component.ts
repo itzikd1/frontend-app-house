@@ -1,16 +1,16 @@
-import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Task } from '../../core/interfaces/task.model';
-import { FormsModule } from '@angular/forms';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
-import { MatOptionModule } from '@angular/material/core';
-import { MatButtonModule } from '@angular/material/button';
-import { ModalDialogComponent } from '../../shared/components/modal-dialog.component';
-import { TaskCategoryService } from '../../core/services/item-category.service';
-import { signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {Component, ChangeDetectionStrategy, inject} from '@angular/core';
+import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import {Task} from '../../core/interfaces/task.model';
+import {FormsModule} from '@angular/forms';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
+import {MatSelectModule} from '@angular/material/select';
+import {MatOptionModule} from '@angular/material/core';
+import {MatButtonModule} from '@angular/material/button';
+import {ModalDialogComponent} from '../../shared/components/modal-dialog.component';
+import {TaskCategoryService} from '../../core/services/item-category.service';
+import {signal} from '@angular/core';
+import {CommonModule} from '@angular/common';
 import {TaskCategory} from '../../core/interfaces/item-category.model';
 
 @Component({
@@ -87,12 +87,12 @@ export class AddTaskDialogWrapperComponent {
 
   onTitleChange(event: Event): void {
     const value = (event.target as HTMLInputElement).value;
-    this.task.update(t => ({ ...t, title: value }));
+    this.task.update(t => ({...t, title: value}));
   }
 
   onDescriptionChange(event: Event): void {
     const value = (event.target as HTMLTextAreaElement).value;
-    this.task.update(t => ({ ...t, description: value }));
+    this.task.update(t => ({...t, description: value}));
   }
 
   onPriorityChange(event: Event): void {
@@ -106,11 +106,11 @@ export class AddTaskDialogWrapperComponent {
 
   onDueDateChange(event: Event): void {
     const value = (event.target as HTMLInputElement).value;
-    this.task.update(t => ({ ...t, dueDate: value }));
+    this.task.update(t => ({...t, dueDate: value}));
   }
 
   onRepeatChange(event: Event): void {
     const value = (event.target as HTMLSelectElement).value;
-    this.task.update(t => ({ ...t, repeat: value }));
+    this.task.update(t => ({...t, repeat: value}));
   }
 }

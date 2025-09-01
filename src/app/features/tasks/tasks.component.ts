@@ -174,10 +174,6 @@ export class TasksComponent implements OnInit {
     });
   }
 
-  startEdit(task: Task): void {
-    this.openEditTaskDialog(task);
-  }
-
   deleteTask(id: string): void {
     this.loading.set(true);
     this.taskService.deleteTask(id).subscribe({
