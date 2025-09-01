@@ -29,7 +29,7 @@ export class TasksTabComponent {
 
   @Output() setCategory = new EventEmitter<string>();
   @Output() setDashboardFilter = new EventEmitter<DashboardCardFilter>();
-  @Output() onToggleComplete = new EventEmitter<{task: Task, completed: boolean}>();
+  @Output() toggleComplete = new EventEmitter<{task: Task, completed: boolean}>();
   @Output() startEdit = new EventEmitter<Task>();
   @Output() deleteTask = new EventEmitter<string>();
 

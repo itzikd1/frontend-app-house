@@ -37,7 +37,7 @@
     [error]="error()"
     (setCategory)="setCategory($event)"
     (setDashboardFilter)="setDashboardFilter($event)"
-    (onToggleComplete)="onToggleComplete($event.task, $event.completed)"
+    (toggleComplete)="onToggleComplete($event.task, $event.completed)"
     (startEdit)="startEdit($event)"
     (deleteTask)="deleteTask($event)"
   ></app-tasks-tab>
@@ -48,5 +48,6 @@
     [categoryLoading]="categoryLoading()"
     [categoryError]="categoryError()"
     (openEditCategoryDialog)="openEditCategoryDialog($event)"
+    (deleteCategory)="onDeleteCategory($event)"
   ></app-categories-tab>
 </div>

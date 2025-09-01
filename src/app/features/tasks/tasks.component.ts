@@ -240,6 +240,22 @@ export class TasksComponent implements OnInit {
     });
   }
 
+  onDeleteCategory(id: string): void {
+    this.categoryLoading.set(true);
+    this.categoryService.delete(id).subscribe({
+      next: () => {
+        const updated = this.categories().filter(cat => cat.id !== id);
+        this.categories.set(updated);
+        this.categoryLoading.set(false);
+        this.categoryError.set(null);
+      },
+      error: () => {
+        this.categoryError.set('Failed to delete category.');
+        this.categoryLoading.set(false);
+      }
+    });
+  }
+
   get overdueCount(): number {
     return this.tasks().filter(t => this.isOverdue(t)).length;
   }

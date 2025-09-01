@@ -8,16 +8,18 @@
   </div>
   <div *ngIf="!categoryLoading && categories.length">
     <div class="categories-list">
-      <div *ngFor="let category of categories" class="category-item">
-        <span>{{ category.name }}</span>
-        <button
-          mat-icon-button
-          aria-label="Edit Category"
-          (click)="openEditCategoryDialog.emit(category)"
-        >
-          <mat-icon>edit</mat-icon>
-        </button>
-      </div>
+      <app-item-card
+        *ngFor="let item of categoryItems; let i = index"
+        [item]="item"
+        [showCheckbox]="false"
+        [completed]="false"
+        (edit)="openEditCategoryDialog.emit(categories[i])"
+        (delete)="deleteCategory.emit(categories[i].id)"
+      >
+        <div class="category-meta-row">
+          <span class="category-name">{{ item.title }}</span>
+        </div>
+      </app-item-card>
     </div>
   </div>
   <div *ngIf="!categoryLoading && !categories.length">

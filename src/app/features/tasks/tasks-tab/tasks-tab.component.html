@@ -32,7 +32,7 @@
         [item]="task"
         [showCheckbox]="true"
         [completed]="task.completed"
-        (toggleComplete)="onToggleComplete.emit({task: task, completed: $event})"
+        (toggleComplete)="toggleComplete.emit({task: task, completed: $event})"
         (edit)="startEdit.emit(task)"
         (delete)="deleteTask.emit(task.id)"
       >
