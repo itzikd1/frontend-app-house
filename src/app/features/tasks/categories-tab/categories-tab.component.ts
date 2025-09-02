@@ -1,4 +1,4 @@
-import { Component, Input, ChangeDetectionStrategy, inject } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy, inject, Output, EventEmitter } from '@angular/core';
 import { TaskCategory } from '../../../core/interfaces/item-category.model';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
@@ -21,6 +21,7 @@ export class CategoriesTabComponent {
   @Input() categories: TaskCategory[] = [];
   @Input() categoryLoading = false;
   @Input() categoryError: string | null = null;
+  @Output() categoriesChanged = new EventEmitter<void>();
 
   private dialog = inject(MatDialog);
   private categoryService = inject(TaskCategoryService);
@@ -67,7 +68,6 @@ export class CategoriesTabComponent {
   }
 
   reloadCategories(): void {
-    // This should trigger a reload, e.g. via an output or service event
-    // For now, you may need to emit an event or use a shared service
+    this.categoriesChanged.emit();
   }
 }

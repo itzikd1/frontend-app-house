@@ -48,7 +48,7 @@ export class AddCategoryDialogWrapperComponent {
           isEdit: true,
         });
       } else {
-        this.dialogRef.close(this.categoryName.trim());
+        this.dialogRef.close({name: this.categoryName.trim()});
       }
     }
   }

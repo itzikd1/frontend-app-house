@@ -33,5 +33,6 @@
     [categories]="categories()"
     [categoryLoading]="categoryLoading()"
     [categoryError]="categoryError()"
+    (categoriesChanged)="loadCategories()"
   ></app-categories-tab>
 </div>
