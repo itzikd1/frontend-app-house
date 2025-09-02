@@ -15,10 +15,10 @@ export class FabButtonComponent {
   @Input() icon = 'add';
   @Input() color: 'primary' | 'accent' | 'warn' = 'primary';
   @Input() ariaLabel = 'Add';
-  @Output() fabClick = new EventEmitter<void>();
+  @Output() click = new EventEmitter<void>();
 
   onClick(event: MouseEvent): void {
     event.stopPropagation();
-    this.fabClick.emit();
+    this.click.emit();
   }
 }
