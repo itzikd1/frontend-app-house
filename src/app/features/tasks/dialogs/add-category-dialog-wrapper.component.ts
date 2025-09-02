@@ -5,7 +5,7 @@ import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { ModalDialogComponent } from '../../shared/components/modal-dialog.component';
+import { ModalDialogComponent } from '../../../shared/components/modal-dialog.component';
 
 @Component({
   selector: 'app-add-category-dialog-wrapper',

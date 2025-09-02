@@ -9,7 +9,7 @@ import { ItemCardComponent } from '../../../shared/components/item-card/item-car
 import { MatIconModule } from '@angular/material/icon';
 import { DashboardSummaryCardsComponent } from '../../../shared/components/dashboard-summary-cards/dashboard-summary-cards.component';
 import { MatDialog } from '@angular/material/dialog';
-import { AddTaskDialogWrapperComponent } from '../add-task-dialog-wrapper.component';
+import { AddTaskDialogWrapperComponent } from '../dialogs/add-task-dialog-wrapper.component';
 
 @Component({
   selector: 'app-tasks-tab',

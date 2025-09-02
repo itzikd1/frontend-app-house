@@ -1,11 +1,11 @@
 import { Component, ChangeDetectionStrategy, inject, signal, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Task } from '../../core/interfaces/task.model';
-import { ModalDialogComponent } from '../../shared/components/modal-dialog.component';
-import { TaskCategoryService } from '../../core/services/item-category.service';
+import { Task } from '../../../core/interfaces/task.model';
+import { ModalDialogComponent } from '../../../shared/components/modal-dialog.component';
+import { TaskCategoryService } from '../../../core/services/item-category.service';
 import { CommonModule } from '@angular/common';
-import { TaskCategory } from '../../core/interfaces/item-category.model';
-import { TaskFormComponent, TaskFormData } from './components/task-form.component';
+import { TaskCategory } from '../../../core/interfaces/item-category.model';
+import { TaskFormComponent, TaskFormData } from '../components/task-form.component';
 
 @Component({
   selector: 'app-add-task-dialog-wrapper',
@@ -65,7 +65,7 @@ export class AddTaskDialogWrapperComponent implements OnInit {
       next: (cats: TaskCategory[]) => {
         this.categories.set(cats);
       },
-      error: (error) => {
+      error: (error: {error: string}) => {
         console.error('Failed to load categories:', error);
       }
     });

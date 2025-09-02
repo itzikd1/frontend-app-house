@@ -11,7 +11,7 @@ import { TabOption, TabSwitcherComponent } from '../../shared/components/tab-swi
 import { TasksTabComponent } from './tasks-tab/tasks-tab.component';
 import { CategoriesTabComponent } from './categories-tab/categories-tab.component';
 import { TaskFacadeService } from './services/task-facade.service';
-import { AddCategoryDialogWrapperComponent } from './add-category-dialog-wrapper.component';
+import { AddCategoryDialogWrapperComponent } from './dialogs/add-category-dialog-wrapper.component';
 import { TaskCategoryService } from '../../core/services/item-category.service';
 
 @Component({
