@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy, computed, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy, computed, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -116,31 +116,23 @@ export class TaskFormComponent implements OnInit {
   @Output() formSubmit = new EventEmitter<TaskFormData>();
   @Output() formCancel = new EventEmitter<void>();
 
-  public readonly taskForm: FormGroup;
+  public readonly taskForm: FormGroup = inject(FormBuilder).group({
+    title: ['', [Validators.required, Validators.minLength(1)]],
+    description: [''],
+    categoryId: [''],
+    priority: ['Medium'],
+    repeatFrequency: ['None'],
+    dueDate: [''],
+  });
 
   public readonly submitButtonText = computed(() =>
     this.isEditMode ? 'Update Task' : 'Add Task'
   );
 
-  constructor(private readonly fb: FormBuilder) {
-    this.taskForm = this.createForm();
-  }
-
   ngOnInit(): void {
     if (this.initialData) {
       this.taskForm.patchValue(this.initialData);
     }
-  }
-
-  private createForm(): FormGroup {
-    return this.fb.group({
-      title: ['', [Validators.required, Validators.minLength(1)]],
-      description: [''],
-      categoryId: [''],
-      priority: ['Medium'],
-      repeatFrequency: ['None'],
-      dueDate: [''],
-    });
   }
 
   public onSubmit(): void {

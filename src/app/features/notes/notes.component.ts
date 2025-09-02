@@ -2,7 +2,6 @@ import { Component, ChangeDetectionStrategy, signal, OnInit, inject } from '@ang
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NoteService } from '../../core/services/note.service';
-import { ItemListComponent } from '../../shared/components/item-list/item-list.component';
 import { FabButtonComponent } from '../../shared/components/fab-button/fab-button.component';
 import { ItemCardComponent } from '../../shared/components/item-card/item-card.component';
 import { MatButtonModule } from '@angular/material/button';

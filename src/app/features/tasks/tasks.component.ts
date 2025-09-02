@@ -5,7 +5,6 @@ import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialogModule, MatDialog } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
-import { TaskCategory } from '../../core/interfaces/item-category.model';
 import { DashboardCardFilter } from '../../shared/models/dashboard-card-filter.model';
 import { TabOption, TabSwitcherComponent } from '../../shared/components/tab-switcher/tab-switcher.component';
 import { TasksTabComponent } from './tasks-tab/tasks-tab.component';
