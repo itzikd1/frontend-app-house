@@ -51,13 +51,64 @@ export class TasksComponent implements OnInit {
   private categoryService = inject(TaskCategoryService);
 
   filteredTasks: Task[] = [];
-  dashboardCards: DashboardCardConfig[] = [];
+  public get dashboardCards(): DashboardCardConfig[] {
+    return [
+      {
+        title: 'Total Tasks',
+        value: this.tasks().length,
+        icon: 'list',
+        color: '#9ca3af',
+        filter: DashboardCardFilter.All,
+      },
+      {
+        title: 'Overdue',
+        value: this.overdueCount,
+        icon: 'error',
+        color: '#ef4444',
+        filter: DashboardCardFilter.Overdue,
+      },
+      {
+        title: 'Complete',
+        value: this.completeCount,
+        icon: 'check_circle',
+        color: '#22c55e',
+        filter: DashboardCardFilter.Complete,
+      },
+      {
+        title: 'Incomplete',
+        value: this.incompleteCount,
+        icon: 'radio_button_unchecked',
+        color: '#fbbf24',
+        filter: DashboardCardFilter.Incomplete,
+      },
+    ];
+  }
+
+
+  get overdueCount(): number {
+    return this.tasks().filter(t => this.isOverdue(t)).length;
+  }
+
+  get completeCount(): number {
+    return this.tasks().filter(t => t.completed).length;
+  }
+
+  get incompleteCount(): number {
+    return this.tasks().filter(t => !t.completed).length;
+  }
 
   ngOnInit(): void {
     this.fetchTasks();
     this.loadCategories();
     this.updateFilteredTasks();
-    this.initDashboardCards();
+    // dashboardCards is now a getter, no need to initialize
+  }
+
+  isOverdue(task: Task): boolean {
+    if (!task.dueDate) return false;
+    const due = new Date(task.dueDate);
+    const now = new Date();
+    return due < now;
   }
 
   private sortTasks(tasks: Task[]): Task[] {
@@ -108,19 +159,30 @@ export class TasksComponent implements OnInit {
   updateFilteredTasks(): void {
     const allTasks = this.tasks();
     const selected = this.selectedCategory();
-    this.filteredTasks = selected === 'all'
+    let filtered = selected === 'all'
       ? allTasks
       : allTasks.filter(task => task.categoryId === selected);
-  }
-
-  initDashboardCards(): void {
-    // Example: initialize with empty array or with summary cards if you have logic
-    this.dashboardCards = [];
-    // If you have logic to populate dashboardCards, add it here
+    switch (this.dashboardFilter()) {
+      case DashboardCardFilter.Overdue:
+        filtered = filtered.filter(t => this.isOverdue(t));
+        break;
+      case DashboardCardFilter.Complete:
+        filtered = filtered.filter(t => t.completed);
+        break;
+      case DashboardCardFilter.Incomplete:
+        filtered = filtered.filter(t => !t.completed);
+        break;
+      case DashboardCardFilter.All:
+      default:
+        // no additional filter
+        break;
+    }
+    this.filteredTasks = filtered;
   }
 
   setDashboardFilter(filter: DashboardCardFilter): void {
     this.dashboardFilter.set(filter);
+    this.updateFilteredTasks();
   }
 
   onToggleComplete(task: Task, completed: boolean): void {
