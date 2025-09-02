@@ -1,13 +1,10 @@
-import { Component, Input, ChangeDetectionStrategy, inject, Output, EventEmitter } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy, Output, EventEmitter } from '@angular/core';
 import { TaskCategory } from '../../../core/interfaces/item-category.model';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { LoadingSpinnerComponent } from '../../../shared/components/loading-spinner/loading-spinner.component';
 import { ItemCardComponent } from '../../../shared/components/item-card/item-card.component';
 import { Item } from '../../../shared/models/item.model';
-import { MatDialog } from '@angular/material/dialog';
-import { TaskCategoryService } from '../../../core/services/item-category.service';
-import { AddCategoryDialogWrapperComponent } from '../add-category-dialog-wrapper.component';
 
 @Component({
   selector: 'app-categories-tab',
@@ -21,53 +18,29 @@ export class CategoriesTabComponent {
   @Input() categories: TaskCategory[] = [];
   @Input() categoryLoading = false;
   @Input() categoryError: string | null = null;
-  @Output() categoriesChanged = new EventEmitter<void>();
 
-  private dialog = inject(MatDialog);
-  private categoryService = inject(TaskCategoryService);
+  @Output() addCategory = new EventEmitter<{name: string}>();
+  @Output() editCategory = new EventEmitter<{id: string, name: string}>();
+  @Output() deleteCategory = new EventEmitter<string>();
 
-  get categoryItems(): Item[] {
+  public get categoryItems(): Item[] {
     return this.categories.map(category => ({
       title: category.name,
-      description: '',
+      description: `Category ID: ${category.id}`,
+      id: category.id,
     }));
   }
 
-  openAddCategoryDialog(): void {
-    const dialogRef = this.dialog.open(AddCategoryDialogWrapperComponent, {
-      width: '400px',
-      data: {}
-    });
-    dialogRef.afterClosed().subscribe((result: { name: string } | null) => {
-      if (result && result.name) {
-        this.categoryService.create({ name: result.name }).subscribe(() => {
-          this.reloadCategories();
-        });
-      }
-    });
+  public onAddCategory(): void {
+    // This will be handled by parent component with proper dialog management
+    this.addCategory.emit({ name: '' });
   }
 
-  openEditCategoryDialog(category: TaskCategory): void {
-    const dialogRef = this.dialog.open(AddCategoryDialogWrapperComponent, {
-      width: '400px',
-      data: { category }
-    });
-    dialogRef.afterClosed().subscribe((result: { name: string; id?: string } | null) => {
-      if (result && result.name && result.id) {
-        this.categoryService.update(result.id, { name: result.name }).subscribe(() => {
-          this.reloadCategories();
-        });
-      }
-    });
+  public onEditCategory(category: TaskCategory): void {
+    this.editCategory.emit({ id: category.id, name: category.name });
   }
 
-  deleteCategory(id: string): void {
-    this.categoryService.delete(id).subscribe(() => {
-      this.reloadCategories();
-    });
-  }
-
-  reloadCategories(): void {
-    this.categoriesChanged.emit();
+  public onDeleteCategory(id: string): void {
+    this.deleteCategory.emit(id);
   }
 }

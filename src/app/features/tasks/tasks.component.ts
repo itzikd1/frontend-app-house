@@ -1,18 +1,18 @@
 import { Component, ChangeDetectionStrategy, OnInit, signal, inject } from '@angular/core';
-import { TaskService } from '../../core/services/task.service';
 import { Task } from '../../core/interfaces/task.model';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
-import { MatDialogModule } from '@angular/material/dialog';
+import { MatDialogModule, MatDialog } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
-import { TaskCategoryService } from '../../core/services/item-category.service';
 import { TaskCategory } from '../../core/interfaces/item-category.model';
 import { DashboardCardFilter } from '../../shared/models/dashboard-card-filter.model';
 import { TabOption, TabSwitcherComponent } from '../../shared/components/tab-switcher/tab-switcher.component';
 import { TasksTabComponent } from './tasks-tab/tasks-tab.component';
 import { CategoriesTabComponent } from './categories-tab/categories-tab.component';
-import { DashboardCardConfig } from '../../shared/components/dashboard-summary-cards/dashboard-summary-cards.component';
+import { TaskFacadeService } from './services/task-facade.service';
+import { AddCategoryDialogWrapperComponent } from './add-category-dialog-wrapper.component';
+import { TaskCategoryService } from '../../core/services/item-category.service';
 
 @Component({
   selector: 'app-tasks',
@@ -27,250 +27,143 @@ import { DashboardCardConfig } from '../../shared/components/dashboard-summary-c
     TasksTabComponent,
     CategoriesTabComponent,
   ],
-
   templateUrl: './tasks.component.html',
   styleUrl: './tasks.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TasksComponent implements OnInit {
-  tasks = signal<Task[]>([]);
-  error = signal<string | null>(null);
-  loading = signal<boolean>(true);
+  private readonly taskFacade = inject(TaskFacadeService);
+  private readonly dialog = inject(MatDialog);
+  private readonly categoryService = inject(TaskCategoryService);
 
-  public selectedCategory = signal<string>('all');
-  selectedTab = signal<string>('tasks');
-  categories = signal<TaskCategory[]>([]);
-  categoryLoading = signal<boolean>(false);
-  categoryError = signal<string | null>(null);
-  public dashboardFilter = signal<DashboardCardFilter>(DashboardCardFilter.All);
-  public tabOptions: TabOption[] = [
+  // Expose facade signals
+  public readonly tasks = this.taskFacade.tasks;
+  public readonly categories = this.taskFacade.categories;
+  public readonly filteredTasks = this.taskFacade.filteredTasks;
+  public readonly dashboardCards = this.taskFacade.dashboardCards;
+  public readonly loading = this.taskFacade.loading;
+  public readonly error = this.taskFacade.error;
+  public readonly selectedCategory = this.taskFacade.selectedCategory;
+  public readonly dashboardFilter = this.taskFacade.dashboardFilter;
+
+  public selectedTab = signal<string>('tasks');
+  public categoryLoading = signal<boolean>(false);
+  public categoryError = signal<string | null>(null);
+
+  public readonly tabOptions: TabOption[] = [
     { id: 'tasks', label: 'Tasks' },
     { id: 'categories', label: 'Categories' },
   ];
-  private taskService = inject(TaskService);
-  private categoryService = inject(TaskCategoryService);
-
-  filteredTasks: Task[] = [];
-  public get dashboardCards(): DashboardCardConfig[] {
-    return [
-      {
-        title: 'Total Tasks',
-        value: this.tasks().length,
-        icon: 'list',
-        color: '#9ca3af',
-        filter: DashboardCardFilter.All,
-      },
-      {
-        title: 'Overdue',
-        value: this.overdueCount,
-        icon: 'error',
-        color: '#ef4444',
-        filter: DashboardCardFilter.Overdue,
-      },
-      {
-        title: 'Complete',
-        value: this.completeCount,
-        icon: 'check_circle',
-        color: '#22c55e',
-        filter: DashboardCardFilter.Complete,
-      },
-      {
-        title: 'Incomplete',
-        value: this.incompleteCount,
-        icon: 'radio_button_unchecked',
-        color: '#fbbf24',
-        filter: DashboardCardFilter.Incomplete,
-      },
-    ];
-  }
-
-
-  get overdueCount(): number {
-    return this.tasks().filter(t => this.isOverdue(t)).length;
-  }
-
-  get completeCount(): number {
-    return this.tasks().filter(t => t.completed).length;
-  }
-
-  get incompleteCount(): number {
-    return this.tasks().filter(t => !t.completed).length;
-  }
 
   ngOnInit(): void {
-    this.fetchTasks();
-    this.loadCategories();
-    this.updateFilteredTasks();
-    // dashboardCards is now a getter, no need to initialize
+    this.taskFacade.loadTasks();
+    this.taskFacade.loadCategories();
   }
 
-  isOverdue(task: Task): boolean {
-    if (!task.dueDate) return false;
-    const due = new Date(task.dueDate);
-    const now = new Date();
-    return due < now;
-  }
-
-  private sortTasks(tasks: Task[]): Task[] {
-    return tasks.slice().sort((a, b) => {
-      if (a.completed === b.completed) return 0;
-      return a.completed ? 1 : -1;
-    });
-  }
-
-  fetchTasks(): void {
-    this.loading.set(true);
-    this.taskService.getTasks().subscribe({
-      next: (tasks) => {
-        this.tasks.set(this.sortTasks(tasks));
-        this.loading.set(false);
-        this.updateFilteredTasks();
-      },
-      error: () => {
-        this.error.set('Failed to load tasks.');
-        this.loading.set(false);
-      }
-    });
-  }
-
-  setTab(tab: string): void {
+  public setTab(tab: string): void {
     this.selectedTab.set(tab);
   }
 
-  public loadCategories(): void {
+  public setCategory(categoryId: string): void {
+    this.taskFacade.setCategory(categoryId);
+  }
+
+  public setDashboardFilter(filter: DashboardCardFilter): void {
+    this.taskFacade.setDashboardFilter(filter);
+  }
+
+  public onToggleComplete(task: Task, completed: boolean): void {
+    this.taskFacade.updateTask(task.id, { completed }).catch(() => {
+      // Error handling is done in the facade
+    });
+  }
+
+  public onDeleteTask(id: string): void {
+    this.taskFacade.deleteTask(id).catch(() => {
+      // Error handling is done in the facade
+    });
+  }
+
+  public onAddTask(task: Partial<Task>): void {
+    this.taskFacade.addTask(task).catch(() => {
+      // Error handling is done in the facade
+    });
+  }
+
+  public onEditTask({ id, changes }: { id: string; changes: Partial<Task> }): void {
+    this.taskFacade.updateTask(id, changes).catch(() => {
+      // Error handling is done in the facade
+    });
+  }
+
+  public onDeleteTaskFromTab(id: string): void {
+    this.taskFacade.deleteTask(id).catch(() => {
+      // Error handling is done in the facade
+    });
+  }
+
+  // Category management methods
+  public onAddCategory(): void {
+    const dialogRef = this.dialog.open(AddCategoryDialogWrapperComponent, {
+      width: '400px',
+      data: {}
+    });
+
+    dialogRef.afterClosed().subscribe((result: { name: string } | null) => {
+      if (result && result.name) {
+        this.categoryLoading.set(true);
+        this.categoryService.create({ name: result.name }).subscribe({
+          next: () => {
+            this.taskFacade.loadCategories();
+            this.categoryLoading.set(false);
+          },
+          error: () => {
+            this.categoryError.set('Failed to create category');
+            this.categoryLoading.set(false);
+          }
+        });
+      }
+    });
+  }
+
+  public onEditCategory(event: { id: string, name: string }): void {
+    const dialogRef = this.dialog.open(AddCategoryDialogWrapperComponent, {
+      width: '400px',
+      data: { category: { id: event.id, name: event.name } }
+    });
+
+    dialogRef.afterClosed().subscribe((result: { name: string; id?: string } | null) => {
+      if (result && result.name && result.id) {
+        this.categoryLoading.set(true);
+        this.categoryService.update(result.id, { name: result.name }).subscribe({
+          next: () => {
+            this.taskFacade.loadCategories();
+            this.categoryLoading.set(false);
+          },
+          error: () => {
+            this.categoryError.set('Failed to update category');
+            this.categoryLoading.set(false);
+          }
+        });
+      }
+    });
+  }
+
+  public onDeleteCategory(categoryId: string): void {
     this.categoryLoading.set(true);
-    this.categoryService.getAll().subscribe({
-      next: (cats: TaskCategory[]) => {
-        this.categories.set(cats);
+    this.categoryService.delete(categoryId).subscribe({
+      next: () => {
+        this.taskFacade.loadCategories();
         this.categoryLoading.set(false);
       },
       error: () => {
-        this.categoryError.set('Failed to load categories');
+        this.categoryError.set('Failed to delete category');
         this.categoryLoading.set(false);
       }
     });
   }
 
-  setCategory(categoryId: string): void {
-    this.selectedCategory.set(categoryId);
-    this.updateFilteredTasks();
-  }
-
-  updateFilteredTasks(): void {
-    const allTasks = this.tasks();
-    const selected = this.selectedCategory();
-    let filtered = selected === 'all'
-      ? allTasks
-      : allTasks.filter(task => task.categoryId === selected);
-    switch (this.dashboardFilter()) {
-      case DashboardCardFilter.Overdue:
-        filtered = filtered.filter(t => this.isOverdue(t));
-        break;
-      case DashboardCardFilter.Complete:
-        filtered = filtered.filter(t => t.completed);
-        break;
-      case DashboardCardFilter.Incomplete:
-        filtered = filtered.filter(t => !t.completed);
-        break;
-      case DashboardCardFilter.All:
-      default:
-        // no additional filter
-        break;
-    }
-    this.filteredTasks = filtered;
-  }
-
-  setDashboardFilter(filter: DashboardCardFilter): void {
-    this.dashboardFilter.set(filter);
-    this.updateFilteredTasks();
-  }
-
-  onToggleComplete(task: Task, completed: boolean): void {
-    // Optimistically update UI
-    const updatedTasks = this.tasks().map(t =>
-      t.id === task.id ? { ...t, completed } : t
-    );
-    this.tasks.set(updatedTasks);
-    this.updateFilteredTasks();
-    // Sync with backend
-    this.taskService.updateTask(task.id, { completed }).subscribe({
-      error: () => {
-        // Revert if failed
-        this.tasks.set(this.tasks().map(t =>
-          t.id === task.id ? { ...t, completed: !completed } : t
-        ));
-        this.updateFilteredTasks();
-        this.error.set('Failed to update task.');
-      }
-    });
-  }
-
-  onDeleteTask(id: string): void {
-    // Optimistically update UI
-    const prevTasks = this.tasks();
-    const updatedTasks = prevTasks.filter(task => task.id !== id);
-    this.tasks.set(updatedTasks);
-    this.updateFilteredTasks();
-    // Sync with backend
-    this.taskService.deleteTask(id).subscribe({
-      error: () => {
-        // Revert if failed
-        this.tasks.set(prevTasks);
-        this.updateFilteredTasks();
-        this.error.set('Failed to delete task.');
-      }
-    });
-  }
-
-  // Handle add task event from tab
-  onAddTask(task: Partial<Task>): void {
-    const tempId = 'temp-' + Date.now();
-    const optimisticTask: Task = { ...task, id: tempId, completed: false } as Task;
-    const prevTasks = this.tasks();
-    this.tasks.set([optimisticTask, ...prevTasks]);
-    this.updateFilteredTasks();
-    this.taskService.createTask(task).subscribe({
-      next: (created: Task) => {
-        // Replace temp task with real one
-        this.tasks.set([created, ...prevTasks]);
-        this.updateFilteredTasks();
-      },
-      error: () => {
-        // Revert if failed
-        this.tasks.set(prevTasks);
-        this.updateFilteredTasks();
-        this.error.set('Failed to add task.');
-      }
-    });
-  }
-
-  // Handle edit task event from tab
-  onEditTask({ id, changes }: { id: string; changes: Partial<Task> }): void {
-    const prevTasks = this.tasks();
-    this.tasks.set(prevTasks.map(t => t.id === id ? { ...t, ...changes } : t));
-    this.updateFilteredTasks();
-    this.taskService.updateTask(id, changes).subscribe({
-      error: () => {
-        // Revert if failed
-        this.tasks.set(prevTasks);
-        this.updateFilteredTasks();
-        this.error.set('Failed to update task.');
-      }
-    });
-  }
-
-  // Handle delete task event from tab
-  onDeleteTaskFromTab(id: string): void {
-    const prevTasks = this.tasks();
-    this.tasks.set(prevTasks.filter(task => task.id !== id));
-    this.updateFilteredTasks();
-    this.taskService.deleteTask(id).subscribe({
-      error: () => {
-        // Revert if failed
-        this.tasks.set(prevTasks);
-        this.updateFilteredTasks();
-        this.error.set('Failed to delete task.');
-      }
-    });
+  public loadCategories(): void {
+    this.taskFacade.loadCategories();
   }
 }

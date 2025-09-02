@@ -33,6 +33,8 @@
     [categories]="categories()"
     [categoryLoading]="categoryLoading()"
     [categoryError]="categoryError()"
-    (categoriesChanged)="loadCategories()"
+    (editCategory)="onEditCategory($event)"
+    (deleteCategory)="onDeleteCategory($event)"
+    (addCategory)="onAddCategory()"
   ></app-categories-tab>
 </div>

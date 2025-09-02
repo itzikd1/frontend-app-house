@@ -13,8 +13,8 @@
         [item]="item"
         [showCheckbox]="false"
         [completed]="false"
-        (edit)="openEditCategoryDialog(categories[i])"
-        (delete)="deleteCategory(categories[i].id)"
+        (edit)="onEditCategory(categories[i])"
+        (delete)="onDeleteCategory(categories[i].id)"
       >
         <div class="category-meta-row">
           <span class="category-name">{{ item.title }}</span>
@@ -25,7 +25,7 @@
   <div *ngIf="!categoryLoading && !categories.length">
     <p>No categories found.</p>
   </div>
-  <button class="fab-btn" (click)="openAddCategoryDialog()" aria-label="Add Category">
+  <button class="fab-btn" (click)="onAddCategory()" aria-label="Add Category">
     <mat-icon>add</mat-icon>
   </button>
 </div>

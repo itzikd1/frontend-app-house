@@ -1,5 +1,5 @@
 <app-dashboard-summary-cards
-  [cards]="dashboardCards"
+  [cards]="dashboardCards()"
   [activeFilter]="dashboardFilter"
   (cardClick)="setDashboardFilter.emit($event)"
 ></app-dashboard-summary-cards>
@@ -26,9 +26,9 @@
     <p class="error">{{ error }}</p>
   </div>
   <ng-template #showTasks>
-    <div *ngIf="filteredTasks.length; else noTasks" class="tasks-list">
+    <div *ngIf="filteredTasks().length; else noTasks" class="tasks-list">
       <app-item-card
-        *ngFor="let task of filteredTasks"
+        *ngFor="let task of filteredTasks()"
         [item]="task"
         [showCheckbox]="true"
         [completed]="task.completed"

@@ -1,15 +1,14 @@
-import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy, inject } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy, inject, Signal } from '@angular/core';
 import { Task } from '../../../core/interfaces/task.model';
 import { TaskCategory } from '../../../core/interfaces/item-category.model';
 import { DashboardCardConfig } from '../../../shared/components/dashboard-summary-cards/dashboard-summary-cards.component';
 import { DashboardCardFilter } from '../../../shared/models/dashboard-card-filter.model';
-import {CommonModule} from '@angular/common';
-import {LoadingSpinnerComponent} from '../../../shared/components/loading-spinner/loading-spinner.component';
-import {ItemCardComponent} from '../../../shared/components/item-card/item-card.component';
+import { CommonModule } from '@angular/common';
+import { LoadingSpinnerComponent } from '../../../shared/components/loading-spinner/loading-spinner.component';
+import { ItemCardComponent } from '../../../shared/components/item-card/item-card.component';
 import { MatIconModule } from '@angular/material/icon';
 import { DashboardSummaryCardsComponent } from '../../../shared/components/dashboard-summary-cards/dashboard-summary-cards.component';
 import { MatDialog } from '@angular/material/dialog';
-import { TaskService } from '../../../core/services/task.service';
 import { AddTaskDialogWrapperComponent } from '../add-task-dialog-wrapper.component';
 
 @Component({
@@ -22,10 +21,10 @@ import { AddTaskDialogWrapperComponent } from '../add-task-dialog-wrapper.compon
 })
 export class TasksTabComponent {
   @Input() tasks: Task[] = [];
-  @Input() filteredTasks: Task[] = [];
+  @Input() filteredTasks!: Signal<Task[]>;
   @Input() categories: TaskCategory[] = [];
   @Input() selectedCategory = '';
-  @Input() dashboardCards: DashboardCardConfig[] = [];
+  @Input() dashboardCards!: Signal<DashboardCardConfig[]>;
   @Input() dashboardFilter!: DashboardCardFilter;
   @Input() loading = false;
   @Input() error: string | null = null;
@@ -37,36 +36,21 @@ export class TasksTabComponent {
   @Output() editTaskEvent = new EventEmitter<{id: string, changes: Partial<Task>}>();
   @Output() deleteTaskEvent = new EventEmitter<string>();
 
-  private dialog = inject(MatDialog);
-  private taskService = inject(TaskService);
+  private readonly dialog = inject(MatDialog);
 
-  // Helper to update local lists
-  private addTaskLocally(task: Task): void {
-    this.tasks = [task, ...this.tasks];
-    this.filteredTasks = [task, ...this.filteredTasks];
-  }
-
-  private removeTaskLocally(id: string): void {
-    this.tasks = this.tasks.filter(t => t.id !== id);
-    this.filteredTasks = this.filteredTasks.filter(t => t.id !== id);
-  }
-
-  private updateTaskLocally(id: string, changes: Partial<Task>): void {
-    this.tasks = this.tasks.map(t => t.id === id ? { ...t, ...changes } : t);
-    this.filteredTasks = this.filteredTasks.map(t => t.id === id ? { ...t, ...changes } : t);
-  }
-
-  isOverdue(dueDate: string | Date): boolean {
+  public isOverdue(dueDate: string | Date): boolean {
+    if (!dueDate) return false;
     const date = new Date(dueDate);
     const now = new Date();
     return date < now;
   }
 
-  openAddTaskDialog(): void {
+  public openAddTaskDialog(): void {
     const dialogRef = this.dialog.open(AddTaskDialogWrapperComponent, {
       width: '400px',
       data: {}
     });
+
     dialogRef.afterClosed().subscribe((result: Partial<Task> | null) => {
       if (result && result.title) {
         this.addTaskEvent.emit(result);
@@ -74,11 +58,12 @@ export class TasksTabComponent {
     });
   }
 
-  openEditTaskDialog(task: Task): void {
+  public openEditTaskDialog(task: Task): void {
     const dialogRef = this.dialog.open(AddTaskDialogWrapperComponent, {
       width: '400px',
       data: { task }
     });
+
     dialogRef.afterClosed().subscribe((result: Partial<Task> | null) => {
       if (result && result.title) {
         this.editTaskEvent.emit({ id: task.id, changes: result });
@@ -86,12 +71,19 @@ export class TasksTabComponent {
     });
   }
 
-  deleteTask(id: string): void {
+  public deleteTask(id: string): void {
     this.deleteTaskEvent.emit(id);
   }
 
-  reloadTasks(): void {
-    // This should trigger a reload, e.g. via an output or service event
-    // For now, you may need to emit an event or use a shared service
+  public onToggleTaskComplete(task: Task, completed: boolean): void {
+    this.toggleComplete.emit({ task, completed });
+  }
+
+  public onCategoryChange(categoryId: string): void {
+    this.setCategory.emit(categoryId);
+  }
+
+  public onDashboardFilterChange(filter: DashboardCardFilter): void {
+    this.setDashboardFilter.emit(filter);
   }
 }

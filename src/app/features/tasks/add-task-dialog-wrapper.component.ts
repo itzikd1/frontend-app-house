@@ -1,17 +1,11 @@
-import {Component, ChangeDetectionStrategy, inject} from '@angular/core';
-import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
-import {Task} from '../../core/interfaces/task.model';
-import {FormsModule} from '@angular/forms';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatInputModule} from '@angular/material/input';
-import {MatSelectModule} from '@angular/material/select';
-import {MatOptionModule} from '@angular/material/core';
-import {MatButtonModule} from '@angular/material/button';
-import {ModalDialogComponent} from '../../shared/components/modal-dialog.component';
-import {TaskCategoryService} from '../../core/services/item-category.service';
-import {signal} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {TaskCategory} from '../../core/interfaces/item-category.model';
+import { Component, ChangeDetectionStrategy, inject, signal, OnInit } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Task } from '../../core/interfaces/task.model';
+import { ModalDialogComponent } from '../../shared/components/modal-dialog.component';
+import { TaskCategoryService } from '../../core/services/item-category.service';
+import { CommonModule } from '@angular/common';
+import { TaskCategory } from '../../core/interfaces/item-category.model';
+import { TaskFormComponent, TaskFormData } from './components/task-form.component';
 
 @Component({
   selector: 'app-add-task-dialog-wrapper',
@@ -19,96 +13,69 @@ import {TaskCategory} from '../../core/interfaces/item-category.model';
   imports: [
     CommonModule,
     ModalDialogComponent,
-    FormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatSelectModule,
-    MatOptionModule,
-    MatButtonModule
+    TaskFormComponent,
   ],
-  templateUrl: './add-task-dialog-wrapper.component.html',
-  styleUrls: ['./add-task-dialog.component.scss'],
+  template: `
+    <app-modal-dialog
+      [title]="dialogTitle">
+      <app-task-form
+        [initialData]="initialFormData"
+        [categories]="categories()"
+        [isEditMode]="isEditMode"
+        (formSubmit)="onFormSubmit($event)"
+        (formCancel)="onFormCancel()">
+      </app-task-form>
+    </app-modal-dialog>
+  `,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AddTaskDialogWrapperComponent {
-  public isEditMode = false;
-  public task = signal<Partial<Task>>({
-    title: '',
-    description: '',
-    categoryId: '',
-    priority: 'Medium',
-    repeatFrequency: 'None',
-    dueDate: '',
-  });
+export class AddTaskDialogWrapperComponent implements OnInit {
+  public readonly isEditMode: boolean;
+  public readonly dialogTitle: string;
+  public readonly initialFormData: TaskFormData | null;
+  public readonly categories = signal<TaskCategory[]>([]);
 
-  public categories = signal<TaskCategory[]>([]);
-  public categoriesLoading = signal<boolean>(false);
-  public categoriesError = signal<string | null>(null);
-
-  private dialogRef = inject(MatDialogRef<AddTaskDialogWrapperComponent>);
-  private categoryService = inject(TaskCategoryService);
-  private data = inject(MAT_DIALOG_DATA) as { task?: Task } | undefined;
+  private readonly dialogRef = inject(MatDialogRef<AddTaskDialogWrapperComponent>);
+  private readonly categoryService = inject(TaskCategoryService);
+  private readonly data = inject(MAT_DIALOG_DATA) as { task?: Task } | undefined;
 
   constructor() {
     this.isEditMode = !!this.data?.task;
-    if (this.isEditMode && this.data?.task) {
-      const normalizedTask: Partial<Task> = {
-        ...this.data.task,
-        categoryId: String(this.data.task.categoryId ?? this.data.task.category?.id ?? ''),
-      };
-      this.task.set(normalizedTask);
-    }
+    this.dialogTitle = this.isEditMode ? 'Edit Task' : 'Add New Task';
+    this.initialFormData = this.data?.task ? this.mapTaskToFormData(this.data.task) : null;
+  }
+
+  ngOnInit(): void {
     this.loadCategories();
   }
 
+  private mapTaskToFormData(task: Task): TaskFormData {
+    return {
+      title: task.title,
+      description: task.description || '',
+      categoryId: String(task.categoryId ?? task.category?.id ?? ''),
+      priority: task.priority,
+      repeatFrequency: task.repeatFrequency || 'None',
+      dueDate: task.dueDate || '',
+    };
+  }
+
   private loadCategories(): void {
-    this.categoriesLoading.set(true);
     this.categoryService.getAll().subscribe({
       next: (cats: TaskCategory[]) => {
         this.categories.set(cats);
-        this.categoriesLoading.set(false);
       },
-      error: () => {
-        this.categoriesError.set('Failed to load categories.');
-        this.categoriesLoading.set(false);
+      error: (error) => {
+        console.error('Failed to load categories:', error);
       }
     });
   }
 
-  public onSubmit(): void {
-    this.dialogRef.close(this.task());
+  public onFormSubmit(formData: TaskFormData): void {
+    this.dialogRef.close(formData);
   }
 
-  public onCancel(): void {
+  public onFormCancel(): void {
     this.dialogRef.close(null);
-  }
-
-  public onTitleChange(event: Event): void {
-    const value = (event.target as HTMLInputElement).value;
-    this.task.update(t => ({ ...t, title: value }));
-  }
-
-  public onDescriptionChange(event: Event): void {
-    const value = (event.target as HTMLTextAreaElement).value;
-    this.task.update(t => ({ ...t, description: value }));
-  }
-
-  public onPriorityChange(event: Event): void {
-    const value = (event.target as HTMLSelectElement).value;
-    const allowedPriorities = ['Low', 'Medium', 'High'];
-    this.task.update(t => ({
-      ...t,
-      priority: allowedPriorities.includes(value) ? value as 'Low' | 'Medium' | 'High' : undefined,
-    }));
-  }
-
-  public onDueDateChange(event: Event): void {
-    const value = (event.target as HTMLInputElement).value;
-    this.task.update(t => ({ ...t, dueDate: value }));
-  }
-
-  public onRepeatChange(event: Event): void {
-    const value = (event.target as HTMLSelectElement).value;
-    this.task.update(t => ({ ...t, repeatFrequency: value }));
   }
 }
