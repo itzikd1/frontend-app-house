@@ -4,6 +4,16 @@
   (cardClick)="setDashboardFilter.emit($event)"
 ></app-dashboard-summary-cards>
 
+<!-- Tabs for tasks and categories -->
+<app-tab-switcher
+  [tabs]="[
+    { id: 'tasks', label: 'Tasks' },
+    { id: 'categories', label: 'Categories' }
+  ]"
+  [selectedTab]="selectedTab"
+  (tabChange)="setTab($event)"
+></app-tab-switcher>
+
 <div class="tasks-filters">
   <div class="tag-filters">
     <button class="tag-btn" [class.active]="selectedCategory === 'all'" (click)="setCategory.emit('all')">All ({{ tasks.length }})</button>

@@ -53,7 +53,7 @@ import { ShoppingList, ShoppingListItem } from '../../core/interfaces/shopping-l
 })
 export class AddShoppingListDialogComponent {
   @Input() data: ShoppingList | null = null;
-  @Output() dialogClose = new EventEmitter<ShoppingList | null>();
+  @Output() dialogClose = new EventEmitter<ShoppingList | ShoppingListItem | null>();
 
   form: FormGroup;
 
@@ -92,11 +92,21 @@ export class AddShoppingListDialogComponent {
   onSubmit(): void {
     if (this.form.invalid) return;
     const value = this.form.value;
-    if (this.dialogData) {
+    if (this.dialogData && this.dialogData.id && !Array.isArray(this.dialogData.items)) {
+      // Editing a single shopping item
+      const item = this.items.at(0)?.value;
+      if (item) {
+        this.shoppingListService.updateItem(this.dialogData.id, item).subscribe(result => {
+          this.dialogClose.emit(result);
+        });
+      }
+    } else if (this.dialogData) {
+      // Editing a shopping list
       this.shoppingListService.update(this.dialogData.id, value).subscribe(result => {
         this.dialogClose.emit(result);
       });
     } else {
+      // Creating a new shopping list
       this.shoppingListService.create(value).subscribe(result => {
         this.dialogClose.emit(result);
       });

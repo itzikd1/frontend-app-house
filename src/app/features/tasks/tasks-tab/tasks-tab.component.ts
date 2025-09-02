@@ -10,13 +10,21 @@ import { MatIconModule } from '@angular/material/icon';
 import { DashboardSummaryCardsComponent } from '../../../shared/components/dashboard-summary-cards/dashboard-summary-cards.component';
 import { MatDialog } from '@angular/material/dialog';
 import { AddTaskDialogWrapperComponent } from '../dialogs/add-task-dialog-wrapper.component';
+import {TabSwitcherComponent} from '../../../shared/components/tab-switcher/tab-switcher.component';
 
 @Component({
   selector: 'app-tasks-tab',
   templateUrl: './tasks-tab.component.html',
   styleUrls: ['./tasks-tab.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CommonModule, LoadingSpinnerComponent, ItemCardComponent, MatIconModule, DashboardSummaryCardsComponent],
+  imports: [
+    CommonModule,
+    LoadingSpinnerComponent,
+    ItemCardComponent,
+    MatIconModule,
+    DashboardSummaryCardsComponent,
+    TabSwitcherComponent,
+  ],
   standalone: true,
 })
 export class TasksTabComponent {
@@ -37,6 +45,8 @@ export class TasksTabComponent {
   @Output() deleteTaskEvent = new EventEmitter<string>();
 
   private readonly dialog = inject(MatDialog);
+
+  public selectedTab: string = 'tasks';
 
   public isOverdue(dueDate: string | Date): boolean {
     if (!dueDate) return false;
@@ -85,5 +95,9 @@ export class TasksTabComponent {
 
   public onDashboardFilterChange(filter: DashboardCardFilter): void {
     this.setDashboardFilter.emit(filter);
+  }
+
+  public setTab(tabId: string): void {
+    this.selectedTab = tabId;
   }
 }

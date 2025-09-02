@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import {ShoppingList, ShoppingListItem} from '../interfaces/shopping-list.model';
+import {Task} from '../interfaces/task.model';
 
 
 
@@ -13,8 +14,8 @@ export class ShoppingListService {
   private readonly http = inject(HttpClient);
 
   getAll(): Observable<ShoppingListItem[]> {
-    return this.http.get<{ success: boolean; data: ShoppingListItem[] }>(this.baseUrl)
-      .pipe(map(response => response.data));
+    return this.http.get<{ data?: {success: boolean; items: ShoppingListItem[]} }>(this.baseUrl)
+      .pipe(map(response => response.data?.items || []));
   }
 
   create(list: Partial<ShoppingList>): Observable<ShoppingList> {
