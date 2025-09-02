@@ -104,15 +104,13 @@ export class TasksComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result: { name: string } | null) => {
       if (result && result.name) {
-        this.categoryLoading.set(true);
         this.categoryService.create({ name: result.name }).subscribe({
           next: () => {
             this.taskService.loadCategories();
-            this.categoryLoading.set(false);
+            // Loading/error state handled in service
           },
           error: () => {
-            this.categoryError.set('Failed to create category');
-            this.categoryLoading.set(false);
+            // Loading/error state handled in service
           }
         });
       }
@@ -127,15 +125,13 @@ export class TasksComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result: { name: string; id?: string } | null) => {
       if (result && result.name && result.id) {
-        this.categoryLoading.set(true);
         this.categoryService.update(result.id, { name: result.name }).subscribe({
           next: () => {
             this.taskService.loadCategories();
-            this.categoryLoading.set(false);
+            // Loading/error state handled in service
           },
           error: () => {
-            this.categoryError.set('Failed to update category');
-            this.categoryLoading.set(false);
+            // Loading/error state handled in service
           }
         });
       }
@@ -143,15 +139,13 @@ export class TasksComponent implements OnInit {
   }
 
   public onDeleteCategory(categoryId: string): void {
-    this.categoryLoading.set(true);
     this.categoryService.delete(categoryId).subscribe({
       next: () => {
         this.taskService.loadCategories();
-        this.categoryLoading.set(false);
+        // Loading/error state handled in service
       },
       error: () => {
-        this.categoryError.set('Failed to delete category');
-        this.categoryLoading.set(false);
+        // Loading/error state handled in service
       }
     });
   }
