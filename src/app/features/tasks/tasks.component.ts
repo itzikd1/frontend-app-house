@@ -31,23 +31,23 @@ import { TaskCategoryService } from '../../core/services/item-category.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TasksComponent implements OnInit {
-  private readonly taskFacade = inject(TaskFacadeService);
   private readonly dialog = inject(MatDialog);
+  private readonly taskService = inject(TaskFacadeService);
   private readonly categoryService = inject(TaskCategoryService);
 
   // Expose facade signals
-  public readonly tasks = this.taskFacade.tasks;
-  public readonly categories = this.taskFacade.categories;
-  public readonly filteredTasks = this.taskFacade.filteredTasks;
-  public readonly dashboardCards = this.taskFacade.dashboardCards;
-  public readonly loading = this.taskFacade.loading;
-  public readonly error = this.taskFacade.error;
-  public readonly selectedCategory = this.taskFacade.selectedCategory;
-  public readonly dashboardFilter = this.taskFacade.dashboardFilter;
+  public readonly tasks = this.taskService.tasks;
+  public readonly filteredTasks = this.taskService.filteredTasks;
+  public readonly taskLoading = this.taskService.taskLoading;
+  public readonly taskError = this.taskService.taskError;
+  public readonly categories = this.taskService.categories;
+  public readonly selectedCategory = this.taskService.selectedCategory;
+  public readonly categoryLoading = this.taskService.categoryLoading;
+  public readonly categoryError = this.taskService.categoryError;
+  public readonly dashboardCards = this.taskService.dashboardCards;
+  public readonly dashboardFilter = this.taskService.dashboardFilter;
 
   public selectedTab = signal<string>('tasks');
-  public categoryLoading = signal<boolean>(false);
-  public categoryError = signal<string | null>(null);
 
   public readonly tabOptions: TabOption[] = [
     { id: 'tasks', label: 'Tasks' },
@@ -55,48 +55,42 @@ export class TasksComponent implements OnInit {
   ];
 
   ngOnInit(): void {
-    this.taskFacade.loadTasks();
-    this.taskFacade.loadCategories();
+    this.taskService.loadTasks();
+    this.taskService.loadCategories();
   }
 
   public setTab(tab: string): void {
     this.selectedTab.set(tab);
   }
 
-  public setCategory(categoryId: string): void {
-    this.taskFacade.setCategory(categoryId);
+  public setDashboardFilter(filter: DashboardCardFilter): void {
+    this.taskService.setDashboardFilter(filter);
   }
 
-  public setDashboardFilter(filter: DashboardCardFilter): void {
-    this.taskFacade.setDashboardFilter(filter);
+  public setCategory(categoryId: string): void {
+    this.taskService.setCategory(categoryId);
   }
 
   public onToggleComplete(task: Task, completed: boolean): void {
-    this.taskFacade.updateTask(task.id, { completed }).catch(() => {
-      // Error handling is done in the facade
-    });
-  }
-
-  public onDeleteTask(id: string): void {
-    this.taskFacade.deleteTask(id).catch(() => {
+    this.taskService.updateTask(task.id, { completed }).catch(() => {
       // Error handling is done in the facade
     });
   }
 
   public onAddTask(task: Partial<Task>): void {
-    this.taskFacade.addTask(task).catch(() => {
+    this.taskService.addTask(task).catch(() => {
       // Error handling is done in the facade
     });
   }
 
   public onEditTask({ id, changes }: { id: string; changes: Partial<Task> }): void {
-    this.taskFacade.updateTask(id, changes).catch(() => {
+    this.taskService.updateTask(id, changes).catch(() => {
       // Error handling is done in the facade
     });
   }
 
-  public onDeleteTaskFromTab(id: string): void {
-    this.taskFacade.deleteTask(id).catch(() => {
+  public onDeleteTask(id: string): void {
+    this.taskService.deleteTask(id).catch(() => {
       // Error handling is done in the facade
     });
   }
@@ -113,7 +107,7 @@ export class TasksComponent implements OnInit {
         this.categoryLoading.set(true);
         this.categoryService.create({ name: result.name }).subscribe({
           next: () => {
-            this.taskFacade.loadCategories();
+            this.taskService.loadCategories();
             this.categoryLoading.set(false);
           },
           error: () => {
@@ -136,7 +130,7 @@ export class TasksComponent implements OnInit {
         this.categoryLoading.set(true);
         this.categoryService.update(result.id, { name: result.name }).subscribe({
           next: () => {
-            this.taskFacade.loadCategories();
+            this.taskService.loadCategories();
             this.categoryLoading.set(false);
           },
           error: () => {
@@ -152,7 +146,7 @@ export class TasksComponent implements OnInit {
     this.categoryLoading.set(true);
     this.categoryService.delete(categoryId).subscribe({
       next: () => {
-        this.taskFacade.loadCategories();
+        this.taskService.loadCategories();
         this.categoryLoading.set(false);
       },
       error: () => {
@@ -162,7 +156,4 @@ export class TasksComponent implements OnInit {
     });
   }
 
-  public loadCategories(): void {
-    this.taskFacade.loadCategories();
-  }
 }

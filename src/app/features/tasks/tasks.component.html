@@ -1,7 +1,6 @@
 <div class="tasks-page">
   <div class="tasks-header">
     <h1>Tasks</h1>
-    <p class="tasks-subtitle">Manage your tasks and stay organized</p>
   </div>
 
   <app-tab-switcher
@@ -18,14 +17,14 @@
     [selectedCategory]="selectedCategory()"
     [dashboardCards]="dashboardCards"
     [dashboardFilter]="dashboardFilter()"
-    [loading]="loading()"
-    [error]="error()"
+    [loading]="taskLoading()"
+    [error]="taskError()"
     (setCategory)="setCategory($event)"
     (setDashboardFilter)="setDashboardFilter($event)"
     (toggleComplete)="onToggleComplete($event.task, $event.completed)"
     (addTaskEvent)="onAddTask($event)"
     (editTaskEvent)="onEditTask($event)"
-    (deleteTaskEvent)="onDeleteTaskFromTab($event)"
+    (deleteTaskEvent)="onDeleteTask($event)"
   ></app-tasks-tab>
 
   <app-categories-tab

@@ -22,14 +22,18 @@ export class TaskFacadeService {
   private readonly _dashboardFilter = signal<DashboardCardFilter>(DashboardCardFilter.All);
   private readonly _loading = signal<boolean>(false);
   private readonly _error = signal<string | null>(null);
+  public readonly _categoryLoading = signal<boolean>(false);
+  public readonly _categoryError = signal<string | null>(null);
 
   // Public readonly signals
   public readonly tasks = this._tasks.asReadonly();
   public readonly categories = this._categories.asReadonly();
   public readonly selectedCategory = this._selectedCategory.asReadonly();
   public readonly dashboardFilter = this._dashboardFilter.asReadonly();
-  public readonly loading = this._loading.asReadonly();
-  public readonly error = this._error.asReadonly();
+  public readonly taskLoading = this._loading.asReadonly();
+  public readonly taskError = this._error.asReadonly();
+  public readonly categoryLoading = this._categoryLoading.asReadonly()
+  public readonly categoryError = this._categoryError.asReadonly();
 
   // Computed signals
   public readonly filteredTasks = computed(() => {
