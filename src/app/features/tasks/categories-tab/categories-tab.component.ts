@@ -57,8 +57,6 @@ export class CategoriesTabComponent {
   }
 
   public onDeleteCategory(id: string): void {
-    if (confirm('Are you sure you want to delete this category? This action cannot be undone.')) {
       this.taskFacade.deleteCategory(id);
-    }
   }
 }

@@ -214,15 +214,16 @@ export class TaskFacadeService {
   }
 
   public async deleteCategory(id: string): Promise<void> {
-    this._categoryLoading.set(true);
-    this._categoryError.set(null);
+    const previousCategories = this._categories();
+    this._categories.update(category => category.filter(cat => cat.id !== id));
+
     try {
       await firstValueFrom(this.categoryService.delete(id));
-      this.loadCategories();
     } catch (error) {
+      this._categories.set(previousCategories)
       this._categoryError.set('Failed to delete category');
-    } finally {
-      this._categoryLoading.set(false);
+      throw error;
     }
   }
+
 }
