@@ -11,7 +11,6 @@ import { TasksTabComponent } from './tasks-tab/tasks-tab.component';
 import { CategoriesTabComponent } from './categories-tab/categories-tab.component';
 import { TaskFacadeService } from './services/task-facade.service';
 import { AddCategoryDialogWrapperComponent } from './dialogs/add-category-dialog-wrapper.component';
-import { TaskCategoryService } from '../../core/services/item-category.service';
 
 @Component({
   selector: 'app-tasks',
@@ -33,7 +32,6 @@ import { TaskCategoryService } from '../../core/services/item-category.service';
 export class TasksComponent implements OnInit {
   private readonly dialog = inject(MatDialog);
   private readonly taskService = inject(TaskFacadeService);
-  private readonly categoryService = inject(TaskCategoryService);
 
   // Expose facade signals
   public readonly tasks = this.taskService.tasks;
@@ -71,7 +69,7 @@ export class TasksComponent implements OnInit {
     this.taskService.setCategory(categoryId);
   }
 
-  public onToggleComplete(task: Task, completed: boolean): void {
+  public onToggleTaskComplete(task: Task, completed: boolean): void {
     this.taskService.updateTask(task.id, { completed }).catch(() => {
       // Error handling is done in the facade
     });
@@ -102,17 +100,10 @@ export class TasksComponent implements OnInit {
       data: {}
     });
 
-    dialogRef.afterClosed().subscribe((result: { name: string } | null) => {
+    dialogRef.afterClosed().subscribe(async (result: { name: string } | null) => {
       if (result && result.name) {
-        this.categoryService.create({ name: result.name }).subscribe({
-          next: () => {
-            this.taskService.loadCategories();
-            // Loading/error state handled in service
-          },
-          error: () => {
-            // Loading/error state handled in service
-          }
-        });
+        await this.taskService.createCategory({ name: result.name });
+        // Loading/error state handled in facade
       }
     });
   }
@@ -123,31 +114,17 @@ export class TasksComponent implements OnInit {
       data: { category: { id: event.id, name: event.name } }
     });
 
-    dialogRef.afterClosed().subscribe((result: { name: string; id?: string } | null) => {
+    dialogRef.afterClosed().subscribe(async (result: { name: string; id?: string } | null) => {
       if (result && result.name && result.id) {
-        this.categoryService.update(result.id, { name: result.name }).subscribe({
-          next: () => {
-            this.taskService.loadCategories();
-            // Loading/error state handled in service
-          },
-          error: () => {
-            // Loading/error state handled in service
-          }
-        });
+        await this.taskService.updateCategory(result.id, { name: result.name });
+        // Loading/error state handled in facade
       }
     });
   }
 
   public onDeleteCategory(categoryId: string): void {
-    this.categoryService.delete(categoryId).subscribe({
-      next: () => {
-        this.taskService.loadCategories();
-        // Loading/error state handled in service
-      },
-      error: () => {
-        // Loading/error state handled in service
-      }
-    });
+    this.taskService.deleteCategory(categoryId);
+    // Loading/error state handled in facade
   }
 
 }

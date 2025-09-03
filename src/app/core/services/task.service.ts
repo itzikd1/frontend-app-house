@@ -13,37 +13,37 @@ export class TaskService {
   private readonly http = inject(HttpClient);
 
   getTasks(): Observable<Task[]> {
-    return this.http.get<{ data?: { tasks?: Task[]; error?: string } }>(this.baseUrl).pipe(
+    return this.http.get<{ data?: { item?: Task[]; error?: string } }>(this.baseUrl).pipe(
       map(res => {
         if (res.data?.error) throw res.data.error;
-        return res.data?.tasks ?? [];
+        return res.data?.item as Task[]?? [];
       })
     );
   }
 
   getTask(id: string): Observable<Task> {
-    return this.http.get<{ data?: Task; error?: string }>(`${this.baseUrl}/${id}`).pipe(
+    return this.http.get<{ data?: { item: Task; error?: string } }>(`${this.baseUrl}/${id}`).pipe(
       map(res => {
-        if (res.error) throw res.error;
-        return res.data as Task;
+        if (res.data?.error) throw res.data.error;
+        return res.data?.item as Task;
       })
     );
   }
 
   createTask(task: Partial<Task>): Observable<Task> {
-    return this.http.post<{ data?: Task; error?: string }>(this.baseUrl, task).pipe(
+    return this.http.post<{ data: {item?: Task; error?: string} }>(this.baseUrl, task).pipe(
       map(res => {
-        if (res.error) throw res.error;
-        return res.data as Task;
+        if (res.data.error) throw res.data.error;
+        return res.data.item as Task;
       })
     );
   }
 
   updateTask(id: string, task: Partial<Task>): Observable<Task> {
-    return this.http.put<{ data?: Task; error?: string }>(`${this.baseUrl}/${id}`, task).pipe(
+    return this.http.put<{ data?: { item: Task; error?: string } }>(`${this.baseUrl}/${id}`, task).pipe(
       map(res => {
-        if (res.error) throw res.error;
-        return res.data as Task;
+        if (res.data?.error) throw res.data.error;
+        return res.data?.item as Task;
       })
     );
   }

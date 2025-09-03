@@ -21,7 +21,7 @@
     [error]="taskError()"
     (setCategory)="setCategory($event)"
     (setDashboardFilter)="setDashboardFilter($event)"
-    (toggleComplete)="onToggleComplete($event.task, $event.completed)"
+    (toggleComplete)="onToggleTaskComplete($event.task, $event.completed)"
     (addTaskEvent)="onAddTask($event)"
     (editTaskEvent)="onEditTask($event)"
     (deleteTaskEvent)="onDeleteTask($event)"

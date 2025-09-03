@@ -17,21 +17,21 @@ export class TaskFacadeService {
 
   // State signals
   private readonly _tasks = signal<Task[]>([]);
+  private readonly _taskLoading = signal<boolean>(false);
+  private readonly _taskError = signal<string | null>(null);
   private readonly _categories = signal<TaskCategory[]>([]);
   private readonly _selectedCategory = signal<string>('all');
-  private readonly _dashboardFilter = signal<DashboardCardFilter>(DashboardCardFilter.All);
-  private readonly _loading = signal<boolean>(false);
-  private readonly _error = signal<string | null>(null);
   public readonly _categoryLoading = signal<boolean>(false);
   public readonly _categoryError = signal<string | null>(null);
+  private readonly _dashboardFilter = signal<DashboardCardFilter>(DashboardCardFilter.All);
 
   // Public readonly signals
   public readonly tasks = this._tasks.asReadonly();
   public readonly categories = this._categories.asReadonly();
   public readonly selectedCategory = this._selectedCategory.asReadonly();
   public readonly dashboardFilter = this._dashboardFilter.asReadonly();
-  public readonly taskLoading = this._loading.asReadonly();
-  public readonly taskError = this._error.asReadonly();
+  public readonly taskLoading = this._taskLoading.asReadonly();
+  public readonly taskError = this._taskError.asReadonly();
   public readonly categoryLoading = this._categoryLoading.asReadonly()
   public readonly categoryError = this._categoryError.asReadonly();
 
@@ -96,16 +96,16 @@ export class TaskFacadeService {
   });
 
   public loadTasks(): void {
-    this._loading.set(true);
+    this._taskLoading.set(true);
     this.taskService.getTasks().subscribe({
       next: (tasks) => {
         this._tasks.set(TaskUtils.sortTasks(tasks));
-        this._loading.set(false);
-        this._error.set(null);
+        this._taskLoading.set(false);
+        this._taskError.set(null);
       },
       error: (error) => {
-        this._error.set('Failed to load tasks.');
-        this._loading.set(false);
+        this._taskError.set('Failed to load tasks.');
+        this._taskLoading.set(false);
         console.error('Error loading tasks:', error);
       }
     });
@@ -148,7 +148,7 @@ export class TaskFacadeService {
     } catch (error) {
       // Revert on error
       this._tasks.update(tasks => tasks.filter(t => t.id !== tempId));
-      this._error.set('Failed to add task.');
+      this._taskError.set('Failed to add task.');
       throw error;
     }
   }
@@ -166,7 +166,7 @@ export class TaskFacadeService {
     } catch (error) {
       // Revert on error
       this._tasks.set(previousTasks);
-      this._error.set('Failed to update task.');
+      this._taskError.set('Failed to update task.');
       throw error;
     }
   }
@@ -182,8 +182,47 @@ export class TaskFacadeService {
     } catch (error) {
       // Revert on error
       this._tasks.set(previousTasks);
-      this._error.set('Failed to delete task.');
+      this._taskError.set('Failed to delete task.');
       throw error;
+    }
+  }
+
+  public async createCategory(data: { name: string }): Promise<void> {
+    this._categoryLoading.set(true);
+    this._categoryError.set(null);
+    try {
+      await firstValueFrom(this.categoryService.create(data));
+      this.loadCategories();
+    } catch (error) {
+      this._categoryError.set('Failed to create category');
+    } finally {
+      this._categoryLoading.set(false);
+    }
+  }
+
+  public async updateCategory(id: string, data: { name: string }): Promise<void> {
+    this._categoryLoading.set(true);
+    this._categoryError.set(null);
+    try {
+      await firstValueFrom(this.categoryService.update(id, data));
+      this.loadCategories();
+    } catch (error) {
+      this._categoryError.set('Failed to update category');
+    } finally {
+      this._categoryLoading.set(false);
+    }
+  }
+
+  public async deleteCategory(id: string): Promise<void> {
+    this._categoryLoading.set(true);
+    this._categoryError.set(null);
+    try {
+      await firstValueFrom(this.categoryService.delete(id));
+      this.loadCategories();
+    } catch (error) {
+      this._categoryError.set('Failed to delete category');
+    } finally {
+      this._categoryLoading.set(false);
     }
   }
 }
