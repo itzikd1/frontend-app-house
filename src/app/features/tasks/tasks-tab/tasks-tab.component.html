@@ -29,6 +29,7 @@
         (edit)="openEditTaskDialog(task)"
         (delete)="deleteTask(task.id)"
       >
+        <strong class="item-title">{{ task?.title }}</strong>
         <span *ngIf="task?.description" class="item-desc">{{ task?.description }}</span>
         <div class="task-meta-row">
           <span class="task-priority-badge"

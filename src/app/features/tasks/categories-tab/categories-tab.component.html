@@ -1,5 +1,4 @@
 <div class="category-management">
-  <h2>Manage Task Categories</h2>
   <div *ngIf="categoryLoading()">
     <app-loading-spinner [translationKey]="'loading.default'"></app-loading-spinner>
   </div>
@@ -8,18 +7,18 @@
   </div>
   <div *ngIf="!categoryLoading() && categories().length">
     <div class="categories-list">
-      <app-item-card
-        *ngFor="let item of categoryItems; let i = index"
-        [item]="item"
-        [showCheckbox]="false"
-        [completed]="false"
-        (edit)="onEditCategory(categories()[i])"
-        (delete)="onDeleteCategory(categories()[i].id)"
-      >
-        <div class="category-meta-row">
-          <span class="category-name">{{ item.title }}</span>
-        </div>
-      </app-item-card>
+      <ng-container *ngIf="categories() as categoryItems">
+        <app-item-card
+          *ngFor="let item of categoryItems; let i = index"
+          [item]="item"
+          [showCheckbox]="false"
+          [completed]="false"
+          (edit)="onEditCategory(item)"
+          (delete)="onDeleteCategory(item.id)"
+        >
+          <strong>{{ item.name }}</strong>
+        </app-item-card>
+      </ng-container>
     </div>
   </div>
   <div *ngIf="!categoryLoading() && !categories().length">

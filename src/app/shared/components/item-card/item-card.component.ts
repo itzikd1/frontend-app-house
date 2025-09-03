@@ -1,7 +1,6 @@
 import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
-import { Item } from '../../models/item.model';
 
 @Component({
   selector: 'app-item-card',
@@ -12,11 +11,11 @@ import { Item } from '../../models/item.model';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ItemCardComponent {
-  @Input() item: Item | null = null;
+  @Input() item: unknown = null;
   @Input() completed: boolean = false;
   @Input() showCheckbox: boolean = false;
-  @Output() edit = new EventEmitter<Item | null>();
-  @Output() delete = new EventEmitter<Item | null>();
+  @Output() edit = new EventEmitter<unknown>();
+  @Output() delete = new EventEmitter<unknown>();
   @Output() toggleComplete = new EventEmitter<boolean>();
 
   onToggleComplete(event: Event): void {

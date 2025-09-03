@@ -8,7 +8,7 @@
       (change)="onToggleComplete($event)"
       aria-label="Mark as complete"
     />
-    <strong class="item-title">{{ item?.title }}</strong>
+    <ng-content></ng-content>
     <div class="item-actions">
       <button type="button" class="icon-btn edit" (click)="edit.emit(item)" title="Edit">
         <mat-icon aria-label="Edit">edit</mat-icon>
@@ -22,4 +22,3 @@
     <ng-content></ng-content>
   </div>
 </div>
-

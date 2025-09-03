@@ -26,13 +26,9 @@ export class CategoriesTabComponent {
   public readonly categoryLoading = this.taskFacade.categoryLoading;
   public readonly categoryError = this.taskFacade.categoryError;
 
-  public get categoryItems(): Item[] {
-    return this.categories().map(category => ({
-      title: category.name,
-      description: `Category ID: ${category.id}`,
-      id: category.id,
-    }));
-  }
+  public readonly categoryDisplayMapper = (category: TaskCategory) => ({
+    title: category.name,
+  });
 
   public onAddCategory(): void {
     const dialogRef = this.dialog.open(AddCategoryDialogWrapperComponent, {
