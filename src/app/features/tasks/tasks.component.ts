@@ -3,7 +3,13 @@ import { TabOption, TabSwitcherComponent } from '../../shared/components/tab-swi
 import { TasksTabComponent } from './tasks-tab/tasks-tab.component';
 import { CategoriesTabComponent } from './categories-tab/categories-tab.component';
 import { TaskFacadeService } from './services/task-facade.service';
-import {CommonModule} from '@angular/common';
+import { CommonModule } from '@angular/common';
+
+// Constants for better maintainability
+const TASK_TAB_ID = 'tasks' as const;
+const CATEGORIES_TAB_ID = 'categories' as const;
+
+type TaskTabId = typeof TASK_TAB_ID | typeof CATEGORIES_TAB_ID;
 
 @Component({
   selector: 'app-tasks',
@@ -21,19 +27,25 @@ import {CommonModule} from '@angular/common';
 export class TasksComponent implements OnInit {
   private readonly taskFacade = inject(TaskFacadeService);
 
-  public selectedTab = signal<string>('tasks');
+  public readonly selectedTab = signal<TaskTabId>(TASK_TAB_ID);
 
   public readonly tabOptions: TabOption[] = [
-    { id: 'tasks', label: 'Tasks' },
-    { id: 'categories', label: 'Categories' },
-  ];
+    { id: TASK_TAB_ID, label: 'Tasks' },
+    { id: CATEGORIES_TAB_ID, label: 'Categories' },
+  ] as const;
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.taskFacade.loadTasks();
     this.taskFacade.loadCategories();
   }
 
   public setTab(tab: string): void {
-    this.selectedTab.set(tab);
+    if (this.isValidTab(tab)) {
+      this.selectedTab.set(tab);
+    }
+  }
+
+  private isValidTab(tab: string): tab is TaskTabId {
+    return tab === TASK_TAB_ID || tab === CATEGORIES_TAB_ID;
   }
 }
