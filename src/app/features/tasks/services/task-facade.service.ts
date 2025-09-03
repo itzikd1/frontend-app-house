@@ -106,7 +106,6 @@ export class TaskFacadeService {
       error: (error) => {
         this._taskError.set('Failed to load tasks.');
         this._taskLoading.set(false);
-        console.error('Error loading tasks:', error);
       }
     });
   }

@@ -16,7 +16,7 @@ export class TaskService {
     return this.http.get<{ data?: { item?: Task[]; error?: string } }>(this.baseUrl).pipe(
       map(res => {
         if (res.data?.error) throw res.data.error;
-        return res.data?.item as Task[]?? [];
+        return res.data?.item as Task[] ?? [];
       })
     );
   }
