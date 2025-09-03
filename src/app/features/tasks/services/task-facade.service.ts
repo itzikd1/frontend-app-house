@@ -7,6 +7,7 @@ import { DashboardCardFilter } from '../../../shared/models/dashboard-card-filte
 import { DashboardCardConfig } from '../../../shared/components/dashboard-summary-cards/dashboard-summary-cards.component';
 import { TaskUtils } from '../utils/task.utils';
 import { firstValueFrom } from 'rxjs';
+import { ApiResponse } from '../../../core/interfaces/api-response.model';
 
 @Injectable({
   providedIn: 'root'
@@ -188,28 +189,51 @@ export class TaskFacadeService {
   }
 
   public async createCategory(data: { name: string }): Promise<void> {
-    this._categoryLoading.set(true);
     this._categoryError.set(null);
+    const tempId = TaskUtils.generateTempId();
+    const optimisticCategory: TaskCategory = { id: tempId, name: data.name } as TaskCategory;
+    const previousCategories = this._categories();
+    // Optimistic update
+    this._categories.update(categories => [optimisticCategory, ...categories]);
     try {
-      await firstValueFrom(this.categoryService.create(data));
-      this.loadCategories();
+      const createdCategory = await firstValueFrom(this.categoryService.create(data));
+      if (createdCategory?.data?.item) {
+        // Replace temp category with real one
+        this._categories.update(categories =>
+          categories.map(cat => cat.id === tempId ? createdCategory.data.item : cat)
+        );
+      } else {
+        this.loadCategories();
+      }
     } catch (error) {
+      // Revert on error
+      this._categories.set(previousCategories);
       this._categoryError.set('Failed to create category');
-    } finally {
-      this._categoryLoading.set(false);
+      throw error;
     }
   }
 
   public async updateCategory(id: string, data: { name: string }): Promise<void> {
-    this._categoryLoading.set(true);
     this._categoryError.set(null);
+    const previousCategories = this._categories();
+    // Optimistic update
+    this._categories.update(categories =>
+      categories.map(cat => cat.id === id ? { ...cat, ...data } : cat)
+    );
     try {
-      await firstValueFrom(this.categoryService.update(id, data));
-      this.loadCategories();
+      const updatedCategory = await firstValueFrom(this.categoryService.update(id, data));
+      if (updatedCategory?.data?.item) {
+        this._categories.update(categories =>
+          categories.map(cat => cat.id === id ? updatedCategory.data.item : cat)
+        );
+      } else {
+        this.loadCategories();
+      }
     } catch (error) {
+      // Revert on error
+      this._categories.set(previousCategories);
       this._categoryError.set('Failed to update category');
-    } finally {
-      this._categoryLoading.set(false);
+      throw error;
     }
   }
 
