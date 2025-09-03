@@ -33,8 +33,8 @@ export class CategoriesTabComponent {
     const config = CategoryDialogConfigs.createAddCategoryConfig();
 
     this.formDialogService.openFormDialog(config).subscribe(result => {
-      if (result) {
-        this.taskFacade.createCategory({ name: result.name.trim() });
+      if (result && typeof result['name'] === 'string') {
+        this.taskFacade.createCategory({ name: result['name'].trim() });
       }
     });
   }
@@ -43,8 +43,8 @@ export class CategoriesTabComponent {
     const config = CategoryDialogConfigs.createEditCategoryConfig(category);
 
     this.formDialogService.openFormDialog(config).subscribe(result => {
-      if (result) {
-        this.taskFacade.updateCategory(category.id, { name: result.name.trim() });
+      if (result && typeof result['name'] === 'string') {
+        this.taskFacade.updateCategory(category.id, { name: result['name'].trim() });
       }
     });
   }

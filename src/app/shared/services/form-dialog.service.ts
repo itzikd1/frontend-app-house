@@ -9,7 +9,7 @@ import { FormDialogComponent, FormDialogConfig } from '../components/form-dialog
 export class FormDialogService {
   private readonly dialog = inject(MatDialog);
 
-  public openFormDialog(config: FormDialogConfig): Observable<any> {
+  public openFormDialog(config: FormDialogConfig): Observable<Record<string, string | number | Date> | null> {
     const dialogRef = this.dialog.open(FormDialogComponent, {
       data: config,
       width: '500px',
