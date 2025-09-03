@@ -25,9 +25,6 @@ export class CategoriesTabComponent {
   public readonly categoryLoading = this.taskFacade.categoryLoading;
   public readonly categoryError = this.taskFacade.categoryError;
 
-  public readonly categoryDisplayMapper = (category: TaskCategory) => ({
-    title: category.name,
-  });
 
   public onAddCategory(): void {
     const config = CategoryDialogConfigs.createAddCategoryConfig();
