@@ -7,7 +7,6 @@ import { DashboardCardFilter } from '../../../shared/models/dashboard-card-filte
 import { DashboardCardConfig } from '../../../shared/components/dashboard-summary-cards/dashboard-summary-cards.component';
 import { TaskUtils } from '../utils/task.utils';
 import { firstValueFrom } from 'rxjs';
-import { ApiResponse } from '../../../core/interfaces/api-response.model';
 
 @Injectable({
   providedIn: 'root'
@@ -104,7 +103,7 @@ export class TaskFacadeService {
         this._taskLoading.set(false);
         this._taskError.set(null);
       },
-      error: (error) => {
+      error: () => {
         this._taskError.set('Failed to load tasks.');
         this._taskLoading.set(false);
       }
@@ -114,7 +113,6 @@ export class TaskFacadeService {
   public loadCategories(): void {
     this.categoryService.getAll().subscribe({
       next: (categories) => {
-        console.log(categories)
         this._categories.set(categories);
       },
       error: (error) => {

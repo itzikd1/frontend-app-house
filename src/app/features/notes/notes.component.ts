@@ -56,7 +56,6 @@ export class NotesComponent implements OnInit {
   }
 
   openAddDialog(): void {
-    console.log("click")
     const dialogRef = this.dialog.open(AddNoteDialogWrapperComponent, {
       width: '400px',
       data: {}

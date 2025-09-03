@@ -60,7 +60,6 @@ export class ShoppingListComponent {
 
   constructor() {
     this.facade.loadItems();
-    console.log(this.allItems(), 'allItems')
     this.facade.loadCategories();
   }
 
@@ -83,13 +82,12 @@ export class ShoppingListComponent {
   }
 
   openAddCategoryDialog(): void {
-    console.log('click')
     const dialogRef = this.dialog.open(AddCategoryDialogWrapperComponent);
     dialogRef.afterClosed().subscribe(async (result: { name: string } | undefined) => {
       if (result && result.name.trim()) {
         try {
           await this.facade.addCategory({ name: result.name.trim() });
-        } catch (error) {
+        } catch {
           // handle error (could show a toast/snackbar)
         }
       }
@@ -104,7 +102,7 @@ export class ShoppingListComponent {
       if (result && result.name.trim()) {
         try {
           await this.facade.updateCategory(category.id, { name: result.name.trim() });
-        } catch (error) {
+        } catch {
           // handle error (could show a toast/snackbar)
         }
       }
@@ -114,7 +112,7 @@ export class ShoppingListComponent {
   async deleteCategory(id: string): Promise<void> {
     try {
       await this.facade.deleteCategory(id);
-    } catch (error) {
+    } catch {
       // handle error (could show a toast/snackbar)
     }
   }

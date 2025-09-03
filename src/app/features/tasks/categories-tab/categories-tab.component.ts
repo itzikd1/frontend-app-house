@@ -5,7 +5,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDialog } from '@angular/material/dialog';
 import { LoadingSpinnerComponent } from '../../../shared/components/loading-spinner/loading-spinner.component';
 import { ItemCardComponent } from '../../../shared/components/item-card/item-card.component';
-import { Item } from '../../../shared/models/item.model';
 import { TaskFacadeService } from '../services/task-facade.service';
 import { AddCategoryDialogWrapperComponent } from '../dialogs/add-category-dialog-wrapper.component';
 

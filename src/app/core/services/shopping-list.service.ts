@@ -4,9 +4,6 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import {ShoppingList, ShoppingListItem} from '../interfaces/shopping-list.model';
-import {Task} from '../interfaces/task.model';
-
-
 
 @Injectable({ providedIn: 'root' })
 export class ShoppingListService {
