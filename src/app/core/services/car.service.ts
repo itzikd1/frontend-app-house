@@ -1,18 +1,9 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
-import {environment} from '../../../environments/environment';
-
-export interface Car {
-  id: string;
-  make: string;
-  model: string;
-  year: number;
-  licensePlate: string;
-  createdAt: string;
-  updatedAt: string;
-}
+import { Observable } from 'rxjs';
+import {  map } from 'rxjs/operators';
+import { environment } from '../../../environments/environment';
+import { Car } from '../../shared/models/car.model';
 
 @Injectable({ providedIn: 'root' })
 export class CarService {
@@ -24,8 +15,7 @@ export class CarService {
       map(res => {
         if (res.error) throw res.error;
         return res.data?.cars ?? [];
-      }),
-      catchError(err => throwError(() => err))
+      })
     );
   }
 

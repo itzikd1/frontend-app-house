@@ -1,8 +1,8 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
-import { Goal } from '../../shared/models/goal.model';
+import { Observable } from 'rxjs';
+import {  map } from 'rxjs/operators';
+import { Goal } from '../interfaces/goal.model';
 import { environment } from '../../../environments/environment';
 
 @Injectable({
@@ -17,8 +17,7 @@ export class GoalService {
       map(res => {
         if (res.error) throw res.error;
         return res.data?.goals ?? [];
-      }),
-      catchError(err => throwError(() => err))
+      })
     );
   }
 
@@ -28,8 +27,7 @@ export class GoalService {
         if (res.error) throw res.error;
         if (!res.data) throw 'Goal not found';
         return res.data;
-      }),
-      catchError(err => throwError(() => err))
+      })
     );
   }
 
@@ -39,8 +37,7 @@ export class GoalService {
         if (res.error) throw res.error;
         if (!res.data) throw 'Failed to create goal';
         return res.data;
-      }),
-      catchError(err => throwError(() => err))
+      })
     );
   }
 
@@ -50,8 +47,7 @@ export class GoalService {
         if (res.error) throw res.error;
         if (!res.data) throw 'Failed to update goal';
         return res.data;
-      }),
-      catchError(err => throwError(() => err))
+      })
     );
   }
 
@@ -60,8 +56,7 @@ export class GoalService {
       map(res => {
         if (res.error) throw res.error;
         return;
-      }),
-      catchError(err => throwError(() => err))
+      })
     );
   }
 }

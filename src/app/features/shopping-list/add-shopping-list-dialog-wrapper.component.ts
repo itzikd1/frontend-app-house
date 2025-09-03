@@ -2,7 +2,7 @@ import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialogRef, MatDialogModule } from '@angular/material/dialog';
 import { AddShoppingListDialogComponent } from './add-shopping-list-dialog.component';
-import { ShoppingList } from '../../shared/models/shopping-list.model';
+import { ShoppingList } from '../../core/interfaces/shopping-list.model';
 
 @Component({
   selector: 'app-add-shopping-list-dialog-wrapper',

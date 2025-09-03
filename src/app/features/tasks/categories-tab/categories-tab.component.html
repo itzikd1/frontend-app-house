@@ -1,0 +1,30 @@
+<div class="category-management">
+  <div *ngIf="categoryLoading()">
+    <app-loading-spinner [translationKey]="'loading.default'"></app-loading-spinner>
+  </div>
+  <div *ngIf="categoryError()">
+    <p class="error">{{ categoryError() }}</p>
+  </div>
+  <div *ngIf="!categoryLoading() && categories().length">
+    <div class="categories-list">
+      <ng-container *ngIf="categories() as categoryItems">
+        <app-item-card
+          *ngFor="let item of categoryItems; let i = index"
+          [item]="item"
+          [showCheckbox]="false"
+          [completed]="false"
+          (edit)="onEditCategory(item)"
+          (delete)="onDeleteCategory(item.id)"
+        >
+          <strong>{{ item.name }}</strong>
+        </app-item-card>
+      </ng-container>
+    </div>
+  </div>
+  <div *ngIf="!categoryLoading() && !categories().length">
+    <p>No categories found.</p>
+  </div>
+  <button class="fab-btn" (click)="onAddCategory()" aria-label="Add Category">
+    <mat-icon>add</mat-icon>
+  </button>
+</div>

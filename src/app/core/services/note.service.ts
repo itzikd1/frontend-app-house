@@ -1,16 +1,9 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
-import {environment} from '../../../environments/environment';
-
-export interface Note {
-  id: string;
-  title: string;
-  content: string;
-  createdAt: string;
-  updatedAt: string;
-}
+import { Observable } from 'rxjs';
+import {  map } from 'rxjs/operators';
+import { environment } from '../../../environments/environment';
+import {Note} from '../interfaces/note.model';
 
 @Injectable({ providedIn: 'root' })
 export class NoteService {
@@ -22,8 +15,7 @@ export class NoteService {
       map(res => {
         if (res.error) throw res.error;
         return res.data?.notes ?? [];
-      }),
-      catchError(err => throwError(() => err))
+      })
     );
   }
 

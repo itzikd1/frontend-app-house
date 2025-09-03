@@ -12,11 +12,11 @@ import { SuccessMessageComponent } from './components/success-message/success-me
 import { FabButtonComponent } from './components/fab-button/fab-button.component';
 import { HealthStatusCardComponent } from './components/health-status-card/health-status-card.component';
 import { ItemCardComponent } from './components/item-card/item-card.component';
-import { ItemDialogComponent } from './components/item-dialog/item-dialog.component';
-import { ItemFormComponent } from './components/item-form/item-form.component';
 import { ItemListComponent } from './components/item-list/item-list.component';
 import { ModalDialogComponent } from './components/modal-dialog.component';
 import { DashboardSummaryCardsComponent } from './components/dashboard-summary-cards/dashboard-summary-cards.component';
+import { TabSwitcherComponent } from './components/tab-switcher/tab-switcher.component';
+import { TaskCategoryFilterModule } from '../features/tasks/task-category-filter/task-category-filter.module';
 
 const MATERIAL_MODULES = [
   MatToolbarModule,
@@ -37,11 +37,11 @@ const MATERIAL_MODULES = [
     FabButtonComponent,
     HealthStatusCardComponent,
     ItemCardComponent,
-    ItemDialogComponent,
-    ItemFormComponent,
     ItemListComponent,
     ModalDialogComponent,
-    DashboardSummaryCardsComponent
+    DashboardSummaryCardsComponent,
+    TabSwitcherComponent,
+    TaskCategoryFilterModule
   ],
   exports: [
     ...MATERIAL_MODULES,
@@ -52,11 +52,11 @@ const MATERIAL_MODULES = [
     FabButtonComponent,
     HealthStatusCardComponent,
     ItemCardComponent,
-    ItemDialogComponent,
-    ItemFormComponent,
     ItemListComponent,
     ModalDialogComponent,
-    DashboardSummaryCardsComponent
+    DashboardSummaryCardsComponent,
+    TabSwitcherComponent,
+    TaskCategoryFilterModule
   ]
 })
 export class SharedModule {}

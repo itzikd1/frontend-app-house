@@ -1,0 +1,55 @@
+<app-dashboard-summary-cards
+  [cards]="dashboardCards()"
+  [activeFilter]="dashboardFilter()"
+  (cardClick)="setDashboardFilter($event)"
+></app-dashboard-summary-cards>
+
+<app-task-category-filter
+  [categories]="categories()"
+  [selectedCategory]="selectedCategory()"
+  [tasksCount]="tasks().length"
+  (categoryChange)="setCategory($event)"
+></app-task-category-filter>
+
+<div *ngIf="taskLoading()">
+  <app-loading-spinner [translationKey]="'loading.default'"></app-loading-spinner>
+</div>
+<div *ngIf="!taskLoading()">
+  <div *ngIf="taskError(); else showTasks">
+    <p class="error">{{ taskError() }}</p>
+  </div>
+  <ng-template #showTasks>
+    <div *ngIf="filteredTasks() && filteredTasks().length; else noTasks" class="tasks-list">
+      <app-item-card
+        *ngFor="let task of filteredTasks()"
+        [item]="task"
+        [showCheckbox]="true"
+        [completed]="task.completed"
+        (toggleComplete)="onToggleTaskComplete(task, $event)"
+        (edit)="openEditTaskDialog(task)"
+        (delete)="deleteTask(task.id)"
+      >
+        <strong class="item-title">{{ task?.title }}</strong>
+        <span *ngIf="task?.description" class="item-desc">{{ task?.description }}</span>
+        <div class="task-meta-row">
+          <span class="task-priority-badge"
+                [ngClass]="task.priority && task.priority.toLowerCase()">{{ task.priority }}</span>
+          <span *ngIf="task.dueDate" class="task-due-date">
+            <mat-icon class="due-date-icon">error</mat-icon>
+            <span [ngClass]="{'overdue': isOverdue(task.dueDate)}">{{ task.dueDate | date:'MMM d, yyyy' }}</span>
+          </span>
+          <span *ngIf="task.category && task.category.id !== 'None'" class="task-category-name">
+            {{ task.category.name }}
+          </span>
+        </div>
+      </app-item-card>
+    </div>
+    <ng-template #noTasks>
+      <p>No tasks found.</p>
+    </ng-template>
+  </ng-template>
+</div>
+
+<button class="fab-btn" (click)="openAddTaskDialog()" aria-label="Add Task">
+  <mat-icon>add</mat-icon>
+</button>

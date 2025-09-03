@@ -1,4 +1,4 @@
-import { TaskCategory } from '../../core/services/item-category.service';
+import {TaskCategory} from './item-category.model';
 
 export interface BaseModel {
   id: string;
@@ -12,9 +12,9 @@ export interface Task extends BaseModel {
   description?: string;
   categoryId?: string;
   category?: TaskCategory;
+  repeatFrequency?: string;
   priority: 'Low' | 'Medium' | 'High';
   dueDate: string | null;
-  repeat?: string;
   completed: boolean;
 }
 

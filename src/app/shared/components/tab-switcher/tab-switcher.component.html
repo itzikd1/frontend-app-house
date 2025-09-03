@@ -1,0 +1,11 @@
+<div class="tab-switcher">
+  <button
+    *ngFor="let tab of tabs"
+    class="tab"
+    [class.active]="selectedTab === tab.id"
+    (click)="onTabClick(tab.id)"
+  >
+    {{ tab.label }}
+  </button>
+</div>
+

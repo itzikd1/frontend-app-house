@@ -3,13 +3,6 @@
   <a href="#main-content" class="skip-to-content">{{ 'skip_to_main_content' | translate }}</a>
 
   <mat-toolbar class="toolbar" role="navigation" aria-label="Main navigation">
-    <!-- Logo -->
-    <div class="logo">
-      <a routerLink="/" class="logo-link" aria-label="Home">
-        <span class="logo-text" [class.rtl]="currentLanguage() === 'he'" aria-hidden="true">{{ 'house_manager' | translate }}</span>
-      </a>
-    </div>
-
     <!-- Desktop Navigation -->
     <nav class="desktop-nav" aria-label="Main menu">
       <ul class="nav-list" role="menubar">

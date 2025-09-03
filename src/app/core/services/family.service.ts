@@ -1,8 +1,8 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
-import { Family } from '../../shared/models/family.model';
+import { Observable } from 'rxjs';
+import {  map } from 'rxjs/operators';
+import { Family } from '../interfaces/family.model';
 import { environment } from '../../../environments/environment';
 
 @Injectable({
@@ -17,8 +17,7 @@ export class FamilyService {
       map(res => {
         if (res.error) throw res.error;
         return res.data ?? [];
-      }),
-      catchError(err => throwError(() => err))
+      })
     );
   }
 
@@ -27,8 +26,7 @@ export class FamilyService {
       map(res => {
         if (res.error) throw res.error;
         return res.data as Family;
-      }),
-      catchError(err => throwError(() => err))
+      })
     );
   }
 
@@ -37,8 +35,7 @@ export class FamilyService {
       map(res => {
         if (res.error) throw res.error;
         return res.data as Family;
-      }),
-      catchError(err => throwError(() => err))
+      })
     );
   }
 
@@ -47,8 +44,7 @@ export class FamilyService {
       map(res => {
         if (res.error) throw res.error;
         return res.data as Family;
-      }),
-      catchError(err => throwError(() => err))
+      })
     );
   }
 
@@ -57,8 +53,7 @@ export class FamilyService {
       map(res => {
         if (res.error) throw res.error;
         return res.data;
-      }),
-      catchError(err => throwError(() => err))
+      })
     );
   }
 }

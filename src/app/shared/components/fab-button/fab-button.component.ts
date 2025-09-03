@@ -7,15 +7,7 @@ import { MatButtonModule } from '@angular/material/button';
   selector: 'app-fab-button',
   standalone: true,
   imports: [CommonModule, MatButtonModule, MatIconModule],
-  template: `
-    <button mat-fab
-            [color]="color"
-            class="fab"
-            (click)="onClick($event)"
-            [attr.aria-label]="ariaLabel">
-      <mat-icon>{{ icon }}</mat-icon>
-    </button>
-  `,
+  templateUrl: './fab-button.component.html',
   styleUrls: ['./fab-button.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -23,10 +15,10 @@ export class FabButtonComponent {
   @Input() icon = 'add';
   @Input() color: 'primary' | 'accent' | 'warn' = 'primary';
   @Input() ariaLabel = 'Add';
-  @Output() fabClick = new EventEmitter<void>();
+  @Output() buttonClick = new EventEmitter<void>();
 
   onClick(event: MouseEvent): void {
     event.stopPropagation();
-    this.fabClick.emit();
+    this.buttonClick.emit();
   }
 }

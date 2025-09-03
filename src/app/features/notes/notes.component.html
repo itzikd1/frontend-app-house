@@ -1,28 +1,46 @@
 <div class="notes-page">
-  <h2>Notes</h2>
+  <div class="notes-header">
+    <h1>My Notes</h1>
+    <div class="notes-subtitle">Capture your thoughts, ideas, and reminders</div>
+  </div>
+
   <ng-container *ngIf="loading(); else showNotes">
     <app-loading-spinner [translationKey]="'loading.default'"></app-loading-spinner>
   </ng-container>
+
   <ng-template #showNotes>
-    <app-item-list
-      [items]="notes()"
-      [loading]="loading()"
-      [error]="error()"
-      emptyMessage="No notes found."
-    >
-      <app-item-card
-        *ngFor="let note of notes()"
-        [item]="note"
-        (delete)="deleteNote(note)"
-      >
-        <span>{{ note.content }}</span>
-      </app-item-card>
-    </app-item-list>
+    <div class="notes-container" *ngIf="notes().length > 0; else emptyState">
+      <div class="notes-grid">
+        <app-item-card
+          *ngFor="let note of notes()"
+          [item]="note"
+          (delete)="deleteNote(note)"
+          (edit)="openEditDialog(note)"
+          class="note-card"
+        >
+          <div class="note-content">
+            <p class="note-text">{{ note.content }}</p>
+            <div class="note-date" *ngIf="note.createdAt">
+              {{ note.createdAt | date:'mediumDate' }}
+            </div>
+          </div>
+        </app-item-card>
+      </div>
+    </div>
+
+    <ng-template #emptyState>
+      <div class="empty-state">
+        <mat-icon class="empty-icon">note</mat-icon>
+        <p>No notes found</p>
+        <p class="empty-subtitle">Create your first note by clicking the + button</p>
+      </div>
+    </ng-template>
 
     <app-fab-button
       icon="add"
       ariaLabel="Add Note"
       (click)="openAddDialog()"
+      class="add-note-fab"
     ></app-fab-button>
   </ng-template>
 </div>

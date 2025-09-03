@@ -5,9 +5,9 @@
   </div>
 
   <!-- Tabs for items and categories -->
-  <div class="shopping-list-tabs">
-    <button mat-raised-button class="tab" [class.active]="selectedTab() === 'items'" (click)="setTab('items')">Items</button>
-    <button mat-raised-button class="tab" [class.active]="selectedTab() === 'categories'" (click)="setTab('categories')">Categories</button>
+  <div class="tag-filters">
+    <button class="tag-btn" [class.active]="selectedTab() === 'items'" (click)="setTab('items')">Items</button>
+    <button class="tag-btn" [class.active]="selectedTab() === 'categories'" (click)="setTab('categories')">Categories</button>
   </div>
 
   <!-- Items tab -->
@@ -20,11 +20,10 @@
     ></app-dashboard-summary-cards>
 
     <!-- Category filters -->
-    <div class="shopping-category-filters">
-      <button mat-raised-button class="category-btn" [class.active]="selectedCategory() === 'all'" (click)="setCategory('all')">All ({{ shoppingItems().length }})</button>
+    <div class="tag-filters">
+      <button class="tag-btn" [class.active]="selectedCategory() === 'all'" (click)="setCategory('all')">All ({{ allItems().length }})</button>
       <button
-        mat-raised-button
-        class="category-btn"
+        class="tag-btn"
         *ngFor="let category of categories()"
         [class.active]="selectedCategory() === category.id"
         (click)="setCategory(category.id)"
@@ -69,20 +68,12 @@
   <ng-container *ngIf="selectedTab() === 'categories'">
     <div class="category-management">
       <h2>Manage Shopping Categories</h2>
-      <form (ngSubmit)="editingCategory() ? updateCategory() : addCategory()" class="category-form">
-        <input
-          type="text"
-          [ngModel]="categoryFormName()"
-          (ngModelChange)="categoryFormName.set($event)"
-          name="categoryName"
-          placeholder="Category name"
-          required
-        />
-        <button mat-raised-button color="primary" type="submit">
-          {{ editingCategory() ? 'Update' : 'Add' }} Category
-        </button>
-        <button *ngIf="editingCategory()" mat-button type="button" (click)="editingCategory.set(null); categoryFormName.set('')">Cancel</button>
-      </form>
+      <app-fab-button
+        icon="add"
+        color="primary"
+        ariaLabel="Add Category"
+        (click)="openAddCategoryDialog()"
+      ></app-fab-button>
       <div *ngIf="categoryLoading()">
         <app-loading-spinner></app-loading-spinner>
       </div>
@@ -97,7 +88,7 @@
                 <span class="category-title">{{ category.name }}</span>
               </mat-card-content>
               <mat-card-actions>
-                <button mat-icon-button color="accent" aria-label="Edit category" (click)="editCategory(category)"><mat-icon>edit</mat-icon></button>
+                <button mat-icon-button color="accent" aria-label="Edit category" (click)="openEditCategoryDialog(category)"><mat-icon>edit</mat-icon></button>
                 <button mat-icon-button color="warn" aria-label="Delete category" (click)="deleteCategory(category.id)"><mat-icon>delete</mat-icon></button>
               </mat-card-actions>
             </mat-card>

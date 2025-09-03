@@ -1,0 +1,24 @@
+<div class="item-card">
+  <div class="item-header">
+    <input
+      *ngIf="showCheckbox"
+      type="checkbox"
+      class="item-complete-checkbox"
+      [checked]="completed"
+      (change)="onToggleComplete($event)"
+      aria-label="Mark as complete"
+    />
+    <ng-content></ng-content>
+    <div class="item-actions">
+      <button type="button" class="icon-btn edit" (click)="edit.emit(item)" title="Edit">
+        <mat-icon aria-label="Edit">edit</mat-icon>
+      </button>
+      <button type="button" class="icon-btn delete" (click)="delete.emit(item)" title="Delete">
+        <mat-icon aria-label="Delete">delete</mat-icon>
+      </button>
+    </div>
+  </div>
+  <div class="item-body">
+    <ng-content></ng-content>
+  </div>
+</div>

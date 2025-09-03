@@ -1,115 +1,19 @@
 <div class="tasks-page">
   <div class="tasks-header">
     <h1>Tasks</h1>
-    <p class="tasks-subtitle">Manage your tasks and stay organized</p>
   </div>
 
-  <app-fab-button
+  <app-tab-switcher
+    [tabs]="tabOptions"
+    [selectedTab]="selectedTab()"
+    (tabChange)="setTab($event)"
+  ></app-tab-switcher>
+
+  <app-tasks-tab
     *ngIf="selectedTab() === 'tasks'"
-    icon="add"
-    color="primary"
-    ariaLabel="Add Task"
-    (fabClick)="openAddTaskDialog()"
-  ></app-fab-button>
-  <app-fab-button
+  ></app-tasks-tab>
+
+  <app-categories-tab
     *ngIf="selectedTab() === 'categories'"
-    icon="add"
-    color="accent"
-    ariaLabel="Add Category"
-    (fabClick)="openAddCategoryDialog()"
-  ></app-fab-button>
-
-  <div class="tasks-tabs">
-    <button class="tab" [class.active]="selectedTab() === 'tasks'" (click)="setTab('tasks')">Tasks</button>
-    <button class="tab" [class.active]="selectedTab() === 'categories'" (click)="setTab('categories')">Categories</button>
-  </div>
-
-  <ng-container *ngIf="selectedTab() === 'tasks'">
-    <div class="tasks-dashboard">
-      <app-dashboard-summary-cards
-        [cards]="dashboardCards"
-        [activeFilter]="dashboardFilter()"
-        (cardClick)="setDashboardFilter($event)"
-      ></app-dashboard-summary-cards>
-    </div>
-
-    <div class="tasks-filters">
-      <div class="tag-filters">
-        <button class="tag-btn" [class.active]="selectedCategory() === 'all'" (click)="setCategory('all')">All ({{ tasks().length }})</button>
-        <button
-          class="tag-btn"
-          *ngFor="let category of categories()"
-          [class.active]="selectedCategory() === category.id"
-          (click)="setCategory(category.id)"
-        >
-          {{ category.name }}
-        </button>
-      </div>
-    </div>
-
-    <div *ngIf="loading()">
-      <app-loading-spinner [translationKey]="'loading.default'"></app-loading-spinner>
-    </div>
-    <div *ngIf="!loading()">
-      <div *ngIf="error(); else showTasks">
-        <p class="error">{{ error() }}</p>
-      </div>
-      <ng-template #showTasks>
-        <div *ngIf="filteredTasks.length; else noTasks" class="tasks-list">
-          <app-item-card
-            *ngFor="let task of filteredTasks"
-            [item]="task"
-            [showCheckbox]="true"
-            [completed]="task.completed"
-            (toggleComplete)="onToggleComplete(task, $event)"
-            (edit)="startEdit(task)"
-            (delete)="deleteTask(task.id)"
-          >
-            <div class="task-meta-row">
-              <span class="task-priority-badge" [ngClass]="task.priority && task.priority.toLowerCase()">{{ task.priority }}</span>
-              <span *ngIf="task.dueDate" class="task-due-date">
-                <mat-icon class="due-date-icon">error</mat-icon>
-                <span [ngClass]="{'overdue': isOverdue(task)}">{{ task.dueDate | date:'MMM d, yyyy' }}</span>
-              </span>
-              <span *ngIf="task.category && task.category.id !== 'None'" class="task-category-name">
-                {{ getCategoryName(task.category.id) }}
-              </span>
-            </div>
-          </app-item-card>
-        </div>
-        <ng-template #noTasks>
-          <p>No tasks found.</p>
-        </ng-template>
-      </ng-template>
-    </div>
-  </ng-container>
-
-  <ng-container *ngIf="selectedTab() === 'categories'">
-    <div class="category-management">
-      <h2>Manage Task Categories</h2>
-      <div *ngIf="categoryLoading()">
-        <app-loading-spinner [translationKey]="'loading.default'"></app-loading-spinner>
-      </div>
-      <div *ngIf="categoryError()">
-        <p class="error">{{ categoryError() }}</p>
-      </div>
-      <div *ngIf="!categoryLoading() && categories().length">
-        <div class="categories-list">
-          <div *ngFor="let category of categories()" class="category-item">
-            <span>{{ category.name }}</span>
-            <button
-              mat-icon-button
-              aria-label="Edit Category"
-              (click)="openEditCategoryDialog(category)"
-            >
-              <mat-icon>edit</mat-icon>
-            </button>
-          </div>
-        </div>
-      </div>
-      <div *ngIf="!categoryLoading() && !categories().length">
-        <p>No categories found.</p>
-      </div>
-    </div>
-  </ng-container>
+  ></app-categories-tab>
 </div>

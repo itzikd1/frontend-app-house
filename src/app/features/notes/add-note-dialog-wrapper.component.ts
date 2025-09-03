@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Note } from '../../shared/models/note.model';
 import { FormsModule } from '@angular/forms';
@@ -6,6 +6,11 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { ModalDialogComponent } from '../../shared/components/modal-dialog.component';
+
+interface DialogData {
+  note?: Partial<Note>;
+  isEdit: boolean;
+}
 
 @Component({
   selector: 'app-add-note-dialog-wrapper',
@@ -38,10 +43,16 @@ import { ModalDialogComponent } from '../../shared/components/modal-dialog.compo
   styleUrls: ['../../shared/components/modal-dialog.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AddNoteDialogWrapperComponent {
+export class AddNoteDialogWrapperComponent implements OnInit {
   note: Partial<Note> = { title: '', content: '' };
   private dialogRef = inject(MatDialogRef<AddNoteDialogWrapperComponent>);
-  public data: unknown = inject(MAT_DIALOG_DATA);
+  public data: DialogData = inject(MAT_DIALOG_DATA);
+
+  ngOnInit(): void {
+    if (this.data?.note) {
+      this.note = { ...this.data.note };
+    }
+  }
 
   onSubmit(): void {
     this.dialogRef.close(this.note);

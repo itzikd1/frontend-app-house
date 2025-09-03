@@ -33,27 +33,28 @@ export function httpErrorInterceptor(
   next: HttpHandlerFn
 ) {
   const snackBar = inject(MatSnackBar);
-  
+
   return next(request).pipe(
     catchError((error: HttpErrorResponse) => {
       let errorMessage = 'An unknown error occurred';
-      
-      if (error.error instanceof ErrorEvent) {
-        // Client-side error
-        errorMessage = `Error: ${error.error.message}`;
+      const errorObj = error.error;
+
+      if (errorObj instanceof ErrorEvent) {
+        errorMessage = `Error: ${errorObj.message}`;
+      } else if (errorObj && Array.isArray(errorObj.errors)) {
+        errorMessage = errorObj.errors.join(' ');
       } else {
-        // Server-side error
         errorMessage = getServerErrorMessage(error);
       }
-      
+
       // Show error to user
       snackBar.open(errorMessage, 'Dismiss', {
-        duration: 5000,
+        duration: 4000,
         panelClass: ['error-snackbar'],
-        horizontalPosition: 'right',
+        horizontalPosition: 'center',
         verticalPosition: 'top',
       });
-      
+
       return throwError(() => error);
     })
   );

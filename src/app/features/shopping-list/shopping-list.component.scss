@@ -2,12 +2,134 @@
   padding: 16px;
 }
 .shopping-list-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
   margin-bottom: 16px;
   padding: 16px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
+  border: none;
 }
 .checked {
   text-decoration: line-through;
 }
+.shopping-list-page {
+  padding: 32px 16px;
+  background: #fafafa;
+}
 
+.shopping-list-header {
+  margin-bottom: 24px;
+  h1 {
+    margin: 0;
+    font-size: 2rem;
+    font-weight: 600;
+  }
+  .shopping-list-subtitle {
+    color: #888;
+    margin-top: 4px;
+    font-size: 1rem;
+  }
+}
+
+.shopping-list-tabs {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+  .tab {
+    flex: 1;
+    font-weight: 500;
+    border-radius: 24px;
+    &.active {
+      background: #1976d2;
+      color: #fff;
+    }
+  }
+}
+
+.shopping-category-filters {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+  .category-btn {
+    border-radius: 20px;
+    font-size: 0.95rem;
+    &.active {
+      background: #43a047;
+      color: #fff;
+    }
+  }
+}
+
+.shopping-list-items {
+  margin-top: 16px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  padding: 0;
+}
+
+.category-management {
+  position: relative;
+  padding: 24px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  min-height: 300px;
+}
+
+.categories-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.category-card {
+  width: 220px;
+}
+
+.category-title {
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+app-fab-button {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 2;
+}
+
+.error {
+  color: #d32f2f;
+  margin-top: 8px;
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+.input-label {
+  font-weight: 500;
+  margin-bottom: 4px;
+  display: block;
+}
+
+.tag-filters {
+  display: flex;
+  gap: 8px;
+}
+.tag-btn {
+  background: #e5e7eb;
+  color: #374151;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 16px;
+  font-size: 0.98rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.tag-btn.active {
+    background: #3b82f6;
+    color: #fff;
+  }

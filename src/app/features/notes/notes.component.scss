@@ -1,24 +1,169 @@
+
 .notes-page {
-  max-width: 600px;
-  margin: 2rem auto;
-  border: 1px solid #e0e0e0;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-  padding: 2rem;
-  background: transparent;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1.5rem;
+  position: relative;
+  min-height: 80vh;
 }
 
-h2 {
+.notes-header {
+  margin-bottom: 2rem;
   text-align: center;
-  color: #111;
+
+  h1 {
+    font-size: 2.5rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: var(--primary-color, #3f51b5);
+  }
+
+  .notes-subtitle {
+    font-size: 1.1rem;
+    color: var(--text-secondary-color, #666);
+    font-weight: 300;
+  }
 }
 
-ul {
-  list-style: none;
-  padding: 0;
+.notes-container {
+  margin-top: 1.5rem;
 }
 
-li {
-  padding: 0.5rem 0;
-  border-bottom: 1px solid #eee;
+.notes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 5rem;
+}
+
+.note-card {
+  height: 100%;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border-radius: 12px;
+  overflow: hidden;
+  background-color: var(--card-bg-color, #fff);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.12);
+  }
+
+  ::ng-deep .item-card {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    border-radius: 12px;
+
+    .card-header {
+      padding: 1.5rem 1.5rem 0.75rem;
+    }
+
+    .card-content {
+      flex: 1;
+      padding: 0 1.5rem 1.5rem;
+    }
+  }
+}
+
+.note-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  .note-text {
+    flex: 1;
+    font-size: 1rem;
+    line-height: 1.5;
+    margin-bottom: 1rem;
+    color: var(--text-primary-color, #333);
+    overflow-wrap: break-word;
+    white-space: pre-line;
+  }
+
+  .note-date {
+    font-size: 0.8rem;
+    color: var(--text-tertiary-color, #999);
+    text-align: right;
+    font-style: italic;
+  }
+}
+
+.add-note-fab {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 100;
+
+  ::ng-deep button {
+    width: 60px;
+    height: 60px;
+
+    .mat-icon {
+      font-size: 24px;
+      width: 24px;
+      height: 24px;
+    }
+
+    &:hover {
+      transform: scale(1.1);
+    }
+  }
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 5rem auto;
+  padding: 2rem;
+  text-align: center;
+  max-width: 400px;
+
+  .empty-icon {
+    font-size: 5rem;
+    width: 5rem;
+    height: 5rem;
+    color: var(--text-disabled-color, #ccc);
+    margin-bottom: 1.5rem;
+  }
+
+  p {
+    font-size: 1.5rem;
+    color: var(--text-secondary-color, #666);
+    margin-bottom: 0.5rem;
+  }
+
+  .empty-subtitle {
+    font-size: 1rem;
+    color: var(--text-tertiary-color, #999);
+  }
+}
+
+// Responsive styles
+@media (max-width: 768px) {
+  .notes-grid {
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1rem;
+  }
+
+  .notes-header h1 {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .notes-page {
+    padding: 1rem;
+  }
+
+  .notes-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .add-note-fab {
+    bottom: 1.5rem;
+    right: 1.5rem;
+  }
 }

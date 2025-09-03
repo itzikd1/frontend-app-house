@@ -1,7 +1,8 @@
 import { Component, ChangeDetectionStrategy, OnInit, signal, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { UserService, User } from '../../core/services/user.service';
+import { UserService } from '../../core/services/user.service';
 import { LoadingSpinnerComponent } from '../../shared/components/loading-spinner/loading-spinner.component';
+import { User } from '../../core/interfaces/user.model';
 
 @Component({
   selector: 'app-users',
