@@ -6,11 +6,11 @@ import { LoadingSpinnerComponent } from '../../../shared/components/loading-spin
 import { ItemCardComponent } from '../../../shared/components/item-card/item-card.component';
 import { MatIconModule } from '@angular/material/icon';
 import { DashboardSummaryCardsComponent } from '../../../shared/components/dashboard-summary-cards/dashboard-summary-cards.component';
-import { MatDialog } from '@angular/material/dialog';
-import { AddTaskDialogWrapperComponent } from '../dialogs/add-task-dialog-wrapper.component';
 import { TaskFacadeService } from '../services/task-facade.service';
 import { TaskUtils } from '../utils/task.utils';
-import {TaskCategoryFilterComponent} from '../task-category-filter/task-category-filter.component';
+import { TaskCategoryFilterComponent } from '../task-category-filter/task-category-filter.component';
+import { FormDialogService } from '../../../shared/services/form-dialog.service';
+import { TaskDialogConfigs } from '../configs/task-dialog.configs';
 
 @Component({
   selector: 'app-tasks-tab',
@@ -28,7 +28,7 @@ import {TaskCategoryFilterComponent} from '../task-category-filter/task-category
   standalone: true,
 })
 export class TasksTabComponent {
-  private readonly dialog = inject(MatDialog);
+  private readonly formDialogService = inject(FormDialogService);
   private readonly taskFacade = inject(TaskFacadeService);
 
   // Expose facade signals directly
@@ -54,26 +54,20 @@ export class TasksTabComponent {
   }
 
   public openAddTaskDialog(): void {
-    const dialogRef = this.dialog.open(AddTaskDialogWrapperComponent, {
-      width: '400px',
-      data: {}
-    });
+    const config = TaskDialogConfigs.createAddTaskConfig(this.categories());
 
-    dialogRef.afterClosed().subscribe((result: Partial<Task> | null) => {
-      if (result && result.title) {
+    this.formDialogService.openFormDialog(config).subscribe(result => {
+      if (result) {
         this.taskFacade.addTask(result);
       }
     });
   }
 
   public openEditTaskDialog(task: Task): void {
-    const dialogRef = this.dialog.open(AddTaskDialogWrapperComponent, {
-      width: '400px',
-      data: { task }
-    });
+    const config = TaskDialogConfigs.createEditTaskConfig(task, this.categories());
 
-    dialogRef.afterClosed().subscribe((result: Partial<Task> | null) => {
-      if (result && result.title) {
+    this.formDialogService.openFormDialog(config).subscribe(result => {
+      if (result) {
         this.taskFacade.updateTask(task.id, result);
       }
     });

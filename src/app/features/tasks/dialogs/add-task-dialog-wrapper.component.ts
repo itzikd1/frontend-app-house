@@ -15,18 +15,7 @@ import { TaskFormComponent, TaskFormData } from '../components/task-form.compone
     ModalDialogComponent,
     TaskFormComponent,
   ],
-  template: `
-    <app-modal-dialog
-      [title]="dialogTitle">
-      <app-task-form
-        [initialData]="initialFormData"
-        [categories]="categories()"
-        [isEditMode]="isEditMode"
-        (formSubmit)="onFormSubmit($event)"
-        (formCancel)="onFormCancel()">
-      </app-task-form>
-    </app-modal-dialog>
-  `,
+  templateUrl: './add-task-dialog-wrapper.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AddTaskDialogWrapperComponent implements OnInit {
