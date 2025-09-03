@@ -1,5 +1,5 @@
 <app-dashboard-summary-cards
-  [cards]="dashboardCards()"
+  [cards]="dashboardCards"
   [activeFilter]="dashboardFilter"
   (cardClick)="setDashboardFilter.emit($event)"
 ></app-dashboard-summary-cards>
@@ -30,21 +30,21 @@
   </div>
 </div>
 
-<div *ngIf="loading">
+<div *ngIf="taskLoading">
   <app-loading-spinner [translationKey]="'loading.default'"></app-loading-spinner>
 </div>
-<div *ngIf="!loading">
-  <div *ngIf="error; else showTasks">
-    <p class="error">{{ error }}</p>
+<div *ngIf="!taskLoading">
+  <div *ngIf="taskError; else showTasks">
+    <p class="error">{{ taskError }}</p>
   </div>
   <ng-template #showTasks>
-    <div *ngIf="filteredTasks().length; else noTasks" class="tasks-list">
+    <div *ngIf="filteredTasks.length; else noTasks" class="tasks-list">
       <app-item-card
-        *ngFor="let task of filteredTasks()"
+        *ngFor="let task of filteredTasks"
         [item]="task"
         [showCheckbox]="true"
         [completed]="task.completed"
-        (toggleComplete)="toggleComplete.emit({task: task, completed: $event})"
+        (toggleComplete)="onToggleTaskComplete(task, $event)"
         (edit)="openEditTaskDialog(task)"
         (delete)="deleteTask(task.id)"
       >

@@ -69,12 +69,6 @@ export class TasksComponent implements OnInit {
     this.taskService.setCategory(categoryId);
   }
 
-  public onToggleTaskComplete(task: Task, completed: boolean): void {
-    this.taskService.updateTask(task.id, { completed }).catch(() => {
-      // Error handling is done in the facade
-    });
-  }
-
   public onAddTask(task: Partial<Task>): void {
     this.taskService.addTask(task).catch(() => {
       // Error handling is done in the facade

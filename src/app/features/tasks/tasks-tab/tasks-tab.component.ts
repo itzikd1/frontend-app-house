@@ -11,6 +11,7 @@ import { DashboardSummaryCardsComponent } from '../../../shared/components/dashb
 import { MatDialog } from '@angular/material/dialog';
 import { AddTaskDialogWrapperComponent } from '../dialogs/add-task-dialog-wrapper.component';
 import {TabSwitcherComponent} from '../../../shared/components/tab-switcher/tab-switcher.component';
+import {TaskService} from '../../../core/services/task.service';
 
 @Component({
   selector: 'app-tasks-tab',
@@ -29,20 +30,21 @@ import {TabSwitcherComponent} from '../../../shared/components/tab-switcher/tab-
 })
 export class TasksTabComponent {
   @Input() tasks: Task[] = [];
-  @Input() filteredTasks!: Signal<Task[]>;
+  @Input() filteredTasks: Task[] = [];
   @Input() categories: TaskCategory[] = [];
   @Input() selectedCategory = '';
-  @Input() dashboardCards!: Signal<DashboardCardConfig[]>;
+  @Input() dashboardCards: DashboardCardConfig[] = [];
   @Input() dashboardFilter!: DashboardCardFilter;
-  @Input() loading = false;
-  @Input() error: string | null = null;
+  @Input() taskLoading = false;
+  @Input() taskError: string | null = null;
 
   @Output() setCategory = new EventEmitter<string>();
   @Output() setDashboardFilter = new EventEmitter<DashboardCardFilter>();
-  @Output() toggleComplete = new EventEmitter<{task: Task, completed: boolean}>();
   @Output() addTaskEvent = new EventEmitter<Partial<Task>>();
   @Output() editTaskEvent = new EventEmitter<{id: string, changes: Partial<Task>}>();
   @Output() deleteTaskEvent = new EventEmitter<string>();
+
+  private taskService = inject(TaskService);
 
   private readonly dialog = inject(MatDialog);
 
@@ -86,7 +88,10 @@ export class TasksTabComponent {
   }
 
   public onToggleTaskComplete(task: Task, completed: boolean): void {
-    this.toggleComplete.emit({ task, completed });
+    this.taskService.updateTask(task.id, { completed }).subscribe({
+      next: () => {}, // Optionally handle success
+      error: () => {}, // Optionally handle error
+    });
   }
 
   public onCategoryChange(categoryId: string): void {
