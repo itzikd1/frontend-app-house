@@ -11,8 +11,8 @@ export class TaskCategoryService {
   private readonly http = inject(HttpClient);
 
   getAll(): Observable<TaskCategory[]> {
-    return this.http.get<{ success: boolean; data: TaskCategory[] }>(this.baseUrl)
-      .pipe(map(res => res.data ?? []));
+    return this.http.get<{ data: {success: boolean; item: TaskCategory[] }}>(this.baseUrl)
+      .pipe(map(res => res.data?.item as TaskCategory[] ?? []));
   }
 
   create(category: Partial<TaskCategory>): Observable<TaskCategory> {

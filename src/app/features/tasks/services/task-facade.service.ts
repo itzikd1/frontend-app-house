@@ -113,6 +113,7 @@ export class TaskFacadeService {
   public loadCategories(): void {
     this.categoryService.getAll().subscribe({
       next: (categories) => {
+        console.log(categories)
         this._categories.set(categories);
       },
       error: (error) => {
