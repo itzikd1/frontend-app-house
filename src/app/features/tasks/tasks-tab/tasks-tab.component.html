@@ -29,8 +29,10 @@
         (edit)="openEditTaskDialog(task)"
         (delete)="deleteTask(task.id)"
       >
+        <span *ngIf="task?.description" class="item-desc">{{ task?.description }}</span>
         <div class="task-meta-row">
-          <span class="task-priority-badge" [ngClass]="task.priority && task.priority.toLowerCase()">{{ task.priority }}</span>
+          <span class="task-priority-badge"
+                [ngClass]="task.priority && task.priority.toLowerCase()">{{ task.priority }}</span>
           <span *ngIf="task.dueDate" class="task-due-date">
             <mat-icon class="due-date-icon">error</mat-icon>
             <span [ngClass]="{'overdue': isOverdue(task.dueDate)}">{{ task.dueDate | date:'MMM d, yyyy' }}</span>
