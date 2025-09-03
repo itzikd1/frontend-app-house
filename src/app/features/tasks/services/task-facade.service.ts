@@ -32,7 +32,7 @@ export class TaskFacadeService {
   public readonly dashboardFilter = this._dashboardFilter.asReadonly();
   public readonly taskLoading = this._taskLoading.asReadonly();
   public readonly taskError = this._taskError.asReadonly();
-  public readonly categoryLoading = this._categoryLoading.asReadonly()
+  public readonly categoryLoading = this._categoryLoading.asReadonly();
   public readonly categoryError = this._categoryError.asReadonly();
 
   // Computed signals

@@ -1,0 +1,18 @@
+<div class="tasks-filters">
+  <div class="tag-filters">
+    <button class="tag-btn" [class.active]="selectedCategory === 'all'" (click)="onCategorySelect('all')">
+      All ({{ tasksCount }})
+    </button>
+    <ng-container *ngIf="categories && categories.length > 0">
+      <button
+        class="tag-btn"
+        *ngFor="let category of categories"
+        [class.active]="selectedCategory === category.id"
+        (click)="onCategorySelect(category.id)"
+      >
+        {{ category.name }}
+      </button>
+    </ng-container>
+  </div>
+</div>
+

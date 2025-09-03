@@ -16,6 +16,7 @@ import { ItemListComponent } from './components/item-list/item-list.component';
 import { ModalDialogComponent } from './components/modal-dialog.component';
 import { DashboardSummaryCardsComponent } from './components/dashboard-summary-cards/dashboard-summary-cards.component';
 import { TabSwitcherComponent } from './components/tab-switcher/tab-switcher.component';
+import { TaskCategoryFilterModule } from '../features/tasks/task-category-filter/task-category-filter.module';
 
 const MATERIAL_MODULES = [
   MatToolbarModule,
@@ -36,12 +37,11 @@ const MATERIAL_MODULES = [
     FabButtonComponent,
     HealthStatusCardComponent,
     ItemCardComponent,
-    ItemDialogComponent,
-    ItemFormComponent,
     ItemListComponent,
     ModalDialogComponent,
     DashboardSummaryCardsComponent,
-    TabSwitcherComponent
+    TabSwitcherComponent,
+    TaskCategoryFilterModule
   ],
   exports: [
     ...MATERIAL_MODULES,
@@ -52,12 +52,11 @@ const MATERIAL_MODULES = [
     FabButtonComponent,
     HealthStatusCardComponent,
     ItemCardComponent,
-    ItemDialogComponent,
-    ItemFormComponent,
     ItemListComponent,
     ModalDialogComponent,
     DashboardSummaryCardsComponent,
-    TabSwitcherComponent
+    TabSwitcherComponent,
+    TaskCategoryFilterModule
   ]
 })
 export class SharedModule {}

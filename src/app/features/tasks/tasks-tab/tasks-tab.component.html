@@ -1,46 +1,27 @@
 <app-dashboard-summary-cards
-  [cards]="dashboardCards"
-  [activeFilter]="dashboardFilter"
-  (cardClick)="setDashboardFilter.emit($event)"
+  [cards]="dashboardCards()"
+  [activeFilter]="dashboardFilter()"
+  (cardClick)="setDashboardFilter($event)"
 ></app-dashboard-summary-cards>
 
-<!-- Tabs for tasks and categories -->
-<app-tab-switcher
-  [tabs]="[
-    { id: 'tasks', label: 'Tasks' },
-    { id: 'categories', label: 'Categories' }
-  ]"
-  [selectedTab]="selectedTab"
-  (tabChange)="setTab($event)"
-></app-tab-switcher>
+<app-task-category-filter
+  [categories]="categories()"
+  [selectedCategory]="selectedCategory()"
+  [tasksCount]="tasks().length"
+  (categoryChange)="setCategory($event)"
+></app-task-category-filter>
 
-<div class="tasks-filters">
-  <div class="tag-filters">
-    <button class="tag-btn" [class.active]="selectedCategory === 'all'" (click)="setCategory.emit('all')">All ({{ tasks.length }})</button>
-    <ng-container *ngIf="categories && categories.length > 0">
-      <button
-        class="tag-btn"
-        *ngFor="let category of categories"
-        [class.active]="selectedCategory === category.id"
-        (click)="setCategory.emit(category.id)"
-      >
-        {{ category.name }}
-      </button>
-    </ng-container>
-  </div>
-</div>
-
-<div *ngIf="taskLoading">
+<div *ngIf="taskLoading()">
   <app-loading-spinner [translationKey]="'loading.default'"></app-loading-spinner>
 </div>
-<div *ngIf="!taskLoading">
-  <div *ngIf="taskError; else showTasks">
-    <p class="error">{{ taskError }}</p>
+<div *ngIf="!taskLoading()">
+  <div *ngIf="taskError(); else showTasks">
+    <p class="error">{{ taskError() }}</p>
   </div>
   <ng-template #showTasks>
-    <div *ngIf="filteredTasks.length; else noTasks" class="tasks-list">
+    <div *ngIf="filteredTasks() && filteredTasks().length; else noTasks" class="tasks-list">
       <app-item-card
-        *ngFor="let task of filteredTasks"
+        *ngFor="let task of filteredTasks()"
         [item]="task"
         [showCheckbox]="true"
         [completed]="task.completed"

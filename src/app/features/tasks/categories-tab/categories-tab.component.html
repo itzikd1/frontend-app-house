@@ -1,20 +1,20 @@
 <div class="category-management">
   <h2>Manage Task Categories</h2>
-  <div *ngIf="categoryLoading">
+  <div *ngIf="categoryLoading()">
     <app-loading-spinner [translationKey]="'loading.default'"></app-loading-spinner>
   </div>
-  <div *ngIf="categoryError">
-    <p class="error">{{ categoryError }}</p>
+  <div *ngIf="categoryError()">
+    <p class="error">{{ categoryError() }}</p>
   </div>
-  <div *ngIf="!categoryLoading && categories.length">
+  <div *ngIf="!categoryLoading() && categories().length">
     <div class="categories-list">
       <app-item-card
         *ngFor="let item of categoryItems; let i = index"
         [item]="item"
         [showCheckbox]="false"
         [completed]="false"
-        (edit)="onEditCategory(categories[i])"
-        (delete)="onDeleteCategory(categories[i].id)"
+        (edit)="onEditCategory(categories()[i])"
+        (delete)="onDeleteCategory(categories()[i].id)"
       >
         <div class="category-meta-row">
           <span class="category-name">{{ item.title }}</span>
@@ -22,7 +22,7 @@
       </app-item-card>
     </div>
   </div>
-  <div *ngIf="!categoryLoading && !categories.length">
+  <div *ngIf="!categoryLoading() && !categories().length">
     <p>No categories found.</p>
   </div>
   <button class="fab-btn" (click)="onAddCategory()" aria-label="Add Category">

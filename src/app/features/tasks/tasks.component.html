@@ -11,28 +11,9 @@
 
   <app-tasks-tab
     *ngIf="selectedTab() === 'tasks'"
-    [tasks]="tasks()"
-    [filteredTasks]="filteredTasks()"
-    [categories]="categories()"
-    [selectedCategory]="selectedCategory()"
-    [dashboardCards]="dashboardCards()"
-    [dashboardFilter]="dashboardFilter()"
-    [taskLoading]="taskLoading()"
-    [taskError]="taskError()"
-    (setCategory)="setCategory($event)"
-    (setDashboardFilter)="setDashboardFilter($event)"
-    (addTaskEvent)="onAddTask($event)"
-    (editTaskEvent)="onEditTask($event)"
-    (deleteTaskEvent)="onDeleteTask($event)"
   ></app-tasks-tab>
 
   <app-categories-tab
     *ngIf="selectedTab() === 'categories'"
-    [categories]="categories()"
-    [categoryLoading]="categoryLoading()"
-    [categoryError]="categoryError()"
-    (editCategory)="onEditCategory($event)"
-    (deleteCategory)="onDeleteCategory($event)"
-    (addCategory)="onAddCategory()"
   ></app-categories-tab>
 </div>
