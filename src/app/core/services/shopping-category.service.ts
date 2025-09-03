@@ -11,8 +11,8 @@ export class ShoppingCategoryService {
   private readonly http = inject(HttpClient);
 
   getAll(): Observable<ShoppingCategory[]> {
-    return this.http.get<{ success: boolean; data: ShoppingCategory[] }>(this.baseUrl)
-      .pipe(map(response => response.data));
+    return this.http.get<{ data: { item: ShoppingCategory[] } }>(this.baseUrl)
+      .pipe(map(response => response.data.item));
   }
 
   create(category: Partial<ShoppingCategory>): Observable<ShoppingCategory> {

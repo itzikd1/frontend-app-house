@@ -14,6 +14,5 @@ export interface ShoppingListItem {
   createdAt: string;
   updatedAt: string;
   categoryId: string | null;
+  notes?: string; // Optional notes field for additional information
 }
-
-

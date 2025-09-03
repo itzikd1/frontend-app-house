@@ -18,11 +18,13 @@ export interface FormFieldOption {
 export interface FormFieldConfig {
   key: string;
   label: string;
-  type: 'text' | 'textarea' | 'select' | 'date';
+  type: 'text' | 'textarea' | 'select' | 'date' | 'number';
   required?: boolean;
   validators?: ValidatorFn[];
   options?: FormFieldOption[];
   placeholder?: string;
+  rows?: number; // For textarea fields
+  defaultValue?: string | number; // Default value for fields
 }
 
 export interface FormDialogConfig {

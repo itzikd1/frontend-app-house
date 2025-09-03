@@ -93,6 +93,7 @@ export class ShoppingListFacadeService {
     this._loading.set(true);
     this.shoppingListService.getAll().subscribe({
       next: (items) => {
+        console.log('items',items)
         this._items.set(ShoppingListUtils.sortItems(items));
         this._loading.set(false);
         this._error.set(null);
@@ -257,10 +258,6 @@ export class ShoppingListFacadeService {
 
     try {
       await firstValueFrom(this.categoryService.delete(id));
-      // Reset category filter if deleted category was selected
-      if (this._selectedCategory() === id) {
-        this._selectedCategory.set('all');
-      }
     } catch (error) {
       // Revert on error
       this._categories.set(previousCategories);
