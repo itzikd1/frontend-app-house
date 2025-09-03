@@ -50,4 +50,42 @@
     border-radius: 4px;
     margin-bottom: 16px;
   }
+
+  .item-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 4px;
+  }
+
+  .item-title {
+    font-size: 1.1em;
+    font-weight: 600;
+    flex: 1;
+    word-break: break-word;
+  }
+
+  .item-actions {
+    display: flex;
+    gap: 8px;
+  }
+
+  .item-card-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    font-size: 0.95em;
+    color: #555;
+    align-items: center;
+  }
+
+  .status-label.purchased {
+    color: #4caf50;
+    font-weight: 500;
+  }
+
+  .status-label.not-purchased {
+    color: #f44336;
+    font-weight: 500;
+  }
 }

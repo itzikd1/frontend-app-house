@@ -111,4 +111,18 @@ export class ShoppingListTabComponent {
       console.error('Failed to toggle purchase status:', error);
     }
   }
+
+  // Helper to get category name by ID
+  public getCategoryName(categoryId: string | null | undefined): string {
+    if (!categoryId) {
+      return 'Uncategorized';
+    }
+    const category = this.categories().find(c => c.id === categoryId);
+    return category ? category.name : 'Unknown';
+  }
+
+  // Helper to format date
+  public formatDate(date: string): string {
+    return new Date(date).toLocaleDateString();
+  }
 }

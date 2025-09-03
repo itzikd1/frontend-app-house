@@ -26,13 +26,14 @@
   <div *ngIf="!categoryLoading() && categories().length" class="categories-list">
     <app-item-card
       *ngFor="let category of categories()"
-      [item]="{ title: category.name, description: 'Category for organizing shopping items' }"
+      [item]="{ title: category.name, description: getItemCount(category.id) + ' items' }"
       (edit)="editCategory(category)"
       (delete)="deleteCategory(category.id)"
     >
       <div class="category-meta-row">
-        <span>Name: {{category.name}} </span>
-        <span>Created: {{ category.createdAt | date:'short' }}</span>
+        <span class="item-count-label">Items: {{ getItemCount(category.id) }}</span>
+        <span class="date-label">Created: {{ formatDate(category.createdAt) }}</span>
+        <span class="date-label">Updated: {{ formatDate(category.updatedAt) }}</span>
       </div>
     </app-item-card>
   </div>

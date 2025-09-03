@@ -78,4 +78,16 @@ export class CategoriesTabComponent {
       console.error('Failed to delete category:', error);
     }
   }
+
+  // Helper to get item count for a category
+  public getItemCount(categoryId: string): number {
+    // Access items from facade
+    const items = this.shoppingListFacade.items();
+    return items.filter(item => item.categoryId === categoryId).length;
+  }
+
+  // Helper to format date
+  public formatDate(date: string): string {
+    return new Date(date).toLocaleDateString();
+  }
 }
