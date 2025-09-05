@@ -1,0 +1,75 @@
+<div class="recipes-tab">
+  <!-- Error Message -->
+  <div *ngIf="error()" class="error-message">
+    <p>{{ error() }}</p>
+    <button mat-button color="primary" (click)="clearError()">Dismiss</button>
+  </div>
+
+  <!-- Loading State -->
+  <app-loading-spinner *ngIf="loading()" [translationKey]="'loading.recipes'"></app-loading-spinner>
+
+  <!-- Content -->
+  <ng-container *ngIf="!loading()">
+    <!-- Tag Filter -->
+    <app-recipe-tag-filter
+      [selectedTag]="selectedTag()"
+      [availableTags]="availableTags()"
+      (tagChange)="onTagFilterChange($event)"
+    ></app-recipe-tag-filter>
+
+    <!-- Recipes List -->
+    <div class="recipes-grid" *ngIf="recipes().length > 0; else noRecipes">
+      <app-item-card
+        *ngFor="let recipe of recipes(); trackBy: trackByRecipeId"
+        [title]="recipe.title"
+        (edit)="openEditRecipeDialog(recipe)"
+        (delete)="deleteRecipe(recipe)"
+      >
+        <!-- Recipe-specific content -->
+        <div class="recipe-details">
+          <div class="recipe-meta" *ngIf="recipe.servings || getFormattedCookTime(recipe)">
+            <span *ngIf="recipe.servings" class="servings">
+              <mat-icon>group</mat-icon>
+              {{ recipe.servings }} serving{{ recipe.servings > 1 ? 's' : '' }}
+            </span>
+            <span *ngIf="getFormattedCookTime(recipe)" class="cook-time">
+              <mat-icon>schedule</mat-icon>
+              {{ getFormattedCookTime(recipe) }}
+            </span>
+          </div>
+
+          <div class="recipe-tags" *ngIf="recipe.tags && recipe.tags.length > 0">
+            <span *ngFor="let tag of recipe.tags" class="tag">{{ tag }}</span>
+          </div>
+
+          <div class="recipe-ingredients" *ngIf="recipe.ingredients && recipe.ingredients.length > 0">
+            <strong>Ingredients ({{ recipe.ingredients.length }}):</strong>
+            <span class="ingredients-preview">
+              {{ getIngredientsPreview(recipe.ingredients) }}
+            </span>
+          </div>
+        </div>
+      </app-item-card>
+    </div>
+
+    <!-- Empty State -->
+    <ng-template #noRecipes>
+      <div class="empty-state">
+        <mat-icon class="empty-icon">restaurant_menu</mat-icon>
+        <h3>No recipes found</h3>
+        <p *ngIf="selectedTag()">
+          No recipes found for tag "{{ selectedTag() }}".
+          <button mat-button color="primary" (click)="onTagFilterChange(null)">Show all recipes</button>
+        </p>
+        <p *ngIf="!selectedTag()">Start building your recipe collection by adding your first recipe!</p>
+      </div>
+    </ng-template>
+  </ng-container>
+
+  <!-- Floating Action Button -->
+  <app-fab-button
+    icon="add"
+    ariaLabel="Add Recipe"
+    (buttonClick)="openAddRecipeDialog()"
+  ></app-fab-button>
+</div>
