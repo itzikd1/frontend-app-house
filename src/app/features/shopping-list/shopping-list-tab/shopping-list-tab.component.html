@@ -41,7 +41,6 @@
   <div *ngIf="!loading() && items().length" class="shopping-list-items">
     <app-item-card
       *ngFor="let item of items()"
-      [item]="{ title: item.name, description: 'Quantity: ' + item.quantity }"
       [completed]="item.purchased"
       [showCheckbox]="true"
       (edit)="editItem(item)"
@@ -51,7 +50,6 @@
       <div class="item-card-meta">
         <span class="category-label">Title: {{ item.name }}</span>
         <span class="category-label">Category: {{ getCategoryName(item.categoryId) }}</span>
-        <span class="quantity-label">Quantity: {{ item.quantity }}</span>
       </div>
     </app-item-card>
   </div>

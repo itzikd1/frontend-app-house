@@ -10,10 +10,10 @@
     />
     <ng-content></ng-content>
     <div class="item-actions">
-      <button type="button" class="icon-btn edit" (click)="edit.emit(item)" title="Edit">
+      <button type="button" class="icon-btn edit" (click)="edit.emit()" title="Edit">
         <mat-icon aria-label="Edit">edit</mat-icon>
       </button>
-      <button type="button" class="icon-btn delete" (click)="delete.emit(item)" title="Delete">
+      <button type="button" class="icon-btn delete" (click)="delete.emit()" title="Delete">
         <mat-icon aria-label="Delete">delete</mat-icon>
       </button>
     </div>

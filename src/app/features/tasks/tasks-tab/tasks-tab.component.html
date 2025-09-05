@@ -22,7 +22,6 @@
     <div *ngIf="filteredTasks() && filteredTasks().length; else noTasks" class="tasks-list">
       <app-item-card
         *ngFor="let task of filteredTasks()"
-        [item]="task"
         [showCheckbox]="true"
         [completed]="task.completed"
         (toggleComplete)="onToggleTaskComplete(task, $event)"

@@ -14,7 +14,6 @@
     >
       <app-item-card
         *ngFor="let recipe of recipes()"
-        [item]="recipe"
         (delete)="deleteRecipe(recipe)"
       >
         <span *ngIf="recipe.servings">Servings: {{ recipe.servings }}</span>

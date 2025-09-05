@@ -219,15 +219,29 @@ export class ShoppingListFacadeService {
 
   // Category management methods
   public async addCategory(categoryData: Partial<ShoppingCategory>): Promise<void> {
-    this._categoryLoading.set(true);
+    const tempId = 'temp-' + Math.random().toString(36).substr(2, 9);
+    const optimisticCategory: ShoppingCategory = {
+      ...categoryData,
+      id: tempId,
+      name: categoryData.name || '',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    } as ShoppingCategory;
+
+    // Optimistic update
+    this._categories.update(categories => [...categories, optimisticCategory]);
+
     try {
       const createdCategory = await firstValueFrom(this.categoryService.create(categoryData));
-      this._categories.update(categories => [...categories, createdCategory]);
-      this._categoryLoading.set(false);
+      // Replace temp category with real one
+      this._categories.update(categories =>
+        categories.map(cat => cat.id === tempId ? createdCategory : cat)
+      );
       this._categoryError.set(null);
     } catch (error) {
+      // Revert on error
+      this._categories.update(categories => categories.filter(cat => cat.id !== tempId));
       this._categoryError.set('Failed to add category.');
-      this._categoryLoading.set(false);
       throw error;
     }
   }

@@ -13,7 +13,6 @@
       <div class="notes-grid">
         <app-item-card
           *ngFor="let note of notes()"
-          [item]="note"
           (delete)="deleteNote(note)"
           (edit)="openEditDialog(note)"
           class="note-card"
