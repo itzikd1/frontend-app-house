@@ -1,5 +1,5 @@
 import { Injectable, inject, signal, computed } from '@angular/core';
-import { ShoppingListService } from '../../../core/services/shopping-list.service';
+import { ShoppingItemService } from '../../../core/services/shopping-item.service';
 import { ShoppingCategoryService } from '../../../core/services/shopping-category.service';
 import { ShoppingListItem } from '../../../core/interfaces/shopping-list.model';
 import { ShoppingCategory } from '../../../core/interfaces/shopping-category.model';
@@ -12,7 +12,7 @@ import { firstValueFrom } from 'rxjs';
   providedIn: 'root'
 })
 export class ShoppingListFacadeService {
-  private readonly shoppingListService = inject(ShoppingListService);
+  private readonly shoppingListService = inject(ShoppingItemService);
   private readonly categoryService = inject(ShoppingCategoryService);
 
   // State signals
