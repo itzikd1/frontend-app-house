@@ -10,14 +10,5 @@
   <div class="tab-content">
     <!-- Recipes Tab -->
     <app-recipes-tab *ngIf="selectedTab() === RECIPES_TAB_ID"></app-recipes-tab>
-
-    <!-- Categories Tab (Future Implementation) -->
-    <div *ngIf="selectedTab() === CATEGORIES_TAB_ID" class="categories-placeholder">
-      <div class="placeholder-content">
-        <mat-icon class="placeholder-icon">category</mat-icon>
-        <h3>Categories Management</h3>
-        <p>Recipe categories management will be implemented here.</p>
-      </div>
-    </div>
   </div>
 </div>

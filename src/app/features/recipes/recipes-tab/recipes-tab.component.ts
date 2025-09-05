@@ -1,16 +1,16 @@
-import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { RecipeFacadeService } from '../services/recipe-facade.service';
-import { FormDialogService } from '../../../shared/services/form-dialog.service';
-import { RecipeDialogConfigs } from '../configs/recipe-dialog.configs';
-import { Recipe, Ingredient } from '../../../core/interfaces/recipe.model';
-import { RecipeUtils } from '../utils/recipe.utils';
-import { ItemCardComponent } from '../../../shared/components/item-card/item-card.component';
-import { LoadingSpinnerComponent } from '../../../shared/components/loading-spinner/loading-spinner.component';
-import { FabButtonComponent } from '../../../shared/components/fab-button/fab-button.component';
-import { RecipeTagFilterComponent } from '../recipe-tag-filter/recipe-tag-filter.component';
+import {Component, ChangeDetectionStrategy, inject} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {MatButtonModule} from '@angular/material/button';
+import {MatIconModule} from '@angular/material/icon';
+import {RecipeFacadeService} from '../services/recipe-facade.service';
+import {FormDialogService} from '../../../shared/services/form-dialog.service';
+import {RecipeDialogConfigs} from '../configs/recipe-dialog.configs';
+import {Recipe, Ingredient} from '../../../core/interfaces/recipe.model';
+import {RecipeUtils} from '../utils/recipe.utils';
+import {ItemCardComponent} from '../../../shared/components/item-card/item-card.component';
+import {LoadingSpinnerComponent} from '../../../shared/components/loading-spinner/loading-spinner.component';
+import {FabButtonComponent} from '../../../shared/components/fab-button/fab-button.component';
+import {RecipeTagFilterComponent} from '../recipe-tag-filter/recipe-tag-filter.component';
 
 @Component({
   selector: 'app-recipes-tab',
@@ -71,9 +71,7 @@ export class RecipesTabComponent {
    * Delete recipe
    */
   public deleteRecipe(recipe: Recipe): void {
-    if (confirm(`Are you sure you want to delete "${recipe.title}"?`)) {
-      this.recipeFacade.deleteRecipe(recipe.id);
-    }
+    this.recipeFacade.deleteRecipe(recipe.id);
   }
 
   /**
@@ -115,7 +113,7 @@ export class RecipesTabComponent {
   /**
    * Get ingredients preview for display
    */
-  public getIngredientsPreview(ingredients: Ingredient[]): string {
+  public getIngredientsPreview(ingredients: Ingredient[] | string[]): string {
     return RecipeUtils.getIngredientsPreview(ingredients);
   }
 }

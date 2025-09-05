@@ -27,21 +27,6 @@
       >
         <!-- Recipe-specific content -->
         <div class="recipe-details">
-          <div class="recipe-meta" *ngIf="recipe.servings || getFormattedCookTime(recipe)">
-            <span *ngIf="recipe.servings" class="servings">
-              <mat-icon>group</mat-icon>
-              {{ recipe.servings }} serving{{ recipe.servings > 1 ? 's' : '' }}
-            </span>
-            <span *ngIf="getFormattedCookTime(recipe)" class="cook-time">
-              <mat-icon>schedule</mat-icon>
-              {{ getFormattedCookTime(recipe) }}
-            </span>
-          </div>
-
-          <div class="recipe-tags" *ngIf="recipe.tags && recipe.tags.length > 0">
-            <span *ngFor="let tag of recipe.tags" class="tag">{{ tag }}</span>
-          </div>
-
           <div class="recipe-ingredients" *ngIf="recipe.ingredients && recipe.ingredients.length > 0">
             <strong>Ingredients ({{ recipe.ingredients.length }}):</strong>
             <span class="ingredients-preview">

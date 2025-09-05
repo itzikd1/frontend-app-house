@@ -119,10 +119,34 @@ export class RecipeUtils {
   }
 
   /**
-   * Convert ingredients to comma-separated string
+   * Parse ingredients to backend format (simple string array)
    */
-  public static ingredientsToString(ingredients: Ingredient[]): string {
-    return ingredients
+  public static parseIngredientsToBackendFormat(ingredientsString: string): string[] {
+    if (!ingredientsString.trim()) {
+      return [];
+    }
+
+    return ingredientsString
+      .split('\n')  // Split by lines instead of commas for better UX
+      .map(ingredient => ingredient.trim())
+      .filter(ingredient => ingredient.length > 0);
+  }
+
+  /**
+   * Convert ingredients to string for display/editing
+   */
+  public static ingredientsToString(ingredients: Ingredient[] | string[]): string {
+    if (!ingredients || ingredients.length === 0) {
+      return '';
+    }
+
+    // Handle both frontend Ingredient objects and backend string arrays
+    if (typeof ingredients[0] === 'string') {
+      return (ingredients as string[]).join('\n');
+    }
+
+    // Frontend Ingredient objects
+    return (ingredients as Ingredient[])
       .map(ingredient => {
         if (ingredient.amount && ingredient.unit) {
           return `${ingredient.amount} ${ingredient.unit} ${ingredient.name}`;
@@ -131,20 +155,28 @@ export class RecipeUtils {
         }
         return ingredient.name;
       })
-      .join(', ');
+      .join('\n');  // Use newlines for better readability
   }
 
   /**
    * Get ingredients preview string for display
    */
-  public static getIngredientsPreview(ingredients: Ingredient[], maxItems: number = 3): string {
+  public static getIngredientsPreview(ingredients: Ingredient[] | string[], maxItems: number = 3): string {
     if (!ingredients || ingredients.length === 0) {
       return 'No ingredients';
     }
 
-    const preview = ingredients
+    let ingredientNames: string[];
+
+    // Handle both frontend Ingredient objects and backend string arrays
+    if (typeof ingredients[0] === 'string') {
+      ingredientNames = ingredients as string[];
+    } else {
+      ingredientNames = (ingredients as Ingredient[]).map(ingredient => ingredient.name);
+    }
+
+    const preview = ingredientNames
       .slice(0, maxItems)
-      .map(ingredient => ingredient.name)
       .join(', ');
 
     return ingredients.length > maxItems ? `${preview}...` : preview;

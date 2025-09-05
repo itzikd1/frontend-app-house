@@ -8,9 +8,8 @@ import { signal } from '@angular/core';
 
 // Tab constants for type safety
 const RECIPES_TAB_ID = 'recipes' as const;
-const CATEGORIES_TAB_ID = 'categories' as const;
 
-type RecipeTabId = typeof RECIPES_TAB_ID | typeof CATEGORIES_TAB_ID;
+type RecipeTabId = typeof RECIPES_TAB_ID;
 
 interface TabOption {
   id: RecipeTabId;
@@ -37,12 +36,10 @@ export class RecipesComponent implements OnInit {
   public readonly selectedTab = signal<RecipeTabId>(RECIPES_TAB_ID);
   public readonly tabOptions: TabOption[] = [
     { id: RECIPES_TAB_ID, label: 'Recipes' },
-    { id: CATEGORIES_TAB_ID, label: 'Categories' },
   ];
 
   // Tab constants for template
   public readonly RECIPES_TAB_ID = RECIPES_TAB_ID;
-  public readonly CATEGORIES_TAB_ID = CATEGORIES_TAB_ID;
 
   ngOnInit(): void {
     // Load initial data
@@ -62,6 +59,6 @@ export class RecipesComponent implements OnInit {
    * Type guard for valid tab IDs
    */
   private isValidTab(tab: string): tab is RecipeTabId {
-    return tab === RECIPES_TAB_ID || tab === CATEGORIES_TAB_ID;
+    return tab === RECIPES_TAB_ID;
   }
 }
