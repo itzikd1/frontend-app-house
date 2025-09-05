@@ -1,14 +1,18 @@
 <div class="item-card">
   <div class="item-header">
-    <input
-      *ngIf="showCheckbox"
-      type="checkbox"
-      class="item-complete-checkbox"
-      [checked]="completed"
-      (change)="onToggleComplete($event)"
-      aria-label="Mark as complete"
-    />
-    <ng-content></ng-content>
+    <div class="item-header-left">
+      <input
+        *ngIf="showCheckbox"
+        type="checkbox"
+        class="item-complete-checkbox"
+        [checked]="completed"
+        (change)="onToggleComplete($event)"
+        aria-label="Mark as complete"
+      />
+    </div>
+    <div class="item-header-content">
+      <ng-content select="[item-header]"></ng-content>
+    </div>
     <div class="item-actions">
       <button type="button" class="icon-btn edit" (click)="edit.emit()" title="Edit">
         <mat-icon aria-label="Edit">edit</mat-icon>
@@ -19,6 +23,8 @@
     </div>
   </div>
   <div class="item-body">
-    <ng-content></ng-content>
+    <div class="item-card-content">
+      <ng-content></ng-content>
+    </div>
   </div>
 </div>

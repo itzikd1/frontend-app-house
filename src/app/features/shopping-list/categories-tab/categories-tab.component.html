@@ -29,9 +29,9 @@
       (edit)="editCategory(category)"
       (delete)="deleteCategory(category.id)"
     >
-      <div class="category-meta-row">
-        <span class="date-label">Category name: {{category.name}}</span>
-        <span class="date-label">Description: {{ category.description }}</span>
+      <div class="item-card-content-inner">
+        <div class="item-title">{{ category.name }}</div>
+        <div class="item-subtitle">{{ category.description }}</div>
       </div>
     </app-item-card>
   </div>

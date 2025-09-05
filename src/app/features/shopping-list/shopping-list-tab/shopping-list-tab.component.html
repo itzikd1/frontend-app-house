@@ -47,9 +47,9 @@
       (delete)="deleteItem(item.id)"
       (toggleComplete)="togglePurchased(item, $event)"
     >
-      <div class="item-card-meta">
-        <span class="category-label">Title: {{ item.name }}</span>
-        <span class="category-label">Category: {{ getCategoryName(item.categoryId) }}</span>
+      <div class="item-card-content-inner">
+        <div class="item-title">{{ item.name }}</div>
+        <div class="item-subtitle">{{ getCategoryName(item.categoryId) }}</div>
       </div>
     </app-item-card>
   </div>
