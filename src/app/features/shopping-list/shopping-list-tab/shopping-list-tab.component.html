@@ -1,0 +1,56 @@
+<div class="shopping-list-tab">
+  <!-- Dashboard summary cards -->
+  <app-dashboard-summary-cards
+    [cards]="dashboardCards()"
+    [activeFilter]="dashboardFilter()"
+    (cardClick)="setDashboardFilter($event)"
+  ></app-dashboard-summary-cards>
+
+  <!-- Category filters -->
+  <div class="tag-filters">
+    <button class="tag-btn" [class.active]="selectedCategory() === 'all'" (click)="setCategory('all')">All ({{ allItems().length }})</button>
+    <button
+      class="tag-btn"
+      *ngFor="let category of categories()"
+      [class.active]="selectedCategory() === category.id"
+      (click)="setCategory(category.id)"
+    >
+      {{ category.name }}
+    </button>
+  </div>
+
+  <app-fab-button
+    icon="add"
+    color="primary"
+    ariaLabel="Add Shopping Item"
+    (buttonClick)="openAddDialog()"
+  ></app-fab-button>
+
+  <div *ngIf="loading()">
+    <app-loading-spinner></app-loading-spinner>
+  </div>
+
+  <div *ngIf="error()" class="error-message">
+    {{ error() }}
+  </div>
+
+  <div *ngIf="!loading() && items().length === 0">
+    <p>No shopping items found.</p>
+  </div>
+
+  <div *ngIf="!loading() && items().length" class="shopping-list-items">
+    <app-item-card
+      *ngFor="let item of items()"
+      [completed]="item.purchased"
+      [showCheckbox]="true"
+      (edit)="editItem(item)"
+      (delete)="deleteItem(item.id)"
+      (toggleComplete)="togglePurchased(item, $event)"
+    >
+      <div class="item-card-content-inner">
+        <div class="item-title">{{ item.name }}</div>
+        <div class="item-subtitle">{{ getCategoryName(item.categoryId) }}</div>
+      </div>
+    </app-item-card>
+  </div>
+</div>

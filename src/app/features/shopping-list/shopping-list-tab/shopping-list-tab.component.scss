@@ -1,0 +1,91 @@
+.shopping-list-tab {
+  padding: 16px;
+
+  .tag-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 16px;
+
+    .tag-btn {
+      padding: 8px 16px;
+      border: 1px solid #ddd;
+      background: white;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.2s;
+
+      &:hover {
+        background: #f5f5f5;
+      }
+
+      &.active {
+        background: #2196f3;
+        color: white;
+        border-color: #2196f3;
+      }
+    }
+  }
+
+  .shopping-list-items {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .shopping-meta-row {
+    font-size: 0.9em;
+    color: #666;
+
+    .checked {
+      color: #4caf50;
+      font-weight: 500;
+    }
+  }
+
+  .error-message {
+    color: #f44336;
+    padding: 16px;
+    background: #ffebee;
+    border-radius: 4px;
+    margin-bottom: 16px;
+  }
+
+  .item-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 4px;
+  }
+
+  .item-title {
+    font-size: 1.1em;
+    font-weight: 600;
+    flex: 1;
+    word-break: break-word;
+  }
+
+  .item-actions {
+    display: flex;
+    gap: 8px;
+  }
+
+  .item-card-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    font-size: 0.95em;
+    color: #555;
+    align-items: center;
+  }
+
+  .status-label.purchased {
+    color: #4caf50;
+    font-weight: 500;
+  }
+
+  .status-label.not-purchased {
+    color: #f44336;
+    font-weight: 500;
+  }
+}

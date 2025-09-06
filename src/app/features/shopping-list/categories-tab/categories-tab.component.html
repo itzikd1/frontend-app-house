@@ -1,0 +1,38 @@
+<div class="categories-tab">
+  <div class="categories-header">
+    <h2>Manage Shopping Categories</h2>
+    <p class="categories-subtitle">Organize your shopping items by categories</p>
+  </div>
+
+  <app-fab-button
+    icon="add"
+    color="primary"
+    ariaLabel="Add Category"
+    (buttonClick)="openAddCategoryDialog()"
+  ></app-fab-button>
+
+  <div *ngIf="categoryLoading()">
+    <app-loading-spinner></app-loading-spinner>
+  </div>
+
+  <div *ngIf="categoryError()" class="error-message">
+    {{ categoryError() }}
+  </div>
+
+  <div *ngIf="!categoryLoading() && categories().length === 0">
+    <p>No categories found. Add your first category to get started!</p>
+  </div>
+
+  <div *ngIf="!categoryLoading() && categories().length" class="categories-list">
+    <app-item-card
+      *ngFor="let category of categories()"
+      (edit)="editCategory(category)"
+      (delete)="deleteCategory(category.id)"
+    >
+      <div class="item-card-content-inner">
+        <div class="item-title">{{ category.name }}</div>
+        <div class="item-subtitle">{{ category.description }}</div>
+      </div>
+    </app-item-card>
+  </div>
+</div>

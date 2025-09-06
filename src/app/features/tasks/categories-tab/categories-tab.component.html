@@ -10,7 +10,6 @@
       <ng-container *ngIf="categories() as categoryItems">
         <app-item-card
           *ngFor="let item of categoryItems; let i = index"
-          [item]="item"
           [showCheckbox]="false"
           [completed]="false"
           (edit)="onEditCategory(item)"

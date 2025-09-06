@@ -1,5 +1,5 @@
 import { Injectable, inject, signal, computed } from '@angular/core';
-import { ShoppingListService } from '../../../core/services/shopping-list.service';
+import { ShoppingItemService } from '../../../core/services/shopping-item.service';
 import { ShoppingCategoryService } from '../../../core/services/shopping-category.service';
 import { ShoppingListItem } from '../../../core/interfaces/shopping-list.model';
 import { ShoppingCategory } from '../../../core/interfaces/shopping-category.model';
@@ -12,7 +12,7 @@ import { firstValueFrom } from 'rxjs';
   providedIn: 'root'
 })
 export class ShoppingListFacadeService {
-  private readonly shoppingListService = inject(ShoppingListService);
+  private readonly shoppingListService = inject(ShoppingItemService);
   private readonly categoryService = inject(ShoppingCategoryService);
 
   // State signals
@@ -93,6 +93,7 @@ export class ShoppingListFacadeService {
     this._loading.set(true);
     this.shoppingListService.getAll().subscribe({
       next: (items) => {
+        console.log('items',items)
         this._items.set(ShoppingListUtils.sortItems(items));
         this._loading.set(false);
         this._error.set(null);
@@ -218,15 +219,29 @@ export class ShoppingListFacadeService {
 
   // Category management methods
   public async addCategory(categoryData: Partial<ShoppingCategory>): Promise<void> {
-    this._categoryLoading.set(true);
+    const tempId = 'temp-' + Math.random().toString(36).substr(2, 9);
+    const optimisticCategory: ShoppingCategory = {
+      ...categoryData,
+      id: tempId,
+      name: categoryData.name || '',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    } as ShoppingCategory;
+
+    // Optimistic update
+    this._categories.update(categories => [...categories, optimisticCategory]);
+
     try {
       const createdCategory = await firstValueFrom(this.categoryService.create(categoryData));
-      this._categories.update(categories => [...categories, createdCategory]);
-      this._categoryLoading.set(false);
+      // Replace temp category with real one
+      this._categories.update(categories =>
+        categories.map(cat => cat.id === tempId ? createdCategory : cat)
+      );
       this._categoryError.set(null);
     } catch (error) {
+      // Revert on error
+      this._categories.update(categories => categories.filter(cat => cat.id !== tempId));
       this._categoryError.set('Failed to add category.');
-      this._categoryLoading.set(false);
       throw error;
     }
   }
@@ -257,10 +272,6 @@ export class ShoppingListFacadeService {
 
     try {
       await firstValueFrom(this.categoryService.delete(id));
-      // Reset category filter if deleted category was selected
-      if (this._selectedCategory() === id) {
-        this._selectedCategory.set('all');
-      }
     } catch (error) {
       // Revert on error
       this._categories.set(previousCategories);

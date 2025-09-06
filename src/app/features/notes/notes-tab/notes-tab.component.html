@@ -1,0 +1,121 @@
+<div class="notes-tab">
+  <!-- Search and Filter Controls -->
+  <div class="controls-section">
+    <mat-form-field appearance="outline" class="search-field">
+      <mat-label>Search notes</mat-label>
+      <input
+        matInput
+        type="text"
+        [value]="searchQuery()"
+        #searchInput
+        (input)="onSearchQueryChange(searchInput.value)"
+        placeholder="Search by title or content">
+      <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+
+    <!-- Color Filter -->
+    <div class="color-filter">
+      <button
+        mat-button
+        [class.active]="!selectedColor()"
+        (click)="onColorFilterChange(null)">
+        All Colors
+      </button>
+      <button
+        *ngFor="let color of colorOptions"
+        mat-icon-button
+        class="color-button"
+        [class.active]="selectedColor() === color"
+        [style.background-color]="color"
+        [style.border]="color === '#ffffff' ? '2px solid #ddd' : 'none'"
+        (click)="onColorFilterChange(color)">
+      </button>
+    </div>
+
+    <button
+      mat-button
+      color="primary"
+      (click)="clearFilters()"
+      *ngIf="searchQuery() || selectedColor()">
+      Clear Filters
+    </button>
+  </div>
+
+  <!-- Loading State -->
+  <app-loading-spinner *ngIf="noteLoading()"></app-loading-spinner>
+
+  <!-- Error State -->
+  <div *ngIf="noteError()" class="error-message">
+    <mat-icon>error</mat-icon>
+    <span>{{ noteError() }}</span>
+  </div>
+
+  <!-- Empty State -->
+  <div *ngIf="!noteLoading() && !noteError() && filteredNotes().length === 0" class="empty-state">
+    <mat-icon>note_add</mat-icon>
+    <h3>No notes found</h3>
+    <p *ngIf="!searchQuery() && !selectedColor()">Start by creating your first note!</p>
+    <p *ngIf="searchQuery() || selectedColor()">Try adjusting your search or filters.</p>
+  </div>
+
+  <!-- Notes List -->
+  <div class="notes-grid" *ngIf="filteredNotes().length > 0">
+    <div
+      *ngFor="let note of filteredNotes(); trackBy: trackByNoteId"
+      class="note-card"
+      [style.background-color]="getDisplayColor(note)">
+
+      <div class="note-header">
+        <h3 class="note-title">{{ note.title }}</h3>
+        <div class="note-actions">
+          <button
+            mat-icon-button
+            [color]="note.isPinned ? 'primary' : ''"
+            (click)="togglePin(note)"
+            matTooltip="{{ note.isPinned ? 'Unpin' : 'Pin' }} note">
+            <mat-icon>push_pin</mat-icon>
+          </button>
+
+          <button
+            mat-icon-button
+            (click)="openEditNoteDialog(note)"
+            matTooltip="Edit note">
+            <mat-icon>edit</mat-icon>
+          </button>
+
+          <button
+            mat-icon-button
+            color="warn"
+            (click)="deleteNote(note)"
+            matTooltip="Delete note">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </div>
+
+      <div class="note-content" *ngIf="note.content">
+        <p>{{ getPreviewText(note) }}</p>
+      </div>
+
+      <div class="note-footer">
+        <span class="note-date">{{ formatDate(note.updatedAt) }}</span>
+        <div class="color-picker">
+          <button
+            *ngFor="let color of colorOptions.slice(0, 6)"
+            mat-icon-button
+            class="mini-color-button"
+            [style.background-color]="color"
+            [style.border]="color === '#ffffff' ? '1px solid #ddd' : 'none'"
+            (click)="updateNoteColor(note, color)">
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FAB Button -->
+  <app-fab-button
+    icon="add"
+    (buttonClick)="openAddNoteDialog()">
+  </app-fab-button>
+</div>

@@ -11,11 +11,10 @@ import { MatIconModule } from '@angular/material/icon';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ItemCardComponent {
-  @Input() item: unknown = null;
   @Input() completed: boolean = false;
   @Input() showCheckbox: boolean = false;
-  @Output() edit = new EventEmitter<unknown>();
-  @Output() delete = new EventEmitter<unknown>();
+  @Output() edit = new EventEmitter<void>();
+  @Output() delete = new EventEmitter<void>();
   @Output() toggleComplete = new EventEmitter<boolean>();
 
   onToggleComplete(event: Event): void {

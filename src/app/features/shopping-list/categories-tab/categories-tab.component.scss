@@ -1,0 +1,44 @@
+.categories-tab {
+  padding: 16px;
+
+  .categories-header {
+    margin-bottom: 24px;
+
+    h2 {
+      margin: 0 0 8px 0;
+      color: #333;
+    }
+
+    .categories-subtitle {
+      margin: 0;
+      color: #666;
+      font-size: 0.9em;
+    }
+  }
+
+  .categories-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .category-meta-row {
+    font-size: 0.9em;
+    color: #666;
+  }
+
+  .error-message {
+    color: #f44336;
+    padding: 16px;
+    background: #ffebee;
+    border-radius: 4px;
+    margin-bottom: 16px;
+  }
+
+  p {
+    text-align: center;
+    color: #666;
+    font-style: italic;
+    margin: 32px 0;
+  }
+}

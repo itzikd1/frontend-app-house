@@ -1,100 +1,19 @@
 <div class="shopping-list-page">
   <div class="shopping-list-header">
     <h1>Shopping List</h1>
-    <p class="shopping-list-subtitle">Manage your shopping items</p>
+    <p class="shopping-list-subtitle">Manage your shopping items and categories</p>
   </div>
 
-  <!-- Tabs for items and categories -->
-  <div class="tag-filters">
-    <button class="tag-btn" [class.active]="selectedTab() === 'items'" (click)="setTab('items')">Items</button>
-    <button class="tag-btn" [class.active]="selectedTab() === 'categories'" (click)="setTab('categories')">Categories</button>
+  <!-- Tab switcher -->
+  <app-tab-switcher
+    [tabs]="tabOptions"
+    [selectedTab]="selectedTab()"
+    (tabChange)="onTabChange($event)"
+  ></app-tab-switcher>
+
+  <!-- Tab content -->
+  <div class="tab-content">
+    <app-shopping-list-tab *ngIf="selectedTab() === 'shopping-list'"></app-shopping-list-tab>
+    <app-categories-tab *ngIf="selectedTab() === 'categories'"></app-categories-tab>
   </div>
-
-  <!-- Items tab -->
-  <ng-container *ngIf="selectedTab() === 'items'">
-    <!-- Dashboard summary cards -->
-    <app-dashboard-summary-cards
-      [cards]="dashboardCards()"
-      [activeFilter]="dashboardFilter()"
-      (cardClick)="setDashboardFilter($event)"
-    ></app-dashboard-summary-cards>
-
-    <!-- Category filters -->
-    <div class="tag-filters">
-      <button class="tag-btn" [class.active]="selectedCategory() === 'all'" (click)="setCategory('all')">All ({{ allItems().length }})</button>
-      <button
-        class="tag-btn"
-        *ngFor="let category of categories()"
-        [class.active]="selectedCategory() === category.id"
-        (click)="setCategory(category.id)"
-      >
-        {{ category.name }}
-      </button>
-    </div>
-
-    <app-fab-button
-      icon="add"
-      color="primary"
-      ariaLabel="Add Shopping Item"
-      (click)="openAddDialog()"
-    ></app-fab-button>
-
-    <div *ngIf="loading()">
-      <app-loading-spinner></app-loading-spinner>
-    </div>
-
-    <div *ngIf="!loading() && filteredItems().length === 0">
-      <p>No shopping items found.</p>
-    </div>
-
-    <div *ngIf="!loading() && filteredItems().length" class="shopping-list-items">
-      <app-item-card
-        *ngFor="let item of filteredItems()"
-        [item]="{ title: item.name, description: 'Quantity: ' + item.quantity }"
-        [completed]="item.purchased"
-        [showCheckbox]="true"
-        (edit)="editList(item)"
-        (delete)="deleteList(item.id)"
-        (toggleComplete)="togglePurchased(item, $event)"
-      >
-        <div class="shopping-meta-row">
-          <span>Status: <span [class.checked]="item.purchased">{{ item.purchased ? 'Purchased' : 'Not Purchased' }}</span></span>
-        </div>
-      </app-item-card>
-    </div>
-  </ng-container>
-
-  <!-- Categories tab -->
-  <ng-container *ngIf="selectedTab() === 'categories'">
-    <div class="category-management">
-      <h2>Manage Shopping Categories</h2>
-      <app-fab-button
-        icon="add"
-        color="primary"
-        ariaLabel="Add Category"
-        (click)="openAddCategoryDialog()"
-      ></app-fab-button>
-      <div *ngIf="categoryLoading()">
-        <app-loading-spinner></app-loading-spinner>
-      </div>
-      <div *ngIf="categoryError()">
-        <p class="error">{{ categoryError() }}</p>
-      </div>
-      <div *ngIf="!categoryLoading() && categories().length">
-        <div class="categories-list">
-          <div *ngFor="let category of categories()" class="category-card">
-            <mat-card>
-              <mat-card-content>
-                <span class="category-title">{{ category.name }}</span>
-              </mat-card-content>
-              <mat-card-actions>
-                <button mat-icon-button color="accent" aria-label="Edit category" (click)="openEditCategoryDialog(category)"><mat-icon>edit</mat-icon></button>
-                <button mat-icon-button color="warn" aria-label="Delete category" (click)="deleteCategory(category.id)"><mat-icon>delete</mat-icon></button>
-              </mat-card-actions>
-            </mat-card>
-          </div>
-        </div>
-      </div>
-    </div>
-  </ng-container>
 </div>

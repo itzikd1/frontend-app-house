@@ -18,11 +18,13 @@ export interface FormFieldOption {
 export interface FormFieldConfig {
   key: string;
   label: string;
-  type: 'text' | 'textarea' | 'select' | 'date';
+  type: 'text' | 'textarea' | 'select' | 'date' | 'number';
   required?: boolean;
   validators?: ValidatorFn[];
   options?: FormFieldOption[];
   placeholder?: string;
+  rows?: number; // For textarea fields
+  defaultValue?: string | number; // Default value for fields
 }
 
 export interface FormDialogConfig {
@@ -48,111 +50,8 @@ export interface FormDialogConfig {
     MatDatepickerModule,
     MatNativeDateModule,
   ],
-  template: `
-    <div class="dialog-container">
-      <h2 mat-dialog-title>{{ config.title }}</h2>
-
-      <form [formGroup]="form" (ngSubmit)="onSubmit()">
-        <mat-dialog-content>
-          <div class="form-fields">
-            <ng-container *ngFor="let field of config.fields">
-
-              <!-- Text Input -->
-              <mat-form-field *ngIf="field.type === 'text'" appearance="outline">
-                <mat-label>{{ field.label }}</mat-label>
-                <input
-                  matInput
-                  [formControlName]="field.key"
-                  [placeholder]="field.placeholder || ''"
-                >
-                <mat-error *ngIf="form.get(field.key)?.hasError('required')">
-                  {{ field.label }} is required
-                </mat-error>
-              </mat-form-field>
-
-              <!-- Textarea -->
-              <mat-form-field *ngIf="field.type === 'textarea'" appearance="outline">
-                <mat-label>{{ field.label }}</mat-label>
-                <textarea
-                  matInput
-                  [formControlName]="field.key"
-                  [placeholder]="field.placeholder || ''"
-                  rows="3"
-                ></textarea>
-              </mat-form-field>
-
-              <!-- Select -->
-              <mat-form-field *ngIf="field.type === 'select'" appearance="outline">
-                <mat-label>{{ field.label }}</mat-label>
-                <mat-select [formControlName]="field.key">
-                  <mat-option
-                    *ngFor="let option of field.options"
-                    [value]="option.value"
-                  >
-                    {{ option.label }}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
-
-              <!-- Date -->
-              <mat-form-field *ngIf="field.type === 'date'" appearance="outline">
-                <mat-label>{{ field.label }}</mat-label>
-                <input
-                  matInput
-                  [matDatepicker]="picker"
-                  [formControlName]="field.key"
-                >
-                <mat-hint>MM/DD/YYYY</mat-hint>
-                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                <mat-datepicker #picker></mat-datepicker>
-              </mat-form-field>
-
-            </ng-container>
-          </div>
-        </mat-dialog-content>
-
-        <mat-dialog-actions align="end">
-          <button
-            mat-button
-            type="button"
-            (click)="onCancel()"
-          >
-            {{ config.cancelLabel || 'Cancel' }}
-          </button>
-          <button
-            mat-raised-button
-            color="primary"
-            type="submit"
-            [disabled]="form.invalid"
-          >
-            {{ config.submitLabel || 'Submit' }}
-          </button>
-        </mat-dialog-actions>
-      </form>
-    </div>
-  `,
-  styles: [`
-    .dialog-container {
-      min-width: 400px;
-      max-width: 600px;
-    }
-
-    .form-fields {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      padding: 16px 0;
-    }
-
-    mat-form-field {
-      width: 100%;
-    }
-
-    mat-dialog-actions {
-      padding: 16px 0 0 0;
-      gap: 8px;
-    }
-  `],
+  templateUrl: './form-dialog.component.html',
+  styleUrls: ['./form-dialog.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FormDialogComponent implements OnInit {

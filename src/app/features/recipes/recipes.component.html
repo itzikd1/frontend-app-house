@@ -1,30 +1,14 @@
-<ng-container *ngIf="loading()">
-  <app-loading-spinner [translationKey]="'loading.default'"></app-loading-spinner>
-</ng-container>
-<ng-container *ngIf="!loading()">
-  <div *ngIf="error(); else showRecipes">
-    <p class="error">{{ error() }}</p>
-  </div>
-  <ng-template #showRecipes>
-    <app-item-list
-      [items]="recipes()"
-      [loading]="loading()"
-      [error]="error()"
-      emptyMessage="No recipes found."
-    >
-      <app-item-card
-        *ngFor="let recipe of recipes()"
-        [item]="recipe"
-        (delete)="deleteRecipe(recipe)"
-      >
-        <span *ngIf="recipe.servings">Servings: {{ recipe.servings }}</span>
-      </app-item-card>
-    </app-item-list>
-  </ng-template>
-</ng-container>
+<div class="recipes-container">
+  <!-- Tab Switcher -->
+  <app-tab-switcher
+    [tabs]="tabOptions"
+    [selectedTab]="selectedTab()"
+    (tabChange)="onTabChange($event)"
+  ></app-tab-switcher>
 
-<app-fab-button
-  icon="add"
-  ariaLabel="Add Recipe"
-  (buttonClick)="openAddDialog()"
-></app-fab-button>
+  <!-- Tab Content -->
+  <div class="tab-content">
+    <!-- Recipes Tab -->
+    <app-recipes-tab *ngIf="selectedTab() === RECIPES_TAB_ID"></app-recipes-tab>
+  </div>
+</div>
