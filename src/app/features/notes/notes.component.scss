@@ -1,4 +1,3 @@
-
 .notes-page {
   max-width: 1200px;
   margin: 0 auto;
@@ -26,7 +25,17 @@
 }
 
 .notes-container {
-  margin-top: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 1rem;
+}
+
+.tab-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  margin-top: 1rem;
 }
 
 .notes-grid {
@@ -150,6 +159,10 @@
 
   .notes-header h1 {
     font-size: 2rem;
+  }
+
+  .notes-container {
+    padding: 0.5rem;
   }
 }
 

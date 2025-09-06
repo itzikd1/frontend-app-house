@@ -11,16 +11,21 @@ export class NoteService {
   private readonly http = inject(HttpClient);
 
   getAll(): Observable<Note[]> {
-    return this.http.get<{ data?: { success: boolean; notes: Note[] }; error?: string }>(this.baseUrl).pipe(
+    return this.http.get<{ data?: { success: boolean; item: Note[] }; error?: string }>(this.baseUrl).pipe(
       map(res => {
         if (res.error) throw res.error;
-        return res.data?.notes ?? [];
+        return res.data?.item ?? [];
       })
     );
   }
 
   create(note: Partial<Note>): Observable<Note> {
-    return this.http.post<Note>(this.baseUrl, note);
+    return this.http.post<{ data?: { success: boolean; item: Note }; error?: string }>(this.baseUrl, note).pipe(
+      map(res => {
+        if (res.error) throw res.error;
+        return res.data?.item as Note;
+      })
+    );
   }
 
   delete(id: string): Observable<void> {
